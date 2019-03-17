@@ -4,6 +4,7 @@
   "description": "maybe to react what react is to hyperscript?",
   "main": "index.js",
   "scripts": {
+    "start": "parcel demo/index.html",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -15,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/dtudury/horsy/issues"
   },
-  "homepage": "https://github.com/dtudury/horsy#readme"
+  "homepage": "https://github.com/dtudury/horsy#readme",
+  "devDependencies": {
+    "parcel-bundler": "^1.12.2"
+  }
 }
