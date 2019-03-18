@@ -2,7 +2,7 @@
   "name": "horsy",
   "version": "1.0.0",
   "description": "maybe to react what react is to hyperscript?",
-  "main": "index.js",
+  "main": "lib/index.js",
   "scripts": {
     "start": "parcel demo/index.html",
     "test": "echo \"Error: no test specified\" && exit 1"
