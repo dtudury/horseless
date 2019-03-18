@@ -34,7 +34,4 @@ export default class SlotTest extends HTMLElement {
     Object.assign(this, attributes)
     this.update()
   }
-  static get NAME () {
-    return 'slot-test-element'
-  }
 }
