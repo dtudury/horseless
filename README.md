@@ -1,13 +1,30 @@
 # horsy
 
-* write html-like into a tagged template and get an array of html elements. 
-  * objects returned by template expressions assigned to attributes stay attributes in the produced element.
-  * functions returned by template expressions assigned to tags get passed attributes and children and must return a node
-* works great with web components
-* doesn't do much else (~200 lines of not-code-golf code)
-
+## html-like markup in template literals!
+write html. get elements. No compiling .jsx
 ```
-import h, { setChildren } from 'horsy'
-let elements = h`<span>hello</span> <span>world</span>`
+import h, { setChildren } from '../lib'
+let name = 'World'
+let style = 'color: red;'
+let elements = h`<span class='greeting'>Hello</span> <span class='name' style=${style}>${name}</span>!`
 setChildren(document.body, elements)
 ```
+
+## but it's not really html, is it?
+well, no... it only handles elements and doesn't check that your tags are valid or anything
+```
+import h, { setChildren } from '../lib'
+let elements = h`
+<!DOCTYPE html>
+<!-- comment -->
+`
+setChildren(document.body, elements)
+```
+nope nope nope
+
+## Ugh! not another bloated framework!
+I feel you! This won't solve all your problems for you. This ***just*** turns markup into dom elements.
+
+There's around 200 code-golf-free lines (plus comments (someday)) with no external dependencies. you can read through all the code and understand every subtle nuance in a few minutes
+
+The gzipped minified version is 2k
