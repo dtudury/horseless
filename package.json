@@ -1,6 +1,6 @@
 {
   "name": "horsy",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "maybe to react what react is to hyperscript?",
   "main": "lib/index.js",
   "scripts": {
