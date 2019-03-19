@@ -5,10 +5,10 @@ import CustomizedTest from './elements/CustomizedTest'
 
 const configuration = { background: 'lightgreen', color: 'darkgreen' }
 const st = 'slot-test'
-customElements.define('slot-test', SlotTest)
+customElements.define(st, SlotTest)
 customElements.define('customized-test', CustomizedTest, { extends: 'div' })
 
-let textNode = h`${st} text node`
+let textNode = h`${st}${st}${st} text node`
 
 setChildren(document.body, h`
   <svg version='1.1' baseProfile='full' width='300' height='200' viewBox='0 0 300 200' xmlns='http://www.w3.org/2000/svg'>
@@ -24,6 +24,11 @@ setChildren(document.body, h`
   <slot-test config=${{ background: 'black', color: 'white' }}><i slot='test'>fascinating italic text</i></slot-test>
 
   ${textNode}
+  &amp;
+  &quot;
+  &apos;
+  &lt;
+  &gt;
 
   <div is='customized-test' a='1' b='1'><i>This is a customized div, it console.log's itself on click</i></div>
 `)
