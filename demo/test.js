@@ -8,7 +8,9 @@ const st = 'slot-test'
 customElements.define(st, SlotTest)
 customElements.define('customized-test', CustomizedTest, { extends: 'div' })
 
-let textNode = h`${st}${st}${st} text node`
+let textNode = h`${st} ${st} ${st} text node`
+let aa = h`${[h`a`, h`a`]}`
+let bb = h`${[h`b`, h`b`]}`
 
 setChildren(document.body, h`
   <svg version='1.1' baseProfile='full' width='300' height='200' viewBox='0 0 300 200' xmlns='http://www.w3.org/2000/svg'>
@@ -29,6 +31,7 @@ setChildren(document.body, h`
   &apos;
   &lt;
   &gt;
-
   <div is='customized-test' a='1' b='1'><i>This is a customized div, it console.log's itself on click</i></div>
+
+  ${[aa, bb]}
 `)
