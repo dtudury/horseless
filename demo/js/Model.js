@@ -5,6 +5,7 @@ class Model {
     this._waiting = false
     this._touches = new Map()
     this._targetWatchers = new Map()
+    this._allWatchers = new Set()
   }
   watchify (target = {}) {
     const model = this
@@ -37,6 +38,12 @@ class Model {
       }
     }
   }
+  watchAll (watcher) {
+    this._allWatchers.add(watcher)
+  }
+  unwatchAll (watcher) {
+    this._allWatchers.delete(watcher)
+  }
   _handleChange (proxy, key) {
     if (!this._waiting) {
       requestAnimationFrame(() => this._dispatch())
@@ -50,8 +57,11 @@ class Model {
     touchedKeys.add()
   }
   _dispatch () {
-    let watchers = []
     this._waiting = false
+    if (!this._touches.size) {
+      return
+    }
+    let watchers = [...this._allWatchers]
     this._touches.forEach((touchedKeys, proxy) => {
       const targetWatcher = this._targetWatchers.get(proxy)
       if (targetWatcher) {

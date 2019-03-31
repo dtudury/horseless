@@ -1,10 +1,10 @@
 /* global HTMLAnchorElement */
 import { model, root } from '../Model'
 
-export default class CustomizedTest extends HTMLAnchorElement {
+export default class FilterButton extends HTMLAnchorElement {
   constructor () {
     super()
-    this._update = this.update.bind(this)
+    model.watch(root, this.update.bind(this), 'hash')
   }
   update () {
     if (root.hash === this.hash) {
@@ -12,12 +12,5 @@ export default class CustomizedTest extends HTMLAnchorElement {
     } else {
       this.classList.remove('selected')
     }
-  }
-  connectedCallback () {
-    this.update()
-    model.watch(root, this._update, 'hash')
-  }
-  disconnectedCallback () {
-    model.unwatch(root, this._update, 'hash')
   }
 }

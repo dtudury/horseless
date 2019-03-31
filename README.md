@@ -11,3 +11,8 @@ import h, { setChildren } from 'horsy'
 let elements = h`<span>hello</span> <span>world</span>`
 setChildren(document.body, elements)
 ```
+## todo
+* handle xml != html
+  * handle attributes without values `<input autofocus/>`
+  * handle elements without closing tags `<br>`
+* less adding and removing when splicing child nodes lists
