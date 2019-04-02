@@ -1,6 +1,6 @@
 /* global requestAnimationFrame */
 
-class Model {
+export default class Model {
   constructor () {
     this._waiting = false
     this._touches = new Map()
