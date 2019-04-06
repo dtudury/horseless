@@ -1,7 +1,7 @@
 {
-  "name": "horsy",
-  "version": "2.3.0",
-  "description": "maybe to react what react is to hyperscript?",
+  "name": "horseless",
+  "version": "0.0.0",
+  "description": "a framework?",
   "main": "lib/index.js",
   "scripts": {
     "start": "parcel --no-hmr --no-cache demo/index.html",
