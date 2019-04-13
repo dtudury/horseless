@@ -3,7 +3,6 @@ import h, { setChildren } from '../../lib'
 import NewTodo from './views/NewTodo'
 import TodoList from './views/TodoList'
 import TodoCount from './views/TodoCount'
-import FilterButton from './views/FilterButton'
 import ClearCompleted from './views/ClearCompleted'
 import model from './Model'
 import './controller'
@@ -12,10 +11,19 @@ import { watchFunction } from '../../lib/functionWatcher'
 customElements.define('new-todo', NewTodo, { extends: 'input' })
 customElements.define('todo-list', TodoList, { extends: 'ul' })
 customElements.define('todo-count', TodoCount, { extends: 'span' })
-customElements.define('filter-button', FilterButton, { extends: 'a' })
 customElements.define('clear-completed', ClearCompleted, { extends: 'button' })
 
 const todoApp = h`<section class="todoapp"/>`[0]
+
+const filterButtonClassUpdater = {
+  watch: el => {
+    if (model.hash === el.hash) {
+      return 'selected'
+    } else {
+      return ''
+    }
+  }
+}
 
 setChildren(document.body, h`
   ${todoApp}
@@ -42,13 +50,13 @@ const footer = h`<footer class="footer">
   <span is="todo-count" class="todo-count" />
   <ul class="filters">
     <li>
-      <a is="filter-button" href="#/">All</a>
+      <a class=${filterButtonClassUpdater}href="#/">All</a>
     </li>
     <li>
-      <a is="filter-button" href="#/active">Active</a>
+      <a class=${filterButtonClassUpdater} href="#/active">Active</a>
     </li>
     <li>
-      <a is="filter-button" href="#/completed">Completed</a>
+      <a class=${filterButtonClassUpdater} href="#/completed">Completed</a>
     </li>
   </ul>
   <button is="clear-completed" class="clear-completed">Clear completed</button>

@@ -26,7 +26,9 @@ export default class TodoItem extends HTMLLIElement {
       this.classList.remove('completed')
     }
   }
-  edit () {
+  edit (e) {
+    console.log(e.target)
+    console.log(this)
     this.classList.add('editing')
     this.querySelector('.edit').focus()
   }

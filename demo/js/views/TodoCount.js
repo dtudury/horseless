@@ -13,8 +13,7 @@ export default class TodoCount extends HTMLSpanElement {
     setChildren(this, h`<strong>${'' + itemsLeft}</strong> item${itemsLeft === 1 ? '' : 's'} left`)
   }
   connectedCallback () {
-    let watches = watchFunction(this._update)
-    console.log(watches)
+    watchFunction(this._update)
   }
   disconnectedCallback () {
     unwatchFunction(this._update)
