@@ -1,17 +1,13 @@
 /* global customElements */
 import h, { setChildren } from '../../lib'
-import NewTodo from './views/NewTodo'
 import TodoList from './views/TodoList'
 import TodoCount from './views/TodoCount'
-import ClearCompleted from './views/ClearCompleted'
 import model from './Model'
-import './controller'
+import { clearCompleted, addTodo } from './controller'
 import { watchFunction } from '../../lib/functionWatcher'
 
-customElements.define('new-todo', NewTodo, { extends: 'input' })
 customElements.define('todo-list', TodoList, { extends: 'ul' })
 customElements.define('todo-count', TodoCount, { extends: 'span' })
-customElements.define('clear-completed', ClearCompleted, { extends: 'button' })
 
 const todoApp = h`<section class="todoapp"/>`[0]
 
@@ -36,7 +32,7 @@ setChildren(document.body, h`
 
 const header = h`<header class="header">
   <h1>todos</h1>
-  <input is="new-todo" class="new-todo" placeholder="What needs to be done?" autofocus=""/>
+  <input onchange=${e => { addTodo(e.target.value); e.target.value = '' }} class="new-todo" placeholder="What needs to be done?" autofocus=""/>
 </header>`
 
 const main = h`<section class="main">
@@ -59,7 +55,7 @@ const footer = h`<footer class="footer">
       <a class=${filterButtonClassUpdater} href="#/completed">Completed</a>
     </li>
   </ul>
-  <button is="clear-completed" class="clear-completed">Clear completed</button>
+  <button class="clear-completed" onclick=${clearCompleted}>Clear completed</button>
 </footer>`
 
 function update () {

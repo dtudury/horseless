@@ -27,8 +27,6 @@ export default class TodoItem extends HTMLLIElement {
     }
   }
   edit (e) {
-    console.log(e.target)
-    console.log(this)
     this.classList.add('editing')
     this.querySelector('.edit').focus()
   }

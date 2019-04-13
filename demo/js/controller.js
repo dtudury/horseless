@@ -8,7 +8,7 @@ window.addEventListener('load', setView)
 window.addEventListener('hashchange', setView)
 
 export function addTodo (label) {
-  model.todos.push({ label, completed: false })
+  model.todos.push({ label: label.trim(), completed: false })
 }
 
 export function destroy (todo) {
