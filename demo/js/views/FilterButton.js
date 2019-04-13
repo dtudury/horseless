@@ -1,13 +1,14 @@
 /* global HTMLAnchorElement */
-import { model, root } from '../Model'
+import model from '../Model'
+import { watchFunction } from '../../../lib/functionWatcher'
 
 export default class FilterButton extends HTMLAnchorElement {
   constructor () {
     super()
-    model.watch(root, this.update.bind(this), 'hash')
+    watchFunction(this.update.bind(this))
   }
   update () {
-    if (root.hash === this.hash) {
+    if (model.hash === this.hash) {
       this.classList.add('selected')
     } else {
       this.classList.remove('selected')

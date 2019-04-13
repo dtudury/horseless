@@ -1,7 +1,8 @@
 /* global customElements HTMLUListElement */
-import { model, root } from '../Model'
+import model from '../Model'
 import h, { setChildren } from '../../../lib'
 import TodoItem from './TodoItem'
+import { watchFunction, unwatchFunction } from '../../../lib/functionWatcher'
 
 customElements.define('todo-item', TodoItem, { extends: 'li' })
 
@@ -12,9 +13,9 @@ export default class TodoList extends HTMLUListElement {
     this.todosMap = new Map()
   }
   update () {
-    setChildren(this, root.todos
+    setChildren(this, model.todos
       .filter(todo => {
-        switch (root.hash) {
+        switch (model.hash) {
           case '#/active':
             return !todo.completed
           case '#/completed':
@@ -31,10 +32,9 @@ export default class TodoList extends HTMLUListElement {
       }))
   }
   connectedCallback () {
-    this.update()
-    model.watchAll(this._update)
+    watchFunction(this._update)
   }
   disconnectedCallback () {
-    model.unwatchAll(this._update)
+    unwatchFunction(this._update)
   }
 }

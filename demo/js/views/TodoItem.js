@@ -1,7 +1,7 @@
 /* global HTMLLIElement */
-import { model } from '../Model'
 import { destroy } from '../controller'
 import h, { setChildren } from '../../../lib'
+import { watchFunction, unwatchFunction } from '../../../lib/functionWatcher'
 const ENTER_KEY = 13
 const ESCAPE_KEY = 27
 
@@ -54,10 +54,9 @@ export default class TodoItem extends HTMLLIElement {
     }
   }
   connectedCallback () {
-    this.update()
-    model.watch(this.todo, this._update)
+    watchFunction(this._update)
   }
   disconnectedCallback () {
-    model.unwatch(this.todo, this._update)
+    unwatchFunction(this._update)
   }
 }

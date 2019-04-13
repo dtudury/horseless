@@ -1,5 +1,8 @@
-/* global requestAnimationFrame */
 
+import { modelify } from '../../lib/functionWatcher'
+export default modelify({ todos: [] })
+
+/*
 export default class Model {
   constructor () {
     this._waiting = false
@@ -80,3 +83,4 @@ export default class Model {
 export const model = new Model()
 export const root = model.watchify({})
 root.todos = model.watchify([])
+*/

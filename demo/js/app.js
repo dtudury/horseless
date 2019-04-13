@@ -5,8 +5,9 @@ import TodoList from './views/TodoList'
 import TodoCount from './views/TodoCount'
 import FilterButton from './views/FilterButton'
 import ClearCompleted from './views/ClearCompleted'
-import { model, root } from './Model'
+import model from './Model'
 import './controller'
+import { watchFunction } from '../../lib/functionWatcher'
 
 customElements.define('new-todo', NewTodo, { extends: 'input' })
 customElements.define('todo-list', TodoList, { extends: 'ul' })
@@ -54,8 +55,9 @@ const footer = h`<footer class="footer">
 </footer>`
 
 function update () {
-  setChildren(todoApp, root.todos.length ? [header, main, footer] : [header])
+  setChildren(todoApp, model.todos.length ? [header, main, footer] : [header])
 }
 
-model.watchAll(update)
+watchFunction(update)
+
 update()

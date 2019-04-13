@@ -1,6 +1,7 @@
 /* global HTMLSpanElement */
-import { model, root } from '../Model'
+import model from '../Model'
 import h, { setChildren } from '../../../lib'
+import { watchFunction, unwatchFunction } from '../../../lib/functionWatcher'
 
 export default class TodoCount extends HTMLSpanElement {
   constructor () {
@@ -8,14 +9,14 @@ export default class TodoCount extends HTMLSpanElement {
     this._update = this.update.bind(this)
   }
   update (e) {
-    const itemsLeft = root.todos.filter(todo => !todo.completed).length
+    const itemsLeft = model.todos.filter(todo => !todo.completed).length
     setChildren(this, h`<strong>${'' + itemsLeft}</strong> item${itemsLeft === 1 ? '' : 's'} left`)
   }
   connectedCallback () {
-    this.update()
-    model.watchAll(this._update)
+    let watches = watchFunction(this._update)
+    console.log(watches)
   }
   disconnectedCallback () {
-    model.unwatchAll(this._update)
+    unwatchFunction(this._update)
   }
 }

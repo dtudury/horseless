@@ -1,22 +1,22 @@
 
-import { model, root } from './Model'
+import model from './Model'
 
 const setView = () => {
-  root.hash = document.location.hash || '#/'
+  model.hash = document.location.hash || '#/'
 }
 window.addEventListener('load', setView)
 window.addEventListener('hashchange', setView)
 
 export function addTodo (label) {
-  root.todos.push(model.watchify({ label, completed: false }))
+  model.todos.push({ label, completed: false })
 }
 
 export function destroy (todo) {
-  root.todos.splice(root.todos.indexOf(todo), 1)
+  model.todos.splice(model.todos.indexOf(todo), 1)
 }
 
 export function clearCompleted () {
-  root.todos = root.todos.filter(todo => !todo.completed)
+  model.todos = model.todos.filter(todo => !todo.completed)
 }
 
 addTodo('Taste JavaScript')
