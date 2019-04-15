@@ -1,17 +1,16 @@
 /* global customElements */
 import h, { setChildren } from '../../lib'
 import TodoList from './views/TodoList'
-import TodoCount from './views/TodoCount'
 import model from './Model'
 import { clearCompleted, addTodo } from './controller'
 import { watchFunction } from '../../lib/functionWatcher'
 
 customElements.define('todo-list', TodoList, { extends: 'ul' })
-customElements.define('todo-count', TodoCount, { extends: 'span' })
 
 const todoApp = h`<section class="todoapp"></section>`[0]
 
-const filterButtonClassUpdater = el => (model.hash === el.hash) ? 'selected' : ''
+const filterButtonClass = el => (model.hash === el.hash) ? 'selected' : ''
+const itemsLeft = () => model.todos.filter(todo => !todo.completed).length
 
 setChildren(document.body, h`
   ${todoApp}
@@ -35,16 +34,16 @@ const main = h`<section class="main">
 </section>`
 
 const footer = h`<footer class="footer">
-  <span is="todo-count" class="todo-count" />
+  <span class="todo-count"><strong>${() => '' + itemsLeft()}</strong> item${() => itemsLeft() === 1 ? '' : 's'} left</span>
   <ul class="filters">
     <li>
-      <a class=${filterButtonClassUpdater}href="#/">All</a>
+      <a class=${filterButtonClass}href="#/">All</a>
     </li>
     <li>
-      <a class=${filterButtonClassUpdater} href="#/active">Active</a>
+      <a class=${filterButtonClass} href="#/active">Active</a>
     </li>
     <li>
-      <a class=${filterButtonClassUpdater} href="#/completed">Completed</a>
+      <a class=${filterButtonClass} href="#/completed">Completed</a>
     </li>
   </ul>
   <button class="clear-completed" onclick=${clearCompleted}>Clear completed</button>
