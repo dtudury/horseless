@@ -54,5 +54,3 @@ function update () {
 }
 
 watchFunction(update)
-
-update()
