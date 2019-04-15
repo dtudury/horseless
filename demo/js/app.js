@@ -9,17 +9,9 @@ import { watchFunction } from '../../lib/functionWatcher'
 customElements.define('todo-list', TodoList, { extends: 'ul' })
 customElements.define('todo-count', TodoCount, { extends: 'span' })
 
-const todoApp = h`<section class="todoapp"/>`[0]
+const todoApp = h`<section class="todoapp"></section>`[0]
 
-const filterButtonClassUpdater = {
-  watch: el => {
-    if (model.hash === el.hash) {
-      return 'selected'
-    } else {
-      return ''
-    }
-  }
-}
+const filterButtonClassUpdater = el => (model.hash === el.hash) ? 'selected' : ''
 
 setChildren(document.body, h`
   ${todoApp}
@@ -32,7 +24,7 @@ setChildren(document.body, h`
 
 const header = h`<header class="header">
   <h1>todos</h1>
-  <input onchange=${e => { addTodo(e.target.value); e.target.value = '' }} class="new-todo" placeholder="What needs to be done?" autofocus=""/>
+  <input class="new-todo" onchange=${e => { addTodo(e.target.value); e.target.value = '' }} placeholder="What needs to be done?" autofocus=""/>
 </header>`
 
 const main = h`<section class="main">
