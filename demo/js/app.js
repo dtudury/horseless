@@ -1,34 +1,19 @@
 /* global customElements */
 import { h } from '../../lib'
 import TodoItem from './views/TodoItem'
-import model from './Model'
 import { clearCompleted, addTodo } from './controller'
+import { onNewTodoChange, showIfTodos, memoizeTodos, itemsLeft, sIfPlural, filterButtonClass } from './display'
 
 customElements.define('todo-item', TodoItem, { extends: 'li' })
 
-const filterButtonClass = el => (model.hash === el.hash) ? 'selected' : ''
-const itemsLeft = () => model.todos.filter(todo => !todo.completed).length.toString()
-const visibleTodos = () => model.todos.filter(todo => model.hash === '#/active' ? !todo.completed : model.hash === '/#completed' ? todo.completed : true)
-let mainElements
-const showIfTodos = f => el => {
-  mainElements = mainElements || f()
-  return model.todos.length ? mainElements : []
-}
-const todosMap = new Map()
-const memoizeTodos = f => el => {
-  return visibleTodos().map(todo => {
-    if (!todosMap.has(todo)) {
-      todosMap.set(todo, f(todo))
-    }
-    return todosMap.get(todo)
-  })
-}
+addTodo('Taste JavaScript')
+addTodo('Buy a unicorn')
 
 h(document.body)`
   <section class="todoapp">
     <header class="header">
       <h1>todos</h1>
-      <input class="new-todo" onchange=${e => { addTodo(e.target.value); e.target.value = '' }} placeholder="What needs to be done?" autofocus=""/>
+      <input class="new-todo" onchange=${onNewTodoChange} placeholder="What needs to be done?" autofocus=""/>
     </header>
     ${showIfTodos(() => h`
       <section class="main">
@@ -41,7 +26,7 @@ h(document.body)`
         </ul>
       </section>
       <footer class="footer">
-        <span class="todo-count"><strong>${itemsLeft}</strong> item${() => itemsLeft() === '1' ? '' : 's'} left</span>
+        <span class="todo-count"><strong>${itemsLeft}</strong> item${sIfPlural} left</span>
         <ul class="filters">
           <li>
             <a class=${filterButtonClass} href="#/">All</a>

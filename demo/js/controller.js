@@ -18,6 +18,3 @@ export function destroy (todo) {
 export function clearCompleted () {
   model.todos = model.todos.filter(todo => !todo.completed)
 }
-
-addTodo('Taste JavaScript')
-addTodo('Buy a unicorn')
