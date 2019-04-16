@@ -12,7 +12,7 @@ export default class TodoItem extends HTMLLIElement {
     this.elements = h`<div class="view" ondblclick=${this.edit.bind(this)}>
       <input class="toggle" type="checkbox" onchange=${this.toggle.bind(this)}/>
       <label/>
-      <button class="destroy" onclick=${this.destroy.bind(this)}></button>
+      <button class="destroy" onclick=${() => destroy(this.todo)}></button>
     </div>
     <input class="edit" onblur=${this.editBlur.bind(this)} onkeydown=${this.editKeyDown.bind(this)}/>`
   }
@@ -27,20 +27,19 @@ export default class TodoItem extends HTMLLIElement {
     }
   }
   edit (e) {
+    this.todo.editing = true
     this.classList.add('editing')
     this.querySelector('.edit').focus()
   }
   toggle () {
     this.todo.completed = this.querySelector('.toggle').checked
   }
-  destroy () {
-    destroy(this.todo)
-  }
-  editBlur () {
+  editBlur (e) {
+    this.todo.editing = false
     this.classList.remove('editing')
     const label = this.querySelector('.edit').value.trim()
     if (!label) {
-      this.destroy()
+      destroy(this.todo)
     } else {
       this.todo.label = label
     }
