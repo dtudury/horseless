@@ -1,6 +1,6 @@
 /* global customElements HTMLUListElement */
 import model from '../Model'
-import h, { setChildren } from '../../../lib'
+import { h, setChildren } from '../../../lib'
 import TodoItem from './TodoItem'
 import { watchFunction, unwatchFunction } from '../../../lib/functionWatcher'
 
