@@ -11,15 +11,13 @@ export default class TodoItem extends HTMLLIElement {
     this._update = this.update.bind(this)
     this.elements = h`<div class="view" ondblclick=${this.edit.bind(this)}>
       <input class="toggle" type="checkbox" onchange=${this.toggle.bind(this)}/>
-      <label/>
+      <label>${() => this.todo.label}</label>
       <button class="destroy" onclick=${() => destroy(this.todo)}></button>
     </div>
-    <input class="edit" onblur=${this.editBlur.bind(this)} onkeydown=${this.editKeyDown.bind(this)}/>`
+    <input class="edit" value=${() => this.todo.label} onblur=${this.editBlur.bind(this)} onkeydown=${this.editKeyDown.bind(this)}/>`
   }
   update () {
     setChildren(this, this.elements)
-    this.querySelector('label').innerText = this.todo.label
-    this.querySelector('.edit').value = this.todo.label
     if (this.todo.completed) {
       this.classList.add('completed')
     } else {
