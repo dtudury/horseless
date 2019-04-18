@@ -1,5 +1,5 @@
 /* global customElements */
-import { h } from '../../lib'
+import { h, watchSetChildren } from '../../lib'
 import TodoItem from './views/TodoItem'
 import { clearCompleted, addTodo } from './controller'
 import { onNewTodoChange, showIfTodos, memoizeTodos, itemsLeft, sIfPlural, filterButtonClass } from './display'
@@ -9,7 +9,7 @@ customElements.define('todo-item', TodoItem, { extends: 'li' })
 addTodo('Taste JavaScript')
 addTodo('Buy a unicorn')
 
-h(document.body)`
+watchSetChildren(document.body, h`
   <section class="todoapp">
     <header class="header">
       <h1>todos</h1>
@@ -47,4 +47,4 @@ h(document.body)`
     <p>Created by <a href="http://todomvc.com">you</a></p>
     <p>Part of <a href="http://todomvc.com">TodoMVC</a></p>
   </footer>
-`
+`)
