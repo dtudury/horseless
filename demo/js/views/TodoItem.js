@@ -1,7 +1,6 @@
 /* global HTMLLIElement */
 import { destroy } from '../controller'
-import { h, setChildren } from '../../../lib'
-import { watchFunction, unwatchFunction } from '../../../lib/functionWatcher'
+import { h, setChildren, watchFunction, unwatchFunction } from '../../../lib'
 const ENTER_KEY = 13
 const ESCAPE_KEY = 27
 
