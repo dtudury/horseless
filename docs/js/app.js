@@ -1,5 +1,5 @@
 /* global customElements */
-import { h, watchSetChildren } from './horseless.esm.js'
+import { h, watchSetChildren } from '//unpkg.com/horseless/dist/horseless.esm.js'
 import TodoItem from './views/TodoItem.js'
 import { clearCompleted, addTodo } from './controller.js'
 import { onNewTodoChange, showIfTodos, memoizeTodos, itemsLeft, sIfPlural, filterButtonClass } from './display.js'

@@ -1,6 +1,6 @@
 /* global HTMLLIElement */
 import { destroy } from '../controller.js'
-import { h, setChildren, watchFunction, unwatchFunction } from '../horseless.esm.js'
+import { h, setChildren, watchFunction, unwatchFunction } from '//unpkg.com/horseless/dist/horseless.esm.js'
 const ENTER_KEY = 13
 const ESCAPE_KEY = 27
 
