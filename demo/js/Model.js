@@ -1,2 +1,2 @@
-import { modelify } from '../../lib/functionWatcher'
+import { modelify } from './horseless.esm.js'
 export default modelify({ todos: [] })

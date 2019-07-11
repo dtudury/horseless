@@ -1,5 +1,5 @@
-import { addTodo } from './controller'
-import model from './Model'
+import { addTodo } from './controller.js'
+import model from './Model.js'
 
 export function onNewTodoChange (e) {
   addTodo(e.target.value)

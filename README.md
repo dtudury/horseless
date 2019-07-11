@@ -24,7 +24,7 @@ nope nope nope
 ## Ugh! not another bloated framework!
 I feel you! This won't solve all your problems for you. This ***just*** turns markup into dom elements.
 
-There's around 200 code-golf-free lines with no external dependencies. you can read through all the code and understand every subtle nuance in a few minutes
+There's around 400 code-golf-free lines with no external dependencies. you can read through all the code and understand every subtle nuance in a few minutes
 
 The gzipped minified version is 2k
 
