@@ -4,7 +4,7 @@
   "description": "a framework?",
   "main": "lib/index.js",
   "scripts": {
-    "start": "rollup -c -w & http-server && fg",
+    "start": "http-server ./demo",
     "build": "rollup -c"
   },
   "repository": {
@@ -19,7 +19,6 @@
   "homepage": "https://github.com/dtudury/horsy#readme",
   "devDependencies": {
     "http-server": "^0.11.1",
-    "parcel-bundler": "^1.12.2",
     "rollup": "^1.16.7",
     "standard": "^12.0.1",
     "todomvc-app-css": "^2.0.0",

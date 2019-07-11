@@ -1,5 +1,5 @@
 
-import model from './Model'
+import model from './Model.js'
 
 const setView = () => {
   model.hash = document.location.hash || '#/'

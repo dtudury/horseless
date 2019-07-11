@@ -1,8 +1,8 @@
 /* global customElements */
-import { h, watchSetChildren } from '../../lib'
-import TodoItem from './views/TodoItem'
-import { clearCompleted, addTodo } from './controller'
-import { onNewTodoChange, showIfTodos, memoizeTodos, itemsLeft, sIfPlural, filterButtonClass } from './display'
+import { h, watchSetChildren } from './horseless.esm.js'
+import TodoItem from './views/TodoItem.js'
+import { clearCompleted, addTodo } from './controller.js'
+import { onNewTodoChange, showIfTodos, memoizeTodos, itemsLeft, sIfPlural, filterButtonClass } from './display.js'
 
 customElements.define('todo-item', TodoItem, { extends: 'li' })
 
