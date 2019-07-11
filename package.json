@@ -4,9 +4,8 @@
   "description": "a framework?",
   "main": "lib/index.js",
   "scripts": {
-    "start": "parcel --no-hmr --no-cache demo/index.html",
-    "build": "parcel build demo/index.html",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "rollup -c -w & http-server && fg",
+    "build": "rollup -c"
   },
   "repository": {
     "type": "git",
@@ -19,7 +18,9 @@
   },
   "homepage": "https://github.com/dtudury/horsy#readme",
   "devDependencies": {
+    "http-server": "^0.11.1",
     "parcel-bundler": "^1.12.2",
+    "rollup": "^1.16.7",
     "standard": "^12.0.1",
     "todomvc-app-css": "^2.0.0",
     "todomvc-common": "^1.0.0"
