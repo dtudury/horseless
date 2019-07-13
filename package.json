@@ -1,9 +1,10 @@
 {
   "name": "horseless",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "a framework?",
   "main": "dist/horseless.cjs.js",
-  "module": "dist/horseless.esm.js",
+  "module": "dist/horseless.min.esm.js",
+  "devmodule": "dist/horseless.esm.js",
   "scripts": {
     "demo": "serve -S ./docs",
     "prepublishOnly": "rollup -c"
