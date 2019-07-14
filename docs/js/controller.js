@@ -1,4 +1,3 @@
-
 import model from './Model.js'
 
 const setView = () => {
