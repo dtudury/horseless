@@ -1,2 +1,2 @@
-import { modelify } from '//unpkg.com/horseless/dist/horseless.esm.js'
+import { modelify } from '../lib/index.js'
 export default modelify({ todos: [] })

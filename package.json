@@ -6,7 +6,7 @@
   "module": "dist/horseless.min.esm.js",
   "devmodule": "dist/horseless.esm.js",
   "scripts": {
-    "demo": "serve -S ./docs",
+    "start": "serve -S ./docs",
     "prepublishOnly": "rollup -c"
   },
   "repository": {
