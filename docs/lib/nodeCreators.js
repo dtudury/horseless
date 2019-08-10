@@ -3,14 +3,6 @@
 import { FRAGMENT } from './fragment.js'
 import { watchFunction } from './functionWatcher.js'
 
-function _createTextNode (str) {
-  if (str.length) {
-    return document.createTextNode(str)
-  } else {
-    return []
-  }
-}
-
 function _setAttributes (element, attributes, ignoreMethod = false) {
   if (!ignoreMethod && element.setAttributes) {
     element.setAttributes(attributes)
@@ -65,14 +57,14 @@ function _descriptionToNode (description) {
   } else if (description.type) {
     if (!_descriptionMap.has(description)) {
       if (description.type === 'textnode') {
-        _descriptionMap.set(description, _createTextNode(description.value))
+        _descriptionMap.set(description, document.createTextNode(description.value))
       } else {
         _descriptionMap.set(description, _createElement(description.tag, description.attributes, description.children, description.xmlns))
       }
     }
     return _descriptionMap.get(description)
   }
-  return _createTextNode(description.toString())
+  return document.createTextNode(description.toString())
 }
 
 function _descriptionsToNodes (descriptions) {

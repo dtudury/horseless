@@ -1,5 +1,9 @@
 import { h, render } from '../lib/index.js'
 
+function fourFiveSix () {
+  return h`<div>4</div><div>5</div><div>6</div>`
+}
+
 render(document.querySelector('.count'), h`
   <div>0</div>
   <>
@@ -7,11 +11,7 @@ render(document.querySelector('.count'), h`
     <div>2</div>
     <div>3</div>
   </>
-  ${h`
-    <div>4</div>
-    <div>5</div>
-    <div>6</div>
-  `}
+  ${fourFiveSix}
   ${[7, 8, 9].map(v => h`<div>${v}</div>`)}
 `)
 
