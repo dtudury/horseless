@@ -1,5 +1,6 @@
 /* global customElements */
-import { h, watchSetChildren } from '../lib/index.js'
+
+import { h, render } from '../../lib/index.js'
 import TodoItem from './views/TodoItem.js'
 import { clearCompleted, addTodo } from './controller.js'
 import { onNewTodoChange, showIfTodos, memoizeTodos, itemsLeft, sIfPlural, filterButtonClass } from './display.js'
@@ -9,7 +10,7 @@ customElements.define('todo-item', TodoItem, { extends: 'li' })
 addTodo('Taste JavaScript')
 addTodo('Buy a unicorn')
 
-watchSetChildren(document.body, h`
+render(document.body, h`
   <section class="todoapp">
     <header class="header">
       <h1>todos</h1>

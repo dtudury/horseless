@@ -1,5 +1,5 @@
 import { decodeDescriptions } from './horsyDecoders.js'
-export { watchSetChildren, getNode } from './nodeCreators.js'
+export { render } from './nodeCreators.js'
 export { watch, unwatch, watchFunction, unwatchFunction, modelify } from './functionWatcher.js'
 export { setChildren } from './nodeCreators.js'
 export { FRAGMENT } from './fragment.js'

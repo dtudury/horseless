@@ -54,13 +54,13 @@ function _flattenAndMap (arr, f) {
 
 function _createElement (tag, attributes, descriptions, xmlns) {
   if (tag === FRAGMENT) {
-    return _createNodes(descriptions)
+    return _flattenAndMap(descriptions, _createNode)
   } else if (typeof tag === 'function') {
     return tag(attributes, descriptions, xmlns)
   } if (typeof tag === 'string') {
     let element = document.createElementNS(xmlns, tag, { is: attributes.is })
     _setAttributes(element, attributes)
-    watchSetChildren(element, descriptions)
+    render(element, descriptions)
     return element
   }
 }
@@ -78,54 +78,45 @@ function _createNode (description) {
       }
     }
     return _descriptionMap.get(description)
-  } else if (typeof description === 'string') {
-    return _createTextNode(description)
   }
-  return description
-}
-export function getNode (description) {
-  return _descriptionMap.get(description)
+  return _createTextNode(description.toString())
 }
 
-function _createNodes (descriptions) {
-  return _flattenAndMap(descriptions, _createNode)
-}
-
-export function setChildren (element, children, ignoreMethod = false) {
+export function setChildren (element, descriptions, ignoreMethod = false) {
   if (!element) {
-    console.log(children)
+    console.log(descriptions)
   }
-  children = _flattenAndMap(children, child => {
-    if (typeof child === 'function') {
-      child = _createNodes(child(element))
+  descriptions = _flattenAndMap(descriptions, description => {
+    if (typeof description === 'function') {
+      description = _flattenAndMap(description(element), _createNode)
     } else {
-      child = _createNodes(child)
+      description = _flattenAndMap(description, _createNode)
     }
-    return child
+    return description
   })
   if (!ignoreMethod && element.setChildren) {
-    element.setChildren(children)
+    element.setChildren(descriptions)
   } else {
-    children.forEach((child, index) => {
-      if (!(child instanceof Node)) {
-        console.error(child)
-        throw new Error('unhandled child')
+    descriptions.forEach((description, index) => {
+      if (!(description instanceof Node)) {
+        console.error(description)
+        throw new Error('unhandled description')
       }
       const referenceNode = element.childNodes[index]
       if (!referenceNode) {
-        element.appendChild(child)
-      } else if (child !== referenceNode) {
-        element.insertBefore(child, referenceNode)
+        element.appendChild(description)
+      } else if (description !== referenceNode) {
+        element.insertBefore(description, referenceNode)
       }
     })
-    while (element.childNodes.length > children.length) {
+    while (element.childNodes.length > descriptions.length) {
       element.removeChild(element.lastChild)
     }
   }
   return element
 }
 
-export function watchSetChildren (element, descriptions) {
+export function render (element, descriptions) {
   function f () {
     return setChildren(element, descriptions)
   }
