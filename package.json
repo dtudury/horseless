@@ -1,6 +1,6 @@
 {
   "name": "horseless",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "description": "a framework?",
   "main": "dist/horseless.cjs.js",
   "module": "dist/horseless.min.esm.js",
@@ -11,14 +11,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dtudury/horsy.git"
+    "url": "git+https://github.com/dtudury/horseless.git"
   },
   "author": "David Tudury <david.tudury@gmail.com>",
   "license": "GPL-3.0-or-later",
   "bugs": {
-    "url": "https://github.com/dtudury/horsy/issues"
+    "url": "https://github.com/dtudury/horseless/issues"
   },
-  "homepage": "https://github.com/dtudury/horsy#readme",
+  "homepage": "https://horseless.info",
   "devDependencies": {
     "acorn": "^6.2.0",
     "rollup": "^1.16.7",
