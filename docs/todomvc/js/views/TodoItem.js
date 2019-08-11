@@ -1,6 +1,6 @@
 /* global HTMLLIElement */
 import { destroy } from '../controller.js'
-import { h, setChildren, watchFunction, unwatchFunction } from '../../../lib/index.js'
+import { h, render, watchFunction, unwatchFunction } from '../../../lib/index.js'
 const ENTER_KEY = 13
 const ESCAPE_KEY = 27
 
@@ -16,7 +16,7 @@ export default class TodoItem extends HTMLLIElement {
     <input class="edit" value=${() => this.todo.label} onblur=${this.editBlur.bind(this)} onkeydown=${this.editKeyDown.bind(this)}/>`
   }
   update () {
-    setChildren(this, this.elements)
+    render(this, this.elements)
     if (this.todo.completed) {
       this.classList.add('completed')
     } else {

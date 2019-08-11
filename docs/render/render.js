@@ -15,7 +15,8 @@ render(document.querySelector('.count'), h`
   ${[7, 8, 9].map(v => h`<div>${v}</div>`)}
 `)
 
-// this renders basics.js into the html pre tag and isn't really part of the example
-window.fetch('basics.js').then(res => res.text()).then(text => {
+// this renders render.js into the html pre tag and isn't really part of the example
+// ---------------------------------------------------------------------------------
+window.fetch('render.js').then(res => res.text()).then(text => {
   render(document.querySelector('pre'), h`${text}`)
 })

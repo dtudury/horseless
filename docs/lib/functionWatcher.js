@@ -25,48 +25,45 @@ function _dispatch () {
   _nextCallbacksSet.clear()
 }
 
-export function modelify (target = {}) {
-  if (_modelMap.has(target)) {
-    return _modelMap.get(target)
+export function remodel (target = {}) {
+  if (!_modelMap.has(target)) {
+    const proxy = new Proxy(target, {
+      set (target, property, value, proxy) {
+        if (value instanceof Object) {
+          value = remodel(value)
+        }
+        target[property] = value
+        if (_callbackSetMapMap.has(proxy)) {
+          const callbackSetMap = _callbackSetMapMap.get(proxy)
+          if (callbackSetMap.has(property)) {
+            _handleChange(callbackSetMap.get(property))
+          }
+          if (callbackSetMap.has()) {
+            _handleChange(callbackSetMap.get())
+          }
+        }
+        return true
+      },
+      get (target, property, proxy) {
+        if (_gets[0]) {
+          _gets[0].push([proxy, property])
+        }
+        return target[property]
+      }
+    })
+    Object.keys(target).forEach(property => {
+      if (target[property] instanceof Object) {
+        target[property] = remodel(target[property])
+      }
+    })
+    _modelMap.set(target, proxy)
+    _modelMap.set(proxy, proxy)
   }
-  const proxy = new Proxy(target, {
-    set (target, property, value, proxy) {
-      if (value instanceof Object) {
-        value = modelify(value)
-      }
-      target[property] = value
-      if (_callbackSetMapMap.has(proxy)) {
-        const callbackSetMap = _callbackSetMapMap.get(proxy)
-        if (callbackSetMap.has(property)) {
-          _handleChange(callbackSetMap.get(property))
-        }
-        if (callbackSetMap.has()) {
-          _handleChange(callbackSetMap.get())
-        }
-      }
-      return true
-    },
-    get (target, property, proxy) {
-      if (_gets[0]) {
-        _gets[0].push([proxy, property])
-      }
-      return target[property]
-    }
-  })
-
-  Object.keys(target).forEach(property => {
-    if (target[property] instanceof Object) {
-      target[property] = modelify(target[property])
-    }
-  })
-
-  _modelMap.set(target, proxy)
-  _modelMap.set(proxy, proxy)
-  return proxy
+  return _modelMap.get(target)
 }
 
 export function watch (target, callback, key) {
-  target = modelify(target)
+  target = remodel(target)
   if (!_callbackSetMapMap.has(target)) {
     _callbackSetMapMap.set(target, new Map())
   }
@@ -79,7 +76,7 @@ export function watch (target, callback, key) {
 }
 
 export function unwatch (target, callback, key) {
-  target = modelify(target)
+  target = remodel(target)
   if (_callbackSetMapMap.has(target)) {
     const callbackSetMap = _callbackSetMapMap.get(target)
     if (callbackSetMap.has(key)) {

@@ -21,7 +21,7 @@ function _setAttributes (element, attributes, ignoreMethod = false) {
           try {
             element[attribute] = temp
           } catch (e) {
-            if (!(e instanceof TypeError)) { // SVGs don't like getting their properties set...
+            if (!(e instanceof TypeError)) { // SVGs don't like getting their properties set and that's okay...
               throw e
             }
           }
@@ -37,36 +37,7 @@ function _setAttributes (element, attributes, ignoreMethod = false) {
   return element
 }
 
-function _createElement (tag, attributes, descriptions, xmlns) {
-  if (tag === FRAGMENT) {
-    return _descriptionsToNodes(descriptions)
-  } else if (typeof tag === 'function') {
-    return tag(attributes, descriptions, xmlns)
-  } if (typeof tag === 'string') {
-    let element = document.createElementNS(xmlns, tag, { is: attributes.is })
-    _setAttributes(element, attributes)
-    render(element, descriptions)
-    return element
-  }
-}
-
 const _descriptionMap = new Map()
-function _descriptionToNode (description) {
-  if (!description) {
-    return []
-  } else if (description.type) {
-    if (!_descriptionMap.has(description)) {
-      if (description.type === 'textnode') {
-        _descriptionMap.set(description, document.createTextNode(description.value))
-      } else {
-        _descriptionMap.set(description, _createElement(description.tag, description.attributes, description.children, description.xmlns))
-      }
-    }
-    return _descriptionMap.get(description)
-  }
-  return document.createTextNode(description.toString())
-}
-
 function _descriptionsToNodes (descriptions) {
   if (!Array.isArray(descriptions)) {
     throw new Error('descriptions must be an array')
@@ -76,24 +47,36 @@ function _descriptionsToNodes (descriptions) {
     if (typeof description === 'function') {
       description = description()
     }
-    if (Array.isArray(description)) {
-      nodes.push(..._descriptionsToNodes(description))
-    } else {
-      const node = _descriptionToNode(description)
-      if (Array.isArray(node)) {
-        nodes.push(...node)
+    if (description) {
+      if (Array.isArray(description)) {
+        nodes.push(..._descriptionsToNodes(description))
       } else {
-        nodes.push(node)
+        if (description.tag === FRAGMENT) {
+          nodes.push(..._descriptionsToNodes(description.children))
+        } else if (description.type) {
+          if (!_descriptionMap.has(description)) {
+            if (description.type === 'textnode') {
+              _descriptionMap.set(description, document.createTextNode(description.value))
+            } else if (typeof description.tag === 'function') {
+              _descriptionMap.set(description.tag(description.attributes, description.children, description.xmlns))
+            } else {
+              let element = document.createElementNS(description.xmlns, description.tag, { is: description.attributes.is })
+              _setAttributes(element, description.attributes)
+              render(element, description.children)
+              _descriptionMap.set(description, element)
+            }
+          }
+          nodes.push(_descriptionMap.get(description))
+        } else {
+          nodes.push(document.createTextNode(description.toString()))
+        }
       }
     }
   })
   return nodes
 }
 
-export function setChildren (element, descriptions, ignoreMethod = false) {
-  if (!element) {
-    console.log(descriptions)
-  }
+function _setChildren (element, descriptions, ignoreMethod = false) {
   const nodes = _descriptionsToNodes(descriptions)
   if (!ignoreMethod && element.setChildren) {
     element.setChildren(nodes)
@@ -122,7 +105,7 @@ export function render (element, descriptions) {
     return _descriptionsToNodes(element)
   }
   function f () {
-    return setChildren(element, descriptions)
+    return _setChildren(element, descriptions)
   }
   watchFunction(f)
   return f

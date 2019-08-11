@@ -1,2 +1,2 @@
-import { modelify } from '../../lib/index.js'
-export default modelify({ todos: [] })
+import { remodel } from '../../lib/index.js'
+export default remodel({ todos: [] })
