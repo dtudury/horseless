@@ -7,43 +7,11 @@ Paste your html into a template and use functions of your model for the argument
 
 #### Part 1: `h`, a template tag
 
-`h` parses xml with interspersed arguments. It outputs a simple description of DOM objects. 
+`h` turns XML with interspersed arguments into a simple object based description of DOM objects. 
 
-```
-import { h } from 'horseless'
+It's an XML parser with the additional feature that it operates on string literals so that arguments can be copied into the DOM description (where appropriate). This allows `render` to expand any functions copied into the description itself and allows any web-components to receive real objects as properties.
 
-const astronaut = 'Dave'
-const descriptions = h`I'm sorry <span>${astronaut}</span>, I'm afraid I can't do that`
-console.log(JSON.stringify(descriptions, null, '  '))
-```
-
-output:
-```
-[
-  {
-    "type": "textnode",
-    "value": "I'm sorry "
-  },
-  {
-    "type": "node",
-    "tag": "span",
-    "attributes": {},
-    "children": [
-      "Dave"
-    ],
-    "isClosing": false,
-    "isEmpty": false,
-    "xmlns": "http://www.w3.org/1999/xhtml"
-  },
-  {
-    "type": "textnode",
-    "value": ", I'm afraid I can't do that"
-  }
-]
-```
 [see it working](https://horseless.info/h/)
-
-Is your mind blown yet? No?! Well the part that's going to be interesting later is when you pass a function as an argument it ends up intact in the description.
 
 #### Part 2: `render` it onto the page
 
@@ -69,7 +37,7 @@ render(document.querySelector('.count'), h`
 ```
 [see it working](https://horseless.info/render/)
 
-Functions used as template arguments are evaluated at render time. Arrays are expanded recursively. So if your argument is a function that returns an array of functions that return arrays themselves you still get a flat DOM.
+Functions used as arguments (`fourFiveSix`) are evaluated at render time. Arrays are expanded recursively. So if your argument is a function that returns an array of functions that return arrays themselves you still get a flat DOM.
 
 #### Part 3: `remodel` your model
 

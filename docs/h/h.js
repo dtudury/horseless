@@ -1,7 +1,8 @@
 import { h, render } from '../lib/index.js'
 
 const astronaut = 'Dave'
-const descriptions = h`I'm sorry <span>${astronaut}</span>, I'm afraid I can't do that`
+const obj = { feeling: 'not sorry' }
+const descriptions = h`I'm <custom-element actually=${obj}>sorry</custom-element> ${astronaut}, I'm afraid I can't do that`
 console.log(JSON.stringify(descriptions, null, '  '))
 
 render(document.querySelector('.output'), h`${JSON.stringify(descriptions, null, '  ')}`)
