@@ -26,31 +26,44 @@ function _dispatch () {
 }
 
 export function remodel (target = {}) {
+  function bumpCallbacks (proxy, property) {
+    if (_callbackSetMapMap.has(proxy)) {
+      const callbackSetMap = _callbackSetMapMap.get(proxy)
+      if (callbackSetMap.has(property)) {
+        _handleChange(callbackSetMap.get(property))
+      }
+      if (callbackSetMap.has()) {
+        _handleChange(callbackSetMap.get())
+      }
+    }
+  }
   if (!_modelMap.has(target)) {
-    const proxy = new Proxy(target, {
+    const traps = {
       set (target, property, value, proxy) {
         if (value instanceof Object) {
           value = remodel(value)
         }
         target[property] = value
-        if (_callbackSetMapMap.has(proxy)) {
-          const callbackSetMap = _callbackSetMapMap.get(proxy)
-          if (callbackSetMap.has(property)) {
-            _handleChange(callbackSetMap.get(property))
-          }
-          if (callbackSetMap.has()) {
-            _handleChange(callbackSetMap.get())
-          }
-        }
+        bumpCallbacks(proxy, property)
         return true
+      },
+      deleteProperty (target, property) {
+        const value = Reflect.deleteProperty(target, property)
+        bumpCallbacks(proxy, property)
+        return value
       },
       get (target, property, proxy) {
         if (_gets[0]) {
           _gets[0].push([proxy, property])
         }
         return target[property]
+      },
+      ownKeys (target, handler) {
+        _gets[0].push([proxy])
+        return Reflect.ownKeys(target)
       }
-    })
+    }
+    const proxy = new Proxy(target, traps)
     Object.keys(target).forEach(property => {
       if (target[property] instanceof Object) {
         target[property] = remodel(target[property])
