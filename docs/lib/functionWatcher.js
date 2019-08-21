@@ -59,7 +59,9 @@ export function remodel (target = {}) {
         return target[property]
       },
       ownKeys (target, handler) {
-        _gets[0].push([proxy])
+        if (_gets[0]) {
+          _gets[0].push([proxy])
+        }
         return Reflect.ownKeys(target)
       }
     }
