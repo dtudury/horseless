@@ -20,10 +20,10 @@
   },
   "homepage": "https://horseless.info",
   "devDependencies": {
-    "acorn": "^6.2.0",
-    "rollup": "^1.16.7",
+    "acorn": "^6.3.0",
+    "rollup": "^1.23.1",
     "rollup-plugin-uglify-es": "0.0.1",
-    "serve": "^11.1.0",
+    "serve": "^11.2.0",
     "standard": "^13.0.0"
   },
   "files": [

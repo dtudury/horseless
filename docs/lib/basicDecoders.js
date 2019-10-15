@@ -44,6 +44,32 @@ export function readTo (arr, regex) {
   return ss.join('')
 }
 
+export function readToArr (arr, regex) {
+  let out = []
+  let ss = []
+  while (arr.i < arr.length) {
+    let c = arr[arr.i]
+    if (c.isValue) {
+      if (ss.length) {
+        out.push(ss.join(''))
+        ss = []
+      }
+      out.push(c.value)
+      arr.i++
+    } else if (c.match(regex)) {
+      if (ss.length) {
+        out.push(ss.join(''))
+      }
+      return out
+    } else if (c === '&') {
+      ss.push(_readEscaped(arr))
+    } else {
+      ss.push(c)
+      arr.i++
+    }
+  }
+}
+
 export function skipWhiteSpace (arr) {
   readTo(arr, /\S/)
 }

@@ -3,6 +3,16 @@
 import { FRAGMENT } from './fragment.js'
 import { watchFunction } from './functionWatcher.js'
 
+function _valueToString(value) {
+  if (typeof value === 'function') {
+    value = value()
+  }
+  if (Array.isArray(value)) {
+    value = value.map(_valueToString).join('')
+  }
+  return value
+}
+
 function _setAttributes (element, attributes, ignoreMethod = false) {
   if (!ignoreMethod && element.setAttributes) {
     element.setAttributes(attributes)
@@ -11,11 +21,13 @@ function _setAttributes (element, attributes, ignoreMethod = false) {
       const value = attributes[attribute]
       const setValue = () => {
         let temp = value
-        if (typeof temp === 'function' && !attribute.startsWith('on')) {
-          temp = temp(element)
+        if (!attribute.startsWith('on')) {
+          temp = _valueToString(temp)
         }
-        if (typeof temp === 'string' && element.getAttribute(attribute) !== temp) {
-          element.setAttribute(attribute, temp)
+        if (typeof temp === 'string') {
+          if (element.getAttribute(attribute) !== temp) {
+            element.setAttribute(attribute, temp)
+          }
         }
         if (temp !== '' && element[attribute] !== temp) {
           try {
@@ -27,7 +39,7 @@ function _setAttributes (element, attributes, ignoreMethod = false) {
           }
         }
       }
-      if (typeof value === 'function' && !attribute.startsWith('on')) {
+      if (!attribute.startsWith('on')) {
         watchFunction(setValue)
       } else {
         setValue(value)

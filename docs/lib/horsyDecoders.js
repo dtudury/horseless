@@ -1,4 +1,4 @@
-import { skipWhiteSpace, readTo, readValue, assertChar, readIf } from './basicDecoders.js'
+import { skipWhiteSpace, readTo, readToArr, readValue, assertChar, readIf } from './basicDecoders.js'
 import { FRAGMENT } from './fragment.js'
 
 function _decodeTag (arr) {
@@ -32,7 +32,7 @@ function _decodeAttribute (arr) {
   } else {
     const quote = new RegExp(arr[arr.i])
     assertChar(arr, /["']/)
-    value = readTo(arr, quote)
+    value = readToArr(arr, quote)
     assertChar(arr, quote)
   }
   return { name, value }
@@ -40,12 +40,14 @@ function _decodeAttribute (arr) {
 
 function _decodeAttributes (arr) {
   const attributes = {}
-  let attribute = _decodeAttribute(arr)
-  while (attribute) {
-    attributes[attribute.name] = attribute.value
-    attribute = _decodeAttribute(arr)
+  while (true) {
+    let attribute = _decodeAttribute(arr)
+    if (attribute) {
+      attributes[attribute.name] = attribute.value
+    } else {
+      return attributes
+    }
   }
-  return attributes
 }
 
 function _decodeElement (arr, xmlns) {

@@ -66,9 +66,9 @@ h`<span class=${functionThatReturnsClasses}> click me </span>` // this works as 
 h`<span onclick=${e => console.log('click', e)}> click me </span>` // this also works as you'd expect it to (but differently)
 ```
 
-don't put quotes around embedded expression attributes
+put quotes around embedded expression attributes
 ```
-h`<span class="${functionThatReturnsClasses}"> click me </span>` // this won't work
+h`<span class="${functionThatReturnsClasses} a-class ${functionThatReturnsAnotherClass}"> click me </span>` // this works now
 ```
 
 If you come across more things that may be confusing, please file an issue
