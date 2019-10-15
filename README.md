@@ -62,13 +62,18 @@ There's a todomvc example in the docs folder. You can see it running at https://
 ### things to know
 attributes starting with 'on' won't get called before being set
 ```
-h`<span class=${functionThatReturnsClasses}> click me </span>` // this works as you'd expect it to
-h`<span onclick=${e => console.log('click', e)}> click me </span>` // this also works as you'd expect it to (but differently)
+// this works as you'd expect it to
+h`<span class=${functionThatReturnsClasses}> click me </span>`
+
+// this also works as you'd expect it to (but differently)
+h`<span onclick=${e => console.log('click', e)}> click me </span>`
 ```
 
-put quotes around embedded expression attributes
+put quotes around embedded expression attributes to combine them
 ```
-h`<span class="${functionThatReturnsClasses} a-class ${functionThatReturnsAnotherClass}"> click me </span>` // this works now
+h`<span class="${returnsClasses} a-class ${returnsAnotherClass}">
+    click me
+</span>` // this works now
 ```
 
 If you come across more things that may be confusing, please file an issue
@@ -85,7 +90,7 @@ let elements = h`
 nope nope nope
 
 ## Ugh! not another bloated framework!
-The first iteration of this project was just the template literal xhtml parsing. The model stuff was just for the demo... but it was so cool (imho) it got moved into the project proper. That said, the goal of this project is to enable transformations from models to views. Having the view update as the model updates seemed to be in line with that goal. 
+The first iteration of this project did "just one thing" and that was the template literal xhtml parsing. The model stuff was for demos... but it was so cool (imho) it got moved into the project proper. That said, the goal of this project **is** to enable transformations from models to views. Having the view update as the model updates seemed to be in line with that goal. So... it's still *kind of* doing "just one thing" (but even if you don't buy that the two features are deeply integrated and it's still a long way from bloated)
 
 There's around 400 code-golf-free lines with no external dependencies. you can read through all the code and understand every subtle nuance in an hour
 
