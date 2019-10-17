@@ -3,12 +3,12 @@
 import { FRAGMENT } from './fragment.js'
 import { watchFunction } from './functionWatcher.js'
 
-function _valueToString(value) {
+function _valueToString(value, element) {
   if (typeof value === 'function') {
-    value = value()
+    value = value(element)
   }
   if (Array.isArray(value)) {
-    value = value.map(_valueToString).join('')
+    value = value.map(v => _valueToString(v, element)).join('')
   }
   return value
 }
@@ -22,7 +22,7 @@ function _setAttributes (element, attributes, ignoreMethod = false) {
       const setValue = () => {
         let temp = value
         if (!attribute.startsWith('on')) {
-          temp = _valueToString(temp)
+          temp = _valueToString(temp, element)
         }
         if (typeof temp === 'string') {
           if (element.getAttribute(attribute) !== temp) {

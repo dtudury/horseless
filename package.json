@@ -1,6 +1,6 @@
 {
   "name": "horseless",
-  "version": "0.0.17",
+  "version": "0.0.18",
   "description": "a framework?",
   "main": "dist/horseless.cjs.js",
   "module": "dist/horseless.min.esm.js",
