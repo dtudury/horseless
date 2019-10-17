@@ -9,5 +9,13 @@ setInterval(() => model.c++, 250)
 setInterval(() => model.d++, 125)
 
 render(document.querySelector('.attributes'), h`
-  <span class="${() => wrap('b', model.b, 3)} ${() => wrap('c', model.c, 3)} ${() => wrap('d', model.d, 4)}">seconds running: ${() => model.a.toString()}</span>
+  <span class="${
+    () => wrap('b', model.b, 3)
+  } ${
+    () => wrap('c', model.c, 3)
+  } ${
+    () => wrap('d', model.d, 4)
+  }">seconds running: ${
+    () => model.a.toString()
+  }</span>
 `)
