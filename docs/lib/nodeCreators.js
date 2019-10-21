@@ -20,7 +20,7 @@ function _setAttributes (element, attributes, ignoreMethod = false) {
     Object.keys(attributes).forEach(attribute => {
       const value = attributes[attribute]
       const setValue = () => {
-        let temp = value
+        let temp = attributes[attribute]
         if (!attribute.startsWith('on')) {
           temp = _valueToString(temp, element)
         }
@@ -42,7 +42,7 @@ function _setAttributes (element, attributes, ignoreMethod = false) {
       if (!attribute.startsWith('on')) {
         watchFunction(setValue)
       } else {
-        setValue(value)
+        setValue(attributes[attribute])
       }
     })
   }
