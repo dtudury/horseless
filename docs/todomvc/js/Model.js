@@ -1,2 +1,3 @@
 import { remodel } from '../../lib/index.js'
-export default remodel({ todos: [] })
+const model = window.model = remodel({ todos: [] })
+export default model 

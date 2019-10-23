@@ -17,7 +17,7 @@ render(document.body, h`
 </nav>
 
 <main class="app">
-  ${() => model.root}
+  ${model}
 </main>
 
 <footer class="app">

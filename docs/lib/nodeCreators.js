@@ -3,46 +3,52 @@
 import { FRAGMENT } from './fragment.js'
 import { watchFunction } from './functionWatcher.js'
 
-function _valueToString(value, element) {
-  if (typeof value === 'function') {
-    value = value(element)
-  }
-  if (Array.isArray(value)) {
-    value = value.map(v => _valueToString(v, element)).join('')
+function _renderValue (value, element) {
+  if (value) {
+    if (typeof value === 'function') {
+      value = value(element)
+    }
+    if (Array.isArray(value)) {
+      if (value.length === 1) {
+        return _renderValue(value[0], element)
+      } else {
+        return '' + value.map(v => _renderValue(v, element)).join('')
+      }
+    }
   }
   return value
+}
+
+function _setAttribute (element, name, value) {
+  value = _renderValue(value, element)
+  if (element[name] !== value) {
+    element[name] = value
+    try {
+      element[name] = value
+    } catch (e) {
+      if (!(e instanceof TypeError)) { // SVGs don't like getting their properties set and that's okay...
+        throw e
+      }
+    }
+  }
+  if ((typeof value).match(/(?:boolean|number|string)/)) {
+    const str = '' + value
+    if (element.getAttribute(name) !== str) {
+      element.setAttribute(name, str)
+    }
+  }
+  return element
 }
 
 function _setAttributes (element, attributes, ignoreMethod = false) {
   if (!ignoreMethod && element.setAttributes) {
     element.setAttributes(attributes)
   } else {
-    Object.keys(attributes).forEach(attribute => {
-      const value = attributes[attribute]
-      const setValue = () => {
-        let temp = attributes[attribute]
-        if (!attribute.startsWith('on')) {
-          temp = _valueToString(temp, element)
-        }
-        if (typeof temp === 'string') {
-          if (element.getAttribute(attribute) !== temp) {
-            element.setAttribute(attribute, temp)
-          }
-        }
-        if (temp !== '' && element[attribute] !== temp) {
-          try {
-            element[attribute] = temp
-          } catch (e) {
-            if (!(e instanceof TypeError)) { // SVGs don't like getting their properties set and that's okay...
-              throw e
-            }
-          }
-        }
-      }
-      if (!attribute.startsWith('on')) {
-        watchFunction(setValue)
-      } else {
-        setValue(attributes[attribute])
+    Object.keys(attributes).forEach(name => {
+      if (!name.startsWith('__callback__')) {
+        watchFunction(() => {
+          return _setAttribute(element, name, attributes[name])
+        }, attributes[`__callback__${name}`])
       }
     })
   }
@@ -50,6 +56,7 @@ function _setAttributes (element, attributes, ignoreMethod = false) {
 }
 
 const _descriptionMap = new Map()
+const _nodeMap = new Map()
 function _descriptionsToNodes (descriptions) {
   if (!Array.isArray(descriptions)) {
     throw new Error('descriptions must be an array')
@@ -67,16 +74,18 @@ function _descriptionsToNodes (descriptions) {
           nodes.push(..._descriptionsToNodes(description.children))
         } else if (description.type) {
           if (!_descriptionMap.has(description)) {
+            let node
             if (description.type === 'textnode') {
-              _descriptionMap.set(description, document.createTextNode(description.value))
+              node = document.createTextNode(description.value)
             } else if (typeof description.tag === 'function') {
-              _descriptionMap.set(description.tag(description.attributes, description.children, description.xmlns))
+              node = description.tag(description.attributes, description.children, description.xmlns)
             } else {
-              let element = document.createElementNS(description.xmlns, description.tag, { is: description.attributes.is })
-              _setAttributes(element, description.attributes)
-              render(element, description.children)
-              _descriptionMap.set(description, element)
+              node = document.createElementNS(description.xmlns, description.tag, { is: description.attributes.is })
+              _setAttributes(node, description.attributes)
+              render(node, description.children)
             }
+            _descriptionMap.set(description, node)
+            _nodeMap.set(node, description)
           }
           nodes.push(_descriptionMap.get(description))
         } else {
@@ -108,6 +117,10 @@ function _setChildren (element, descriptions, ignoreMethod = false) {
     while (element.childNodes.length > nodes.length) {
       element.removeChild(element.lastChild)
     }
+  }
+  const description = _nodeMap.get(element)
+  if (description && description.attributes && description.attributes.__callback__) {
+    description.attributes.__callback__(element)
   }
   return element
 }

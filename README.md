@@ -60,13 +60,16 @@ render(document.body, h`
 There's a todomvc example in the docs folder. You can see it running at https://horseless.info/todomvc/
 
 ### things to know
-attributes starting with 'on' won't get called before being set
+Because functions are used to generate dynamic values, they are always expanded. It's likely that on- handler functions  starting with need to be "escaped"
 ```
 // this works as you'd expect it to
 h`<span class=${functionThatReturnsClasses}> click me </span>`
 
-// this also works as you'd expect it to (but differently)
-h`<span onclick=${e => console.log('click', e)}> click me </span>`
+// this logs something like 'click <span>click me</span>' when it's parsed but doesn't do anything when clicked
+h`<span onclick=${el => console.log('click', el)}> click me </span>`
+
+// this is probably what you want
+h`<span onclick=${el => e => console.log('click', e)}> click me </span>`
 ```
 
 put quotes around embedded expression attributes to combine them
