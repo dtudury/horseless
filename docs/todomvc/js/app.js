@@ -4,19 +4,16 @@ import { h, render, showIf, mapList } from '../../lib/index.js'
 import TodoItem from './TodoItem.js'
 import model from './Model.js'
 
-function addTodo (label) {
-  model.todos.push({ label: label.trim(), completed: false })
-}
-function destroy (todo) {
-  model.todos.splice(model.todos.indexOf(todo), 1)
-}
-function clearCompleted () {
-  model.todos = model.todos.filter(todo => !todo.completed)
-}
-function onNewTodoChange (e) {
-  addTodo(e.target.value)
+// event handlers
+const newTodoChange = el => e => {
+  model.todos.push({ label: e.target.value.trim(), completed: false })
   e.target.value = ''
 }
+const clearCompleted = el => e => {
+  model.todos = model.todos.filter(todo => !todo.completed)
+}
+
+// model transformations
 function selected (el) {
   return (model.hash === el.hash) ? 'selected' : ''
 }
@@ -26,19 +23,19 @@ function completed (el) {
 function editing (el) {
   return (el && el.todo && el.todo.editing) ? 'editing' : ''
 }
-function editingCallback(el) {
+function classCallback(el) {
   if (el.classList.contains('editing')) {
-    // el is display:none until after .editing is set (so we can't set focus until the DOM updates)
+    // el is display:none unless .editing is set (so we can't set focus until after)
     el.querySelector('.edit').focus()
   }
 }
-function itemsLeft () {
-  return model.todos.filter(todo => !todo.completed).length.toString()
+function incompletedCount () {
+  return model.todos.filter(todo => !todo.completed).length
 }
-function sIfPlural () {
-  return itemsLeft() === '1' ? '' : 's'
+function s () {
+  return incompletedCount() === 1 ? '' : 's'
 }
-function visibleTodos () {
+function visibleTodosList () {
   return model.todos.filter(todo => model.hash === '#/active' ? !todo.completed : model.hash === '#/completed' ? todo.completed : true)
 }
 
@@ -50,27 +47,24 @@ window.addEventListener('hashchange', setView)
 
 customElements.define('todo-item', TodoItem, { extends: 'li' })
 
-addTodo('Taste JavaScript')
-addTodo('Buy a unicorn')
-
 render(document.body, h`
   <section class="todoapp">
     <header class="header">
       <h1>todos</h1>
-      <input class="new-todo" onchange=${() => onNewTodoChange} placeholder="What needs to be done?" autofocus=""/>
+      <input class="new-todo" onchange=${newTodoChange} placeholder="What needs to be done?" autofocus=""/>
     </header>
     ${showIf(() => model.todos.length, () => h`
       <section class="main">
         <input id="toggle-all" class="toggle-all" type="checkbox"/>
         <label for="toggle-all">Mark all as complete</label>
         <ul class="todo-list">
-        ${mapList(visibleTodos, todo => h`
-          <li is="todo-item" todo=${todo} class="${completed} ${editing}" __callback__class=${editingCallback}/>
+        ${mapList(visibleTodosList, todo => h`
+          <li is="todo-item" todo=${todo} class="${completed} ${editing}" __callback__class=${classCallback}/>
         `)}
         </ul>
       </section>
       <footer class="footer">
-        <span class="todo-count"><strong>${itemsLeft}</strong> item${sIfPlural} left</span>
+        <span class="todo-count"><strong>${incompletedCount}</strong> item${s} left</span>
         <ul class="filters">
           <li>
             <a class="${selected}" href="#/">All</a>
@@ -82,7 +76,7 @@ render(document.body, h`
             <a class="${selected}" href="#/completed">Completed</a>
           </li>
         </ul>
-        <button class="clear-completed" onclick=${() => clearCompleted}>Clear completed</button>
+        <button class="clear-completed" onclick=${clearCompleted}>Clear completed</button>
       </footer>
     `)}
   </section>
