@@ -29,9 +29,9 @@ function _readEscaped (arr) {
 }
 
 export function readTo (arr, regex) {
-  let ss = []
+  const ss = []
   while (arr.i < arr.length) {
-    let c = arr[arr.i]
+    const c = arr[arr.i]
     if (c.isValue || c.match(regex)) {
       return ss.join('')
     } else if (c === '&') {
@@ -45,10 +45,10 @@ export function readTo (arr, regex) {
 }
 
 export function readToArr (arr, regex) {
-  let out = []
+  const out = []
   let ss = []
   while (arr.i < arr.length) {
-    let c = arr[arr.i]
+    const c = arr[arr.i]
     if (c.isValue) {
       if (ss.length) {
         out.push(ss.join(''))

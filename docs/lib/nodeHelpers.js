@@ -12,10 +12,10 @@ export function h (strings, ...values) {
 }
 
 export function showIf (condition, a, b = () => []) {
-  let _a = a()
-  let _b = b()
+  const _a = a()
+  const _b = b()
   return () => {
-    return model.todos.length ? _a : _b
+    return condition() ? _a : _b
   }
 }
 

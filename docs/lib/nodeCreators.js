@@ -22,7 +22,6 @@ function _renderValue (value, element) {
 function _setAttribute (element, name, value) {
   value = _renderValue(value, element)
   if (element[name] !== value) {
-    element[name] = value
     try {
       element[name] = value
     } catch (e) {
@@ -40,8 +39,8 @@ function _setAttribute (element, name, value) {
   return element
 }
 
-function _setAttributes (element, attributes, ignoreMethod = false) {
-  if (!ignoreMethod && element.setAttributes) {
+function _setAttributes (element, attributes) {
+  if (element.setAttributes) {
     element.setAttributes(attributes)
   } else {
     Object.keys(attributes).forEach(name => {
@@ -97,9 +96,9 @@ function _descriptionsToNodes (descriptions) {
   return nodes
 }
 
-function _setChildren (element, descriptions, ignoreMethod = false) {
+function _setChildren (element, descriptions) {
   const nodes = _descriptionsToNodes(descriptions)
-  if (!ignoreMethod && element.setChildren) {
+  if (element.setChildren) {
     element.setChildren(nodes)
   } else {
     nodes.forEach((node, index) => {

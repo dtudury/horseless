@@ -3,7 +3,7 @@ import { FRAGMENT } from './fragment.js'
 
 function _decodeTag (arr) {
   skipWhiteSpace(arr)
-  let c = arr[arr.i]
+  const c = arr[arr.i]
   if (c.isValue) {
     arr.i++
     return c.value
@@ -13,7 +13,7 @@ function _decodeTag (arr) {
 
 function _decodeAttribute (arr) {
   skipWhiteSpace(arr)
-  let c = arr[arr.i]
+  const c = arr[arr.i]
   if (c === '/' || c === '>') {
     return
   }
@@ -41,7 +41,7 @@ function _decodeAttribute (arr) {
 function _decodeAttributes (arr) {
   const attributes = {}
   while (true) {
-    let attribute = _decodeAttribute(arr)
+    const attribute = _decodeAttribute(arr)
     if (attribute) {
       attributes[attribute.name] = attribute.value
     } else {
@@ -63,7 +63,7 @@ function _decodeElement (arr, xmlns) {
 }
 
 function _decodeDescription (arr, xmlns) {
-  let c = arr[arr.i]
+  const c = arr[arr.i]
   if (c.isValue) {
     arr.i++
     return c.value
@@ -77,7 +77,7 @@ function _decodeDescription (arr, xmlns) {
 export function decodeDescriptions (arr, closingTag, xmlns = 'http://www.w3.org/1999/xhtml') {
   const nodes = []
   while (arr.i < arr.length) {
-    let node = _decodeDescription(arr, xmlns)
+    const node = _decodeDescription(arr, xmlns)
     if (node) {
       if (closingTag && node.isClosing && node.tag === closingTag) {
         return nodes

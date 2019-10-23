@@ -1,5 +1,11 @@
-import { h, render } from '../../lib/index.js'
-import model from './model.js'
+import { h, render, remodel } from '../../lib/index.js'
+const model = remodel(h`
+  <svg style="background:lightgray;" width="300" height="300" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="150" cy="150" r="100"/>
+  </svg>
+`)
+
+window.model = model
 
 const defaultMap = new Map()
 
