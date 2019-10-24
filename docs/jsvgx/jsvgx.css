@@ -37,10 +37,38 @@ nav.app {
   position: relative;
   grid-column: 1/2;
   grid-row: 2/3;
-  padding: 12px 16px 0 0;
+  padding: 8px;
   overflow: auto;
   z-index: 1;
   box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+}
+
+nav.app ul {
+  list-style-type: none;
+  padding: 4px 2px;
+  margin: 4px 0;
+}
+
+nav.app li {
+  border: 1px solid cyan;
+  border-radius: 8px;
+  color: darkcyan;
+  padding: 4px;
+}
+
+dl[title="attributes"]::before,
+ul[title="children"]::before {
+  content: attr(title);
+  display: block;
+  font-weight: bold;
+  padding: 4px;
+}
+
+nav.app dl div {
+  border: 1px solid cyan;
+  border-radius: 8px;
+  color: darkcyan;
+  padding: 4px;
 }
 
 main.app {

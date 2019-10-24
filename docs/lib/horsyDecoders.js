@@ -59,7 +59,7 @@ function _decodeElement (arr, xmlns) {
   const isEmpty = readIf(arr, '/')
   assertChar(arr, />/)
   const children = (isClosing || isEmpty) ? [] : decodeDescriptions(arr, tag, xmlns)
-  return { type: 'node', tag, attributes, children, isClosing, isEmpty, xmlns }
+  return { type: 'node', tag, attributes, children, isClosing, xmlns }
 }
 
 function _decodeDescription (arr, xmlns) {
@@ -82,6 +82,7 @@ export function decodeDescriptions (arr, closingTag, xmlns = 'http://www.w3.org/
       if (closingTag && node.isClosing && node.tag === closingTag) {
         return nodes
       }
+      delete node.isClosing
       nodes.push(node)
     }
   }

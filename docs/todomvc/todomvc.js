@@ -1,4 +1,3 @@
-/* global customElements */
 import { h, render, showIf, mapList, remodel } from '../lib/index.js'
 const ENTER_KEY = 13
 const ESCAPE_KEY = 27
@@ -50,59 +49,60 @@ render(document.body, h`
         <input id="toggle-all" class="toggle-all" type="checkbox"/>
         <label for="toggle-all">Mark all as complete</label>
         <ul class="todo-list">
-        ${mapList(visibleTodosList, todo => {
-
-          // event handlers
-          const editLabel = el => e => todo.editing = true
-          const toggleComplete = el => e => todo.completed = !todo.completed
-          const selfDestruct = el => e => model.todos.splice(model.todos.indexOf(todo), 1)
-          const completeEdit = el => e => {
-            todo.editing = false
-            const label = el.value.trim()
-            if (label) {
-              todo.label = label
-            } else {
-              selfDestruct(el)(e) // 'unescape' and call event handler
-            }
-          }
-          const handleEditKeyDown = el => e => {
-            switch (e.keyCode) {
-              case ENTER_KEY:
-                completeEdit(el)(e) // 'unescape' and call event handler
-                break
-              case ESCAPE_KEY:
+          ${ /* eslint-disable indent */
+            mapList(visibleTodosList, todo => {
+              // event handlers
+              const editLabel = el => e => { todo.editing = true }
+              const toggleComplete = el => e => { todo.completed = !todo.completed }
+              const selfDestruct = el => e => model.todos.splice(model.todos.indexOf(todo), 1)
+              const completeEdit = el => e => {
                 todo.editing = false
-                break
-            }
-          }
+                const label = el.value.trim()
+                if (label) {
+                  todo.label = label
+                } else {
+                  selfDestruct(el)(e) // 'unescape' and call event handler
+                }
+              }
+              const handleEditKeyDown = el => e => {
+                switch (e.keyCode) {
+                  case ENTER_KEY:
+                    completeEdit(el)(e) // 'unescape' and call event handler
+                    break
+                  case ESCAPE_KEY:
+                    todo.editing = false
+                    break
+                }
+              }
 
-          // model transformations
-          function completed (el) {
-            return todo.completed ? 'completed' : ''
-          }
-          function editing (el) {
-            return todo.editing ? 'editing' : ''
-          }
+              // model transformations
+              function completed (el) {
+                return todo.completed ? 'completed' : ''
+              }
+              function editing (el) {
+                return todo.editing ? 'editing' : ''
+              }
 
-          // callback
-          function classCallback(el) {
-            // actual input is display:none unless .editing is set (so we can't set focus until after)
-            if (el.classList.contains('editing')) {
-              el.querySelector('.edit').focus()
-            }
-          }
+              // callback
+              function classCallback (el) {
+                // actual input is display:none unless .editing is set (so we can't set focus until after)
+                if (el.classList.contains('editing')) {
+                  el.querySelector('.edit').focus()
+                }
+              }
 
-          return h`
-            <li class="${completed} ${editing}" __callback__class=${classCallback}>
-              <div class="view" ondblclick=${editLabel}>
-                <input class="toggle" type="checkbox" onchange=${toggleComplete}/>
-                <label>${() => todo.label}</label>
-                <button class="destroy" onclick=${selfDestruct}></button>
-              </div>
-              <input class="edit" value=${() => todo.label} onblur=${completeEdit} onkeydown=${handleEditKeyDown}/>
-            </li>
-          `
-        })}
+              return h`
+                <li class="${completed} ${editing}" __callback__class=${classCallback}>
+                  <div class="view" ondblclick=${editLabel}>
+                    <input class="toggle" type="checkbox" onchange=${toggleComplete}/>
+                    <label>${() => todo.label}</label>
+                    <button class="destroy" onclick=${selfDestruct}></button>
+                  </div>
+                  <input class="edit" value=${() => todo.label} onblur=${completeEdit} onkeydown=${handleEditKeyDown}/>
+                </li>
+              `
+            })
+          /* eslint-enable indent */ }
         </ul>
       </section>
       <footer class="footer">
