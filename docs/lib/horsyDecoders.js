@@ -19,7 +19,7 @@ function _decodeAttribute (arr) {
   }
   let name = readValue(arr)
   if (name && name.isValue) {
-    name = name.value
+    return name
   } else {
     name = readTo(arr, /[\s=]/)
   }
@@ -35,7 +35,7 @@ function _decodeAttribute (arr) {
     value = readToArr(arr, quote)
     assertChar(arr, quote)
   }
-  return { name, value }
+  return { [name]: value }
 }
 
 function _decodeAttributes (arr) {
@@ -43,7 +43,7 @@ function _decodeAttributes (arr) {
   while (true) {
     const attribute = _decodeAttribute(arr)
     if (attribute) {
-      attributes[attribute.name] = attribute.value
+      Object.assign(attributes, attribute)
     } else {
       return attributes
     }

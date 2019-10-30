@@ -6,9 +6,13 @@ const model = remodel(
 )
 window.model = model
 
+function listify (children) {
+
+}
+
 function renderChildren (children, isTopLevel) {
   return h`
-    <ul title="${isTopLevel ? '' : 'children'}">
+    <ul ${{ title: isTopLevel ? '' : 'children' }}>
       ${ /* eslint-disable indent */
     mapList(() => children, child => {
       const state = remodel({
