@@ -43,9 +43,9 @@ nav.app {
   box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
 }
 
-nav.app ul {
+nav.app dl, nav.app ul {
   list-style-type: none;
-  padding: 4px 2px;
+  padding: 0;
   margin: 4px 0;
 }
 
@@ -56,8 +56,11 @@ nav.app li {
   padding: 4px;
 }
 
-dl[title="attributes"]::before,
-ul[title="children"]::before {
+nav.app li:not(.expanded) ul {
+  display: none;
+}
+
+dl[title="attributes"]::before, ul[title="children"]::before {
   content: attr(title);
   display: block;
   font-weight: bold;
@@ -77,6 +80,10 @@ main.app {
   grid-row: 2/3;
   overflow: auto;
   z-index: 0;
+}
+
+main.app svg * {
+  transition: all 0.2s ease-out;
 }
 
 footer.app {

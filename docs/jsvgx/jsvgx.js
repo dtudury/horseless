@@ -1,14 +1,31 @@
 import { h, render, remodel, mapList, mapObject } from '../../lib/index.js'
+const ENTER_KEY = 13
+const ESCAPE_KEY = 27
 const model = remodel(
-  h`<svg style="background:lightgray;" width="300" height="300" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg"><circle cx="150" cy="150" r="100"/></svg>`
+  h`<svg style="background:lightgray; display:block;" width="100%" height="100%" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg"><circle cx="150" cy="150" r="100"/></svg>`
 )
 window.model = model
 
 function renderChildren (children, isTopLevel) {
   return h`
     <ul title="${isTopLevel ? '' : 'children'}">
-      ${mapList(() => children, child => h`<li>${renderChild(child)}</li>`)}
-      <li><button>+</button></li>
+      ${ /* eslint-disable indent */
+    mapList(() => children, child => {
+      const state = remodel({
+        expanded: false
+      })
+      function expanded (el) {
+        return state.expanded ? 'expanded' : ''
+      }
+      const toggleExpanded = el => e => {
+        state.expanded = !state.expanded
+        e.stopPropagation()
+        return false
+      }
+      return h`<li class="${expanded}" onclick="${toggleExpanded}">${renderChild(child)}</li>`
+    })
+      /* eslint-enable indent */}
+      <li><a>+</a></li>
     </ul>
   `
 }
@@ -24,12 +41,21 @@ function renderChild (model, isTopLevel) {
   `
 }
 function renderAttributes (attributes, isTopLevel) {
-  return h`
-    <dl title="attributes">
-      ${mapObject(() => attributes, (name, value) => h`<div><dt>${name}</dt></dd>${value}</dd></div>`)}
-      <div><button>+</button></div>
-    </dl>
-  `
+  return h`<ul title="attributes">
+  ${mapObject(() => attributes, (name, value) => {
+    const liveEdit = el => e => { attributes[name] = el.value.trim() }
+    const handleEditKeyDown = el => e => {
+      switch (e.keyCode) {
+        case ENTER_KEY:
+        case ESCAPE_KEY:
+          el.blur()
+          break
+      }
+    }
+    return h`<li><label>${name}<input value=${value} oninput=${liveEdit} onkeydown=${handleEditKeyDown} /></label></li>`
+  })}
+  <div><button>+</button></div>
+</ul>`
 }
 
 render(document.body, h`

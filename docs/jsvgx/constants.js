@@ -3,7 +3,7 @@ export const elements = {
   animate: {},
   animateMotion: {},
   animateTransform: {},
-  circle: {},
+  circle: { attributes: ['cx', 'cy', 'r'] },
   clipPath: {},
   defs: {},
   desc: {},
