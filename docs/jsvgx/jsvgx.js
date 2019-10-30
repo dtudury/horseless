@@ -46,8 +46,8 @@ function renderChild (model, isTopLevel) {
 }
 function renderAttributes (attributes, isTopLevel) {
   return h`<ul title="attributes">
-  ${mapObject(() => attributes, (name, value) => {
-    const liveEdit = el => e => { attributes[name] = el.value.trim() }
+  ${mapObject(() => attributes.obj, (name, value) => {
+    const liveEdit = el => e => { attributes.obj[name] = el.value.trim() }
     const handleEditKeyDown = el => e => {
       switch (e.keyCode) {
         case ENTER_KEY:

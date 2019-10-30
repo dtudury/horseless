@@ -84,15 +84,17 @@ render(document.body, h`
               }
 
               // callback
-              function classCallback (el) {
-                // actual input is display:none unless .editing is set (so we can't set focus until after)
-                if (el.classList.contains('editing')) {
-                  el.querySelector('.edit').focus()
+              function classCallback (attributes) {
+                attributes.class.callback = el => {
+                  // actual input is display:none unless .editing is set (so we can't set focus until after)
+                  if (el.classList.contains('editing')) {
+                    el.querySelector('.edit').focus()
+                  }
                 }
               }
 
               return h`
-                <li class="${completed} ${editing}" __callback__class=${classCallback}>
+                <li class="${completed} ${editing}" ${classCallback}>
                   <div class="view" ondblclick=${editLabel}>
                     <input class="toggle" type="checkbox" onchange=${toggleComplete}/>
                     <label>${() => todo.label}</label>

@@ -19,7 +19,7 @@ function _decodeAttribute (arr) {
   }
   let name = readValue(arr)
   if (name && name.isValue) {
-    return name
+    return name.value
   } else {
     name = readTo(arr, /[\s=]/)
   }
@@ -39,13 +39,17 @@ function _decodeAttribute (arr) {
 }
 
 function _decodeAttributes (arr) {
-  const attributes = {}
+  const out = { obj: {} }
   while (true) {
     const attribute = _decodeAttribute(arr)
     if (attribute) {
-      Object.assign(attributes, attribute)
+      if (typeof attribute === 'function') {
+        out.callback = attribute
+      } else {
+        Object.assign(out.obj, attribute)
+      }
     } else {
-      return attributes
+      return out
     }
   }
 }
@@ -55,7 +59,7 @@ function _decodeElement (arr, xmlns) {
   const isClosing = readIf(arr, '/')
   const tag = _decodeTag(arr) || FRAGMENT
   const attributes = _decodeAttributes(arr)
-  xmlns = attributes.xmlns || xmlns
+  xmlns = attributes.obj.xmlns || xmlns
   const isEmpty = readIf(arr, '/')
   assertChar(arr, />/)
   const children = (isClosing || isEmpty) ? [] : decodeDescriptions(arr, tag, xmlns)

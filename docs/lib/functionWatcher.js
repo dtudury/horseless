@@ -105,11 +105,12 @@ export function watchFunction (f, callback) {
   function routeFunction () {
     o.getStack.forEach(([proxy, property]) => unwatch(proxy, routeFunction, property))
     _gets.unshift([])
-    const v = f()
+    const v = f(o)
+    o.prev = v
     o.getStack = _gets.shift()
     o.getStack.forEach(([proxy, property]) => watch(proxy, routeFunction, property))
-    if (callback) {
-      callback(v)
+    if (o.callback) {
+      o.callback(v)
     }
   }
   const o = { getStack: [], routeFunction }
@@ -120,7 +121,7 @@ export function watchFunction (f, callback) {
   if (!functionCallbackMap.has(callback)) {
     functionCallbackMap.set(callback, o)
     routeFunction()
-    return o.getStack
+    return o
   }
   return null
 }
