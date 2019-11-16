@@ -56,10 +56,23 @@ nav.app ul label {
 }
 
 nav.app li {
-  border: 1px solid cyan;
-  border-radius: 8px;
+  border: 1px solid gainsboro;
   color: darkcyan;
   padding: 4px;
+}
+
+nav.app li:not(:first-child) {
+  border-top: none;
+}
+
+nav.app li:first-child {
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+
+nav.app li:last-child {
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
 }
 
 nav.app ul[title="attributes"] li {
