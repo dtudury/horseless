@@ -6,60 +6,62 @@ const model = remodel(
 )
 window.model = model
 
-function listify (children) {
-
+const clickEater = el => e => {
+  console.log(el, e)
+  e.stopPropagation()
+  return false
 }
 
 function renderChildren (children, isTopLevel) {
   return h`
-    <ul ${{ title: isTopLevel ? '' : 'children' }}>
-      ${ /* eslint-disable indent */
-    mapList(() => children, child => {
-      const state = remodel({
-        expanded: false
-      })
-      function expanded (el) {
-        return state.expanded ? 'expanded' : ''
-      }
-      const toggleExpanded = el => e => {
-        state.expanded = !state.expanded
-        e.stopPropagation()
-        return false
-      }
-      return h`<li class="${expanded}" onclick="${toggleExpanded}">${renderChild(child)}</li>`
-    })
-      /* eslint-enable indent */}
+    <ul ${{ title: isTopLevel ? '' : 'children' }} onclick="${clickEater}">
+      ${mapList(() => children, child => renderChild(child))}
       <li><a>+</a></li>
     </ul>
   `
 }
 function renderChild (model, isTopLevel) {
+  const state = remodel({
+    expanded: false
+  })
+  function expanded (el) {
+    return state.expanded ? 'expanded' : ''
+  }
+  const toggleExpanded = el => e => {
+    state.expanded = !state.expanded
+    e.stopPropagation()
+    return false
+  }
   return h`
-    <label class="${model.tag}">${model.tag}
-      <svg class="collapser" width="17" height="9" xmlns="http://www.w3.org/2000/svg">
-        <path d="M 0.5 0.5 L 8.5 8.5 L 16.5 0.5" fill="none" stroke="black" stroke-width="1"></path>
-      </svg>
-      ${() => renderChildren(model.children)}
+    <li class="${expanded}" onclick="${toggleExpanded}">
+      <label class="${model.tag}">${model.tag}
+        <svg class="collapser" width="17" height="9" xmlns="http://www.w3.org/2000/svg">
+          <path d="M 0.5 0.5 L 8.5 8.5 L 16.5 0.5" fill="none" stroke="black" stroke-width="1"></path>
+        </svg>
+      </label>
       ${() => renderAttributes(model.attributes)}
-    </label>
+      ${() => renderChildren(model.children)}
+    </li>
   `
 }
 function renderAttributes (attributes, isTopLevel) {
-  return h`<ul title="attributes">
-  ${mapObject(() => attributes.obj, (name, value) => {
-    const liveEdit = el => e => { attributes.obj[name] = el.value.trim() }
-    const handleEditKeyDown = el => e => {
-      switch (e.keyCode) {
-        case ENTER_KEY:
-        case ESCAPE_KEY:
-          el.blur()
-          break
+  return h`<ul title="attributes" onclick="${clickEater}">
+    ${ /* eslint-disable indent */
+    mapObject(() => attributes.obj, (value, name) => {
+      const liveEdit = el => e => { attributes.obj[name] = el.value.trim() }
+      const handleEditKeyDown = el => e => {
+        switch (e.keyCode) {
+          case ENTER_KEY:
+          case ESCAPE_KEY:
+            el.blur()
+            break
+        }
       }
-    }
-    return h`<li><label>${name}<input value=${value} oninput=${liveEdit} onkeydown=${handleEditKeyDown} /></label></li>`
-  })}
-  <div><button>+</button></div>
-</ul>`
+      return h`<li><label>${name}<input value=${value} oninput=${liveEdit} onkeydown=${handleEditKeyDown} /></label></li>`
+    })
+    /* eslint-enable indent */}
+    <li><a>+</a></li>
+  </ul>`
 }
 
 render(document.body, h`

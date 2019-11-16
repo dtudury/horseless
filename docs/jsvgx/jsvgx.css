@@ -43,10 +43,16 @@ nav.app {
   box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
 }
 
-nav.app dl, nav.app ul {
+nav.app ul {
   list-style-type: none;
   padding: 0;
   margin: 4px 0;
+}
+
+nav.app ul label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 nav.app li {
@@ -56,21 +62,26 @@ nav.app li {
   padding: 4px;
 }
 
+nav.app ul[title="attributes"] li {
+  border: none;
+}
+
 nav.app li:not(.expanded) ul {
   display: none;
 }
 
-dl[title="attributes"]::before, ul[title="children"]::before {
+nav.app li .collapser {
+  transition: all 0.2s ease-out;
+}
+
+nav.app li.expanded > label >.collapser {
+  transform: rotate(180deg);
+}
+
+ul[title="attributes"]::before, ul[title="children"]::before {
   content: attr(title);
   display: block;
   font-weight: bold;
-  padding: 4px;
-}
-
-nav.app dl div {
-  border: 1px solid cyan;
-  border-radius: 8px;
-  color: darkcyan;
   padding: 4px;
 }
 

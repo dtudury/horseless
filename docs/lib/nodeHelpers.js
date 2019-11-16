@@ -40,7 +40,7 @@ export function mapObject (obj, f, map = new Map()) {
     return Object.keys(_obj).map(name => {
       const value = _obj[name]
       if (!_map.has(name)) {
-        _map.set(name, f(name, value))
+        _map.set(name, f(value, name))
       }
       return _map.get(name)
     })
