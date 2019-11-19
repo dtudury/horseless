@@ -2,7 +2,7 @@ import { h, render, remodel, mapList, mapObject } from '../../lib/index.js'
 const ENTER_KEY = 13
 const ESCAPE_KEY = 27
 const model = remodel(
-  h`<svg style="background:lightgray; display:block;" width="100%" height="100%" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+  h`<svg id="hypnoface" style="background:lightgray; display:block;" width="100%" height="100%" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
     <circle id="face" cx="150" cy="150" r="100" fill="yellow" stroke="black" stroke-width="30"/>
     <circle id="left-eye" class="eye" cx="110" cy="130" r="15" fill="black"/>
     <circle id="right-eye" class="eye" cx="190" cy="130" r="15" fill="black"/>
@@ -12,7 +12,6 @@ const model = remodel(
 window.model = model
 
 const clickEater = el => e => {
-  console.log(el, e)
   e.stopPropagation()
   return false
 }
@@ -63,14 +62,8 @@ function renderChild (model, isTopLevel) {
   `
 }
 function renderAttributes (model) {
-  const state = remodel({
-    expanded: false
-  })
-  const toggleExpanded = el => e => {
-    console.log(el, e)
-    state.expanded = !state.expanded
-    e.stopPropagation()
-    return false
+  const addAttribute = el => e => {
+    model.attributes.obj[el.parentNode.querySelector('input').value] = ''
   }
   return h`
     <ul title="attributes" onclick="${clickEater}">
@@ -89,22 +82,8 @@ function renderAttributes (model) {
       })
       /* eslint-enable indent */}
       <li>
-        <a onclick=${toggleExpanded}>+</a>
-        ${ /* eslint-disable indent */
-          () => {
-            if (state.expanded) {
-              return renderAttributePicker(model)
-            }
-            return null
-          }
-        /* eslint-enable indent */ }
+        <input /><button onclick=${addAttribute} >Add Attribute</button>
       </li>
-    </ul>
-  `
-}
-function renderAttributePicker (model) {
-  return h`
-    <ul>
     </ul>
   `
 }

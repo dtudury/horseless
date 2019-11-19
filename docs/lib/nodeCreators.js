@@ -1,7 +1,7 @@
 /* global Node */
 
 import { FRAGMENT } from './fragment.js'
-import { watchFunction } from './functionWatcher.js'
+import { watch, watchFunction } from './functionWatcher.js'
 
 function _renderValue (value, element) {
   if (value) {
@@ -44,11 +44,15 @@ function _setAttributes (element, attributes) {
     element.setAttributes(attributes)
   } else {
     const obj = {}
-    Object.keys(attributes.obj).forEach(name => {
-      obj[name] = watchFunction(() => {
-        return _setAttribute(element, name, attributes.obj[name])
+    const _watchKeys = () => {
+      Object.keys(attributes.obj).forEach(name => {
+        obj[name] = obj[name] || watchFunction(() => {
+          return _setAttribute(element, name, attributes.obj[name])
+        })
       })
-    })
+    }
+    _watchKeys()
+    watch(attributes.obj, _watchKeys)
     if (attributes.callback) {
       watchFunction(() => {
         attributes.callback(obj)
