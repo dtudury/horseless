@@ -8,7 +8,7 @@ html, body {
 
 body {
   display: grid;
-  grid-template-columns: 256px 1fr;
+  grid-template-columns: 400px 1fr;
   grid-template-rows: auto 1fr auto;
 }
 
@@ -59,6 +59,15 @@ nav.app li {
   border: 1px solid gainsboro;
   color: darkcyan;
   padding: 4px;
+}
+
+nav.app input {
+  width: 66%;
+}
+
+nav.app a {
+  display: block;
+  cursor: pointer;
 }
 
 nav.app li:not(:first-child) {

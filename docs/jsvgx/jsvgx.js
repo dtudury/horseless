@@ -12,10 +12,11 @@ const clickEater = el => e => {
   return false
 }
 
-function renderChildren (children, isTopLevel) {
+function renderChildren (model) {
+  console.log(JSON.stringify(model, null, '  '))
   return h`
-    <ul ${{ title: isTopLevel ? '' : 'children' }} onclick="${clickEater}">
-      ${mapList(() => children, child => renderChild(child))}
+    <ul ${{ title: model.tag ? 'children' : '' }} onclick="${clickEater}">
+      ${mapList(() => model.children, child => renderChild(child))}
       <li><a>+</a></li>
     </ul>
   `
@@ -39,29 +40,56 @@ function renderChild (model, isTopLevel) {
           <path d="M 0.5 0.5 L 8.5 8.5 L 16.5 0.5" fill="none" stroke="black" stroke-width="1"></path>
         </svg>
       </label>
-      ${() => renderAttributes(model.attributes)}
-      ${() => renderChildren(model.children)}
+      ${() => renderAttributes(model)}
+      ${() => renderChildren(model)}
     </li>
   `
 }
-function renderAttributes (attributes, isTopLevel) {
-  return h`<ul title="attributes" onclick="${clickEater}">
-    ${ /* eslint-disable indent */
-    mapObject(() => attributes.obj, (value, name) => {
-      const liveEdit = el => e => { attributes.obj[name] = el.value.trim() }
-      const handleEditKeyDown = el => e => {
-        switch (e.keyCode) {
-          case ENTER_KEY:
-          case ESCAPE_KEY:
-            el.blur()
-            break
+function renderAttributes (model) {
+  const state = remodel({
+    expanded: false
+  })
+  const toggleExpanded = el => e => {
+    console.log(el, e)
+    state.expanded = !state.expanded
+    e.stopPropagation()
+    return false
+  }
+  return h`
+    <ul title="attributes" onclick="${clickEater}">
+      ${ /* eslint-disable indent */
+      mapObject(() => model.attributes.obj, (value, name) => {
+        const liveEdit = el => e => { model.attributes.obj[name] = el.value.trim() }
+        const handleEditKeyDown = el => e => {
+          switch (e.keyCode) {
+            case ENTER_KEY:
+            case ESCAPE_KEY:
+              el.blur()
+              break
+          }
         }
-      }
-      return h`<li><label>${name}<input value=${value} oninput=${liveEdit} onkeydown=${handleEditKeyDown} /></label></li>`
-    })
-    /* eslint-enable indent */}
-    <li><a>+</a></li>
-  </ul>`
+        return h`<li><label>${name}<input value=${value} oninput=${liveEdit} onkeydown=${handleEditKeyDown} /></label></li>`
+      })
+      /* eslint-enable indent */}
+      <li>
+        <a onclick=${toggleExpanded}>+</a>
+        ${ /* eslint-disable indent */
+          () => {
+            if (state.expanded) {
+              return renderAttributePicker(model)
+            }
+            return null
+          }
+        /* eslint-enable indent */ }
+      </li>
+    </ul>
+  `
+}
+function renderAttributePicker (model) {
+  return h`
+    <ul>
+    </ul>
+  `
 }
 
 render(document.body, h`
@@ -75,7 +103,7 @@ render(document.body, h`
 </header>
 
 <nav class="app">
-  ${renderChildren(model, true)}
+  ${renderChildren({ children: model })}
 </nav>
 
 <main class="app">
