@@ -17,10 +17,15 @@ const clickEater = el => e => {
 }
 
 function renderChildren (model) {
+  const addChild = el => e => {
+    model.children.push(h`<${el.parentNode.querySelector('input').value}/>`)
+  }
   return h`
     <ul ${{ title: model.tag ? 'children' : '' }} onclick="${clickEater}">
       ${mapList(() => model.children, child => renderChild(child))}
-      <li><a>+</a></li>
+      <li>
+        <label><input /><button onclick=${addChild} >Add Child</button></label>
+      </li>
     </ul>
   `
 }
@@ -68,21 +73,21 @@ function renderAttributes (model) {
   return h`
     <ul title="attributes" onclick="${clickEater}">
       ${ /* eslint-disable indent */
-      mapObject(() => model.attributes.obj, (value, name) => {
-        const liveEdit = el => e => { model.attributes.obj[name] = el.value.trim() }
-        const handleEditKeyDown = el => e => {
-          switch (e.keyCode) {
-            case ENTER_KEY:
-            case ESCAPE_KEY:
-              el.blur()
-              break
+        mapObject(() => model.attributes.obj, (value, name) => {
+          const liveEdit = el => e => { model.attributes.obj[name] = el.value.trim() }
+          const handleEditKeyDown = el => e => {
+            switch (e.keyCode) {
+              case ENTER_KEY:
+              case ESCAPE_KEY:
+                el.blur()
+                break
+            }
           }
-        }
-        return h`<li><label>${name}<input value=${value} oninput=${liveEdit} onkeydown=${handleEditKeyDown} /></label></li>`
-      })
+          return h`<li><label>${name}<input value=${value} oninput=${liveEdit} onkeydown=${handleEditKeyDown} /></label></li>`
+        })
       /* eslint-enable indent */}
       <li>
-        <input /><button onclick=${addAttribute} >Add Attribute</button>
+        <label><input /><button onclick=${addAttribute} >Add Attribute</button></label>
       </li>
     </ul>
   `
