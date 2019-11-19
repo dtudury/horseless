@@ -1,7 +1,7 @@
 /* global Node */
 
 import { FRAGMENT } from './fragment.js'
-import { watchFunction } from './functionWatcher.js'
+import { watch, watchFunction } from './functionWatcher.js'
 
 function _renderValue (value, element) {
   if (value) {
@@ -43,13 +43,21 @@ function _setAttributes (element, attributes) {
   if (element.setAttributes) {
     element.setAttributes(attributes)
   } else {
-    Object.keys(attributes).forEach(name => {
-      if (!name.startsWith('__callback__')) {
-        watchFunction(() => {
-          return _setAttribute(element, name, attributes[name])
-        }, attributes[`__callback__${name}`])
-      }
-    })
+    const obj = {}
+    const _watchKeys = () => {
+      Object.keys(attributes.obj).forEach(name => {
+        obj[name] = obj[name] || watchFunction(() => {
+          return _setAttribute(element, name, attributes.obj[name])
+        })
+      })
+    }
+    _watchKeys()
+    watch(attributes.obj, _watchKeys)
+    if (attributes.callback) {
+      watchFunction(() => {
+        attributes.callback(obj)
+      })
+    }
   }
   return element
 }
@@ -79,7 +87,7 @@ function _descriptionsToNodes (descriptions) {
             } else if (typeof description.tag === 'function') {
               node = description.tag(description.attributes, description.children, description.xmlns)
             } else {
-              node = document.createElementNS(description.xmlns, description.tag, { is: description.attributes.is })
+              node = document.createElementNS(description.xmlns, description.tag, { is: description.attributes.obj.is })
               _setAttributes(node, description.attributes)
               render(node, description.children)
             }
@@ -116,10 +124,6 @@ function _setChildren (element, descriptions) {
     while (element.childNodes.length > nodes.length) {
       element.removeChild(element.lastChild)
     }
-  }
-  const description = _nodeMap.get(element)
-  if (description && description.attributes && description.attributes.__callback__) {
-    description.attributes.__callback__(element)
   }
   return element
 }

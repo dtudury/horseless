@@ -19,14 +19,30 @@ export function showIf (condition, a, b = () => []) {
   }
 }
 
-const _defaultMap = new Map()
-export function mapList (list, f, map = _defaultMap) {
+export function mapList (list, f, map = new Map()) {
   return () => {
-    return list().map(todo => {
-      if (!map.has(todo)) {
-        map.set(todo, f(todo))
+    return list().map(value => {
+      if (!map.has(value)) {
+        map.set(value, f(value))
       }
-      return map.get(todo)
+      return map.get(value)
+    })
+  }
+}
+
+export function mapObject (obj, f, map = new Map()) {
+  return () => {
+    const _obj = obj()
+    if (!map.has(_obj)) {
+      map.set(_obj, new Map())
+    }
+    const _map = map.get(_obj)
+    return Object.keys(_obj).map(name => {
+      const value = _obj[name]
+      if (!_map.has(name)) {
+        _map.set(name, f(value, name))
+      }
+      return _map.get(name)
     })
   }
 }
