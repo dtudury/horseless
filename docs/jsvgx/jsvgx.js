@@ -18,13 +18,13 @@ const clickEater = el => e => {
 
 function renderChildren (model) {
   const addChild = el => e => {
-    model.children.push(h`<${el.parentNode.querySelector('input').value}/>`)
+    model.children.push(h`<${el.parentNode.querySelector('input').value} xmlns="http://www.w3.org/2000/svg"/>`[0])
   }
   return h`
     <ul ${{ title: model.tag ? 'children' : '' }} onclick="${clickEater}">
       ${mapList(() => model.children, child => renderChild(child))}
       <li>
-        <label><input /><button onclick=${addChild} >Add Child</button></label>
+        <label><input /><button onclick=${addChild} >+ Child</button></label>
       </li>
     </ul>
   `
@@ -87,7 +87,7 @@ function renderAttributes (model) {
         })
       /* eslint-enable indent */}
       <li>
-        <label><input /><button onclick=${addAttribute} >Add Attribute</button></label>
+        <label><input /><button onclick=${addAttribute} >+ Attribute</button></label>
       </li>
     </ul>
   `
