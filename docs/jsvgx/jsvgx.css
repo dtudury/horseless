@@ -38,15 +38,15 @@ nav.app {
   grid-column: 1/2;
   grid-row: 2/3;
   padding: 8px;
-  overflow: auto;
+  overflow: hidden scroll;
   z-index: 1;
   box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
 }
 
 nav.app ul {
   list-style-type: none;
-  padding: 0;
-  margin: 4px 0;
+  padding: 4px;
+  background: white;
 }
 
 nav.app ul label {
@@ -56,9 +56,11 @@ nav.app ul label {
 }
 
 nav.app li {
-  border: 1px solid gainsboro;
-  color: darkcyan;
+  border: 1px solid darkgray;
+  color: black;
   padding: 4px;
+  background: whitesmoke;
+  font-weight: lighter;
 }
 
 nav.app input {
@@ -85,7 +87,9 @@ nav.app li:last-child {
 }
 
 nav.app ul[title="attributes"] li {
-  border: none;
+  color: darkgoldenrod;
+  border-color: darkgoldenrod;
+  background: lightgoldenrodyellow;
 }
 
 nav.app li:not(.expanded) ul {
@@ -103,8 +107,9 @@ nav.app li.expanded > label >.collapser {
 ul[title="attributes"]::before, ul[title="children"]::before {
   content: attr(title);
   display: block;
-  font-weight: bold;
+  font-weight: lighter;
   padding: 4px;
+  font-size: xx-large;
 }
 
 main.app {
