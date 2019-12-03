@@ -1,6 +1,6 @@
 {
   "name": "horseless",
-  "version": "0.0.23",
+  "version": "0.0.24",
   "description": "a framework?",
   "main": "dist/horseless.cjs.js",
   "module": "dist/horseless.min.esm.js",
@@ -20,8 +20,8 @@
   },
   "homepage": "https://horseless.info",
   "devDependencies": {
-    "acorn": "^6.3.0",
-    "rollup": "^1.23.1",
+    "acorn": "^6.4.0",
+    "rollup": "^1.27.8",
     "rollup-plugin-uglify-es": "0.0.1",
     "serve": "^11.2.0",
     "standard": "^13.0.0"

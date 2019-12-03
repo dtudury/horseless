@@ -61,6 +61,7 @@ nav.app li {
   padding: 4px;
   background: whitesmoke;
   font-weight: lighter;
+  border-radius: 4px / 8px;
 }
 
 nav.app input {

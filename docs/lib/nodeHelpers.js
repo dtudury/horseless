@@ -1,14 +1,23 @@
 import { decodeDescriptions } from './horsyDecoders.js'
 
 export function h (strings, ...values) {
-  const ss = [strings[0].split('')]
-  for (let i = 0; i < values.length; i++) {
-    ss.push({ value: values[i], isValue: true })
-    ss.push(strings[i + 1].split(''))
+  let xmlns
+  function _h (strings, ...values) {
+    const ss = [strings[0].split('')]
+    for (let i = 0; i < values.length; i++) {
+      ss.push({ value: values[i], isValue: true })
+      ss.push(strings[i + 1].split(''))
+    }
+    const arr = [].concat.apply([], ss)
+    arr.i = 0
+    return decodeDescriptions(arr, null, xmlns)
   }
-  const arr = [].concat.apply([], ss)
-  arr.i = 0
-  return decodeDescriptions(arr)
+  if (Array.isArray(strings)) {
+    return _h(strings, ...values)
+  } else if (typeof strings === 'string' || strings == null) {
+    xmlns = strings
+    return _h
+  }
 }
 
 export function showIf (condition, a, b = () => []) {

@@ -18,7 +18,8 @@ const clickEater = el => e => {
 
 function renderChildren (model) {
   const addChild = el => e => {
-    model.children.push(h`<${el.parentNode.querySelector('input').value} xmlns="http://www.w3.org/2000/svg"/>`[0])
+    const xmlns = model.xmlns && model.xmlns.join('')
+    model.children.push(h(xmlns)`<${el.parentNode.querySelector('input').value}/>`[0])
   }
   return h`
     <ul ${{ title: model.tag ? 'children' : '' }} onclick="${clickEater}">
