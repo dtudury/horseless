@@ -1,0 +1,40 @@
+html, body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+body>header {
+  flex: 0 0 60px;
+}
+
+body>main {
+  flex: 1;
+}
+
+#ide {
+  display: flex;
+  flex-direction: row;
+}
+
+#ide .workspace {
+  flex: 3;
+}
+
+#ide .stage {
+  flex: 1;
+}
+
+#ide .workspace svg {
+  overflow: visible;
+}
+
+body>footer {
+  flex: 0 0 24px;
+}
