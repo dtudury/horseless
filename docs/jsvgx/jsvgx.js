@@ -1,4 +1,5 @@
 import { h, render, remodel, mapList, mapObject } from '../../lib/index.js'
+import { decodePathData, encodePathData } from './pathData.js'
 const ENTER_KEY = 13
 const ESCAPE_KEY = 27
 const model = remodel(
@@ -10,6 +11,15 @@ const model = remodel(
   </svg>`
 )
 window.model = model
+
+let svg = ` M 10 315
+L 110 215
+A 30 50 0 01162.55 162.45
+L 172.55 152.45
+A 30 50-45 0 1 215.1 109.9
+L 315 10 `
+console.log(JSON.stringify(decodePathData(svg), null, '  '))
+console.log(encodePathData(decodePathData(svg), null, '  '))
 
 const clickEater = el => e => {
   e.stopPropagation()
@@ -51,7 +61,7 @@ function renderChild (model, isTopLevel) {
       nameParts.push(`#${model.attributes.obj.id}`)
     }
     if (model.attributes.obj.class) {
-      nameParts.push(`.${model.attributes.obj.class}`)
+      nameParts.push(`.${String(model.attributes.obj.class).split(/\s+/).join('.')}`)
     }
     return nameParts.join('')
   }

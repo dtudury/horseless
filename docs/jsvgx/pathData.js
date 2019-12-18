@@ -136,7 +136,7 @@ function decodeFlag (o) {
   const flag = o.d.charAt(o.i)
   if (flag === '0' || flag === '1') {
     ++o.i
-    return flag
+    return Number(flag)
   }
 }
 
@@ -217,4 +217,61 @@ export function decodePathData (d) {
     skipWhiteSpace(o)
   }
   return drawToCommands
+}
+
+function encodeCoordinateSequence (drawToCommand) {
+  return `${drawToCommand.prefix} ${drawToCommand.parameters.join(' ')}`
+}
+
+function encodeCoordinatePairSequence (drawToCommand) {
+  return `${drawToCommand.prefix} ${drawToCommand.parameters.map(parameter => `${parameter.x},${parameter.y}`).join(' ')}`
+}
+
+function encodeCoordinatePairDoubleSequence (drawToCommand) {
+  return `${drawToCommand.prefix} ${drawToCommand.parameters.map(parameter => parameter.map(p => `${p.x},${p.y}`)).join(' ')}`
+}
+
+function encodeCoordinatePairTripletSequence (drawToCommand) {
+  return encodeCoordinatePairDoubleSequence(drawToCommand)
+}
+
+function encodeEllipticalArcArgumentSequence (drawToCommand) {
+  const parameters = drawToCommand.parameters
+  return `${drawToCommand.prefix} ${parameters.map(parameter => `${parameter.radii.x},${parameter.radii.y} ${parameter.xAxisRotation} ${parameter.largeArcFlag} ${parameter.sweepFlag} ${parameter.p.x},${parameter.p.y}`)}`
+}
+
+export function encodePathData (drawToCommands) {
+  return drawToCommands.map(drawToCommand => {
+    switch (drawToCommand.prefix.charCodeAt(0)) {
+      case _Z:
+      case _z:
+        return drawToCommand.prefix
+      case _H:
+      case _h:
+      case _V:
+      case _v:
+        return encodeCoordinateSequence(drawToCommand)
+      case _M:
+      case _m:
+      case _L:
+      case _l:
+      case _T:
+      case _t:
+        return encodeCoordinatePairSequence(drawToCommand)
+      case _S:
+      case _s:
+      case _Q:
+      case _q:
+        return encodeCoordinatePairDoubleSequence(drawToCommand)
+      case _C:
+      case _c:
+        return encodeCoordinatePairTripletSequence(drawToCommand)
+      case _A:
+      case _a:
+        return encodeEllipticalArcArgumentSequence(drawToCommand)
+      default:
+        console.log(drawToCommand)
+        throw new Error('unhandled command')
+    }
+  }).join(' ')
 }
