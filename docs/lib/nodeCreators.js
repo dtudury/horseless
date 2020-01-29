@@ -3,24 +3,24 @@
 import { FRAGMENT } from './fragment.js'
 import { watch, watchFunction } from './functionWatcher.js'
 
-function _renderValue (value, element) {
+function _renderValue (value, element, that) {
   if (value) {
     if (typeof value === 'function') {
-      value = value(element)
+      value = value.call(that, element)
     }
     if (Array.isArray(value)) {
       if (value.length === 1) {
-        return _renderValue(value[0], element)
+        return _renderValue(value[0], element, that)
       } else {
-        return '' + value.map(v => _renderValue(v, element)).join('')
+        return '' + value.map(v => _renderValue(v, element, that)).join('')
       }
     }
   }
   return value
 }
 
-function _setAttribute (element, name, value) {
-  value = _renderValue(value, element)
+function _setAttribute (element, name, value, that) {
+  value = _renderValue(value, element, that)
   if (element[name] !== value) {
     try {
       element[name] = value
@@ -39,15 +39,15 @@ function _setAttribute (element, name, value) {
   return element
 }
 
-function _setAttributes (element, attributes) {
+function _setAttributes (element, attributes, that) {
   if (element.setAttributes) {
-    element.setAttributes(attributes)
+    element.setAttributes(attributes, that)
   } else {
     const obj = {}
     const _watchKeys = () => {
       Object.keys(attributes.obj).forEach(name => {
         obj[name] = obj[name] || watchFunction(() => {
-          return _setAttribute(element, name, attributes.obj[name])
+          return _setAttribute(element, name, attributes.obj[name], that)
         })
       })
     }
@@ -85,10 +85,10 @@ function _descriptionsToNodes (descriptions) {
             if (description.type === 'textnode') {
               node = document.createTextNode(description.value)
             } else if (typeof description.tag === 'function') {
-              node = description.tag(description.attributes, description.children, description.xmlns)
+              node = description.tag.call(description.that, description.attributes, description.children, description.xmlns)
             } else {
               node = document.createElementNS(description.xmlns, description.tag, { is: description.attributes.obj.is })
-              _setAttributes(node, description.attributes)
+              _setAttributes(node, description.attributes, description.that)
               render(node, description.children)
             }
             _descriptionMap.set(description, node)

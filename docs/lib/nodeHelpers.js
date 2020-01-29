@@ -2,6 +2,7 @@ import { decodeDescriptions } from './horsyDecoders.js'
 
 export function h (strings, ...values) {
   let xmlns
+  let that
   function _h (strings, ...values) {
     const ss = [strings[0].split('')]
     for (let i = 0; i < values.length; i++) {
@@ -10,12 +11,17 @@ export function h (strings, ...values) {
     }
     const arr = [].concat.apply([], ss)
     arr.i = 0
-    return decodeDescriptions(arr, null, xmlns)
+    return decodeDescriptions(arr, null, xmlns, that)
   }
   if (Array.isArray(strings)) {
     return _h(strings, ...values)
   } else if (typeof strings === 'string' || strings == null) {
     xmlns = strings
+    that = values[0]
+    return _h
+  } else if (typeof strings === 'object') {
+    that = strings
+    xmlns = values[0]
     return _h
   }
 }

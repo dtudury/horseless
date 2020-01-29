@@ -54,7 +54,7 @@ function _decodeAttributes (arr) {
   }
 }
 
-function _decodeElement (arr, xmlns) {
+function _decodeElement (arr, xmlns, that) {
   assertChar(arr, /</)
   const isClosing = readIf(arr, '/')
   const tag = _decodeTag(arr) || FRAGMENT
@@ -62,26 +62,26 @@ function _decodeElement (arr, xmlns) {
   xmlns = attributes.obj.xmlns || xmlns
   const isEmpty = readIf(arr, '/')
   assertChar(arr, />/)
-  const children = (isClosing || isEmpty) ? [] : decodeDescriptions(arr, tag, xmlns)
-  return { type: 'node', tag, attributes, children, isClosing, xmlns }
+  const children = (isClosing || isEmpty) ? [] : decodeDescriptions(arr, tag, xmlns, that)
+  return { type: 'node', tag, attributes, children, isClosing, xmlns, that }
 }
 
-function _decodeDescription (arr, xmlns) {
+function _decodeDescription (arr, xmlns, that) {
   const c = arr[arr.i]
   if (c.isValue) {
     arr.i++
     return c.value
   } else if (c === '<') {
-    return _decodeElement(arr, xmlns)
+    return _decodeElement(arr, xmlns, that)
   } else {
     return { type: 'textnode', value: readTo(arr, /</) }
   }
 }
 
-export function decodeDescriptions (arr, closingTag, xmlns = 'http://www.w3.org/1999/xhtml') {
+export function decodeDescriptions (arr, closingTag, xmlns = 'http://www.w3.org/1999/xhtml', that) {
   const nodes = []
   while (arr.i < arr.length) {
-    const node = _decodeDescription(arr, xmlns)
+    const node = _decodeDescription(arr, xmlns, that)
     if (node) {
       if (closingTag && node.isClosing && node.tag === closingTag) {
         return nodes

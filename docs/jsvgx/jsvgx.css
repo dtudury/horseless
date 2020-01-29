@@ -114,7 +114,7 @@ ul[title="attributes"]::before, ul[title="children"]::before {
 }
 
 main.app {
-  background-color: whitesmoke;
+  background: violet;
   grid-column: 2/3;
   grid-row: 2/3;
   overflow: auto;
