@@ -80,8 +80,8 @@ function _descriptionsToNodes (descriptions) {
         if (description.tag === FRAGMENT) {
           nodes.push(..._descriptionsToNodes(description.children))
         } else if (description.type) {
+          let node
           if (!_descriptionMap.has(description)) {
-            let node
             if (description.type === 'textnode') {
               node = document.createTextNode(description.value)
             } else if (typeof description.tag === 'function') {
@@ -94,7 +94,11 @@ function _descriptionsToNodes (descriptions) {
             _descriptionMap.set(description, node)
             _nodeMap.set(node, description)
           }
-          nodes.push(_descriptionMap.get(description))
+          node = _descriptionMap.get(description)
+          if (node.nodeType === 3) {
+            node.nodeValue = description.value
+          }
+          nodes.push(node)
         } else {
           nodes.push(document.createTextNode(description.toString()))
         }

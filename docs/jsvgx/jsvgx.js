@@ -61,10 +61,8 @@ function renderTextNode (model) {
   if (!model.value.trim().length) {
     return null
   }
-  console.log(model)
   const liveEdit = el => e => {
     model.value = el.value.trim()
-    console.log(model.value)
   }
   const handleEditKeyDown = el => e => {
     switch (e.keyCode) {
@@ -81,7 +79,6 @@ function renderTextNode (model) {
         <div slot="expandable">
           <textarea rows="8" oninput=${liveEdit} onkeydown=${handleEditKeyDown}>${() => model.value}</textarea>
         </div>
-        ${() => model.value}
       </expandable-element>
     </li>
   `
@@ -112,7 +109,6 @@ function renderNode (model) {
 }
 
 function renderChild (model) {
-  console.log(model)
   switch (model.type) {
     case 'node':
       return renderNode(model)
