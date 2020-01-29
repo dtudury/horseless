@@ -32,43 +32,62 @@ console.log(encodePathData(decodePathData(svg)))
 /* global customElements */
 customElements.define('expandable-element', ExpandableElement)
 
-const clickEater = el => e => {
-  console.log(el)
-  el.classList.toggle('expanded')
-  e.stopPropagation()
-  return false
-}
-
 function renderChildren (model) {
   const addChild = el => e => {
     const xmlns = model.xmlns && model.xmlns.join('')
     model.children.push(h(xmlns)`<${el.parentNode.querySelector('input').value}/>`[0])
   }
+  const children = h`
+      <ul slot="expandable">
+        ${mapList(() => model.children, child => renderChild(child))}
+        <li>
+          <label><input /><button onclick=${addChild} >+ Child</button></label>
+        </li>
+      </ul>
+  `
+  if (model.tag) {
+    return h`
+      <expandable-element class="children">
+        <span slot="clickable">children</span>
+        ${children}
+      </expandable-element>
+    `
+  } else {
+    return children
+  }
+}
+
+function renderTextNode (model) {
+  if (!model.value.trim().length) {
+    return null
+  }
+  console.log(model)
+  const liveEdit = el => e => {
+    model.value = el.value.trim()
+    console.log(model.value)
+  }
+  const handleEditKeyDown = el => e => {
+    switch (e.keyCode) {
+      case ENTER_KEY:
+      case ESCAPE_KEY:
+        el.blur()
+        break
+    }
+  }
   return h`
-    <ul ${{ title: model.tag ? 'children' : '' }} onclick="${clickEater}">
-      ${mapList(() => model.children, child => renderChild(child))}
-      <li>
-        <label><input /><button onclick=${addChild} >+ Child</button></label>
-      </li>
-    </ul>
+    <li class="textnode">
+      <expandable-element>
+        <div slot="clickable">textnode</div>
+        <div slot="expandable">
+          <textarea rows="8" oninput=${liveEdit} onkeydown=${handleEditKeyDown}>${() => model.value}</textarea>
+        </div>
+        ${() => model.value}
+      </expandable-element>
+    </li>
   `
 }
 
-function renderChild (model, isTopLevel) {
-  if (!model.tag) {
-    return null
-  }
-  const state = remodel({
-    expanded: false
-  })
-  function expanded (el) {
-    return state.expanded ? 'expanded' : ''
-  }
-  const toggleExpanded = el => e => {
-    state.expanded = !state.expanded
-    e.stopPropagation()
-    return false
-  }
+function renderNode (model) {
   function longName () {
     const nameParts = [model.tag]
     if (model.attributes.obj.id) {
@@ -80,41 +99,62 @@ function renderChild (model, isTopLevel) {
     return nameParts.join('')
   }
   return h`
-    <li class="${expanded}" onclick="${toggleExpanded}">
-      <label class="${model.tag}">${longName}
-        <svg class="collapser" width="17" height="9" xmlns="http://www.w3.org/2000/svg">
-          <path d="M 0.5 0.5 L 8.5 8.5 L 16.5 0.5" fill="none" stroke="black" stroke-width="1"></path>
-        </svg>
-      </label>
-      ${() => renderAttributes(model)}
-      ${() => renderChildren(model)}
+    <li class=${model.tag}>
+      <expandable-element>
+        <div slot="clickable">${longName}</div>
+        <div slot="expandable">
+          ${() => renderAttributes(model)}
+          ${() => renderChildren(model)}
+        </div>
+      </expandable-element>
     </li>
   `
+}
+
+function renderChild (model) {
+  console.log(model)
+  switch (model.type) {
+    case 'node':
+      return renderNode(model)
+    case 'textnode':
+      return renderTextNode(model)
+    default:
+      return null
+  }
 }
 function renderAttributes (model) {
   const addAttribute = el => e => {
     model.attributes.obj[el.parentNode.querySelector('input').value] = ''
   }
-  return h`
-    <ul title="attributes" onclick="${clickEater}">
-      ${ /* eslint-disable indent */
-    mapObject(() => model.attributes.obj, (value, name) => {
-      const liveEdit = el => e => { model.attributes.obj[name] = el.value.trim() }
-      const handleEditKeyDown = el => e => {
-        switch (e.keyCode) {
-          case ENTER_KEY:
-          case ESCAPE_KEY:
-            el.blur()
-            break
-        }
+  const attributes = mapObject(() => model.attributes.obj, (value, name) => {
+    const liveEdit = el => e => { model.attributes.obj[name] = el.value.trim() }
+    const handleEditKeyDown = el => e => {
+      switch (e.keyCode) {
+        case ENTER_KEY:
+        case ESCAPE_KEY:
+          el.blur()
+          break
       }
-      return h`<li onclick="${clickEater}"><label>${name}<input value=${value} oninput=${liveEdit} onkeydown=${handleEditKeyDown} /></label></li>`
-    })
-      /* eslint-enable indent */}
-      <li>
-        <label><input /><button onclick=${addAttribute} >+ Attribute</button></label>
+    }
+    return h`
+      <li class="attribute">
+        <label>
+          ${name}
+          <input value=${value} oninput=${liveEdit} onkeydown=${handleEditKeyDown} />
+        </label>
       </li>
-    </ul>
+    `
+  })
+  return h`
+    <expandable-element class="attributes">
+      <div slot="clickable">attributes</div>
+      <ul slot="expandable">
+        ${attributes}
+        <li>
+          <label><input /><button onclick=${addAttribute} >+ Attribute</button></label>
+        </li>
+      </ul>
+    </expandable-element>
   `
 }
 
@@ -123,9 +163,7 @@ render(document.body, h`
   <svg class="hamburger" focusable="false" width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
     <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"></path>
   </svg>
-  <h1>
-    JSVGX
-  </h1>
+  <h1>JSVGX</h1>
 </header>
 
 <nav class="app">
@@ -133,10 +171,6 @@ render(document.body, h`
 </nav>
 
 <main class="app">
-  <expandable-element>
-    <div slot="clickable">part 1</div>
-    <div slot="expandable">part 2</div>
-  </expandable-element>
   ${model}
 </main>
 

@@ -46,7 +46,6 @@ nav.app {
 nav.app ul {
   list-style-type: none;
   padding: 4px;
-  background: white;
 }
 
 nav.app ul label {
@@ -62,15 +61,17 @@ nav.app li {
   background: whitesmoke;
   font-weight: lighter;
   border-radius: 4px / 8px;
+  box-shadow: 1px 1px 3px #00000088;
 }
 
 nav.app input {
   width: 66%;
 }
 
-nav.app a {
-  display: block;
-  cursor: pointer;
+nav.app textarea {
+  width: 100%;
+  resize: vertical;
+  box-sizing: border-box;
 }
 
 nav.app li:not(:first-child) {
@@ -87,30 +88,40 @@ nav.app li:last-child {
   border-bottom-right-radius: 8px;
 }
 
-nav.app ul[title="attributes"] li {
-  color: darkgoldenrod;
-  border-color: darkgoldenrod;
-  background: lightgoldenrodyellow;
+nav.app li.svg {
+  color: #666;
+  border-color: #666;
+  background: #fdfdfd;
 }
 
-nav.app li:not(.expanded) ul {
-  display: none;
+nav.app li.path {
+  color: #080;
+  border-color: #080;
+  background: #bfb;
 }
 
-nav.app li .collapser {
-  transition: all 0.2s ease-out;
+nav.app li.style {
+  color: #880;
+  border-color: #880;
+  background: #ffb;
 }
 
-nav.app li.expanded > label >.collapser {
-  transform: rotate(180deg);
+nav.app li.circle {
+  color: #084;
+  border-color: #084;
+  background: #bfd;
 }
 
-ul[title="attributes"]::before, ul[title="children"]::before {
-  content: attr(title);
-  display: block;
+nav.app li.attribute {
+  color: #808;
+  border-color: #808;
+  background: #fbf;
+}
+
+nav.app expandable-element.attributes > [slot=clickable],
+nav.app expandable-element.children > [slot=clickable] {
+  font-size: x-large;
   font-weight: lighter;
-  padding: 4px;
-  font-size: xx-large;
 }
 
 main.app {
