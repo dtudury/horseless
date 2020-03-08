@@ -1,10 +1,10 @@
 import pkg from './package.json'
 import uglify from 'rollup-plugin-uglify-es'
+import alias from '@rollup/plugin-alias'
 
 export default [{
-  inlineDynamicImports: true,
   input: 'breakdown/index.js',
-  plugins: [uglify()],
+  plugins: [alias({ entries: [{ find: './unpkg', replacement: './node_modules' }] }), uglify()],
   output: [{ file: pkg.module, format: 'es' }]
   /*
 }, {

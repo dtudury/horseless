@@ -21,6 +21,7 @@
   },
   "homepage": "https://horseless.info",
   "devDependencies": {
+    "@rollup/plugin-alias": "^3.0.1",
     "acorn": "^7.1.1",
     "express": "^4.17.1",
     "rollup": "^1.32.1",
