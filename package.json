@@ -7,7 +7,7 @@
   "devmodule": "dist/horseless.esm.js",
   "scripts": {
     "start": "serve -S ./docs",
-    "breakdown": "serve -S ./breakdown",
+    "breakdown": "node serve.js",
     "prepublishOnly": "rollup -c"
   },
   "repository": {
@@ -22,9 +22,9 @@
   "homepage": "https://horseless.info",
   "devDependencies": {
     "acorn": "^7.1.1",
+    "express": "^4.17.1",
     "rollup": "^1.32.1",
     "rollup-plugin-uglify-es": "0.0.1",
-    "serve": "^11.2.0",
     "standard": "^13.0.0"
   },
   "files": [
