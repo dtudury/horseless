@@ -2,6 +2,7 @@
 
 import { assert } from 'chai'
 import puppeteer from 'puppeteer'
+import { h, render } from '../breakdown/index.js'
 
 let browser
 let page
@@ -21,8 +22,9 @@ describe('render', function () {
       browser.close()
     }
   })
-  it('sandbox', async function (done) {
-    console.log(page)
-    done()
+  it('sandbox', async function () {
+    const content = await page.content()
+    console.log(content)
+    console.log(h`test`)
   })
 })

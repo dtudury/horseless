@@ -6,7 +6,7 @@
   "module": "dist/horseless.min.esm.js",
   "devmodule": "dist/horseless.esm.js",
   "scripts": {
-    "test": "nyc --reporter html --reporter text-summary _mocha --require esm",
+    "test": "nyc --reporter html --reporter text-summary _mocha --require esm --require ./ununpkgify.js",
     "start": "serve -S ./docs",
     "breakdown": "node serve.js",
     "prepublishOnly": "rollup -c"
@@ -21,6 +21,9 @@
     "url": "https://github.com/dtudury/horseless/issues"
   },
   "homepage": "https://horseless.info",
+  "files": [
+    "dist"
+  ],
   "devDependencies": {
     "@rollup/plugin-alias": "^3.0.1",
     "acorn": "^7.1.1",
@@ -34,9 +37,6 @@
     "rollup-plugin-uglify-es": "0.0.1",
     "standard": "^13.0.0"
   },
-  "files": [
-    "dist"
-  ],
   "dependencies": {
     "horseless.decoder": "^1.0.0",
     "horseless.remodel": "^1.0.2"

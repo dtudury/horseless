@@ -30,7 +30,7 @@ function _setAttribute (element, name, value) {
     }
   }
   if ((typeof value).match(/(?:boolean|number|string)/)) {
-    const str = '' + value
+    const str = value.toString()
     if (element.getAttribute(name) !== str) {
       element.setAttribute(name, str)
     }
@@ -43,20 +43,14 @@ function _setAttributes (element, attributes) {
     element.setAttributes(attributes)
   } else {
     const obj = {}
-    const _watchKeys = () => {
+    watchFunction(() => {
       Object.keys(attributes.obj).forEach(name => {
         obj[name] = obj[name] || watchFunction(() => {
           return _setAttribute(element, name, attributes.obj[name])
         })
       })
-    }
-    _watchKeys()
-    watch(attributes.obj, _watchKeys)
-    if (attributes.callback) {
-      watchFunction(() => {
-        attributes.callback(obj)
-      })
-    }
+      // TODO: delete missing keys
+    })
   }
   return element
 }
@@ -113,6 +107,7 @@ function _setChildren (element, descriptions) {
         console.error(node)
         throw new Error('unhandled node')
       }
+      // TODO: LCS https://rosettacode.org/wiki/Longest_common_subsequence#JavaScript
       const referenceNode = element.childNodes[index]
       if (!referenceNode) {
         element.appendChild(node)
