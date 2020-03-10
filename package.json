@@ -6,6 +6,7 @@
   "module": "dist/horseless.min.esm.js",
   "devmodule": "dist/horseless.esm.js",
   "scripts": {
+    "test": "nyc --reporter html --reporter text-summary _mocha --require esm",
     "start": "serve -S ./docs",
     "breakdown": "node serve.js",
     "prepublishOnly": "rollup -c"
@@ -23,7 +24,12 @@
   "devDependencies": {
     "@rollup/plugin-alias": "^3.0.1",
     "acorn": "^7.1.1",
+    "chai": "^4.2.0",
+    "esm": "^3.2.25",
     "express": "^4.17.1",
+    "mocha": "^7.1.0",
+    "nyc": "^15.0.0",
+    "puppeteer": "^2.1.1",
     "rollup": "^1.32.1",
     "rollup-plugin-uglify-es": "0.0.1",
     "standard": "^13.0.0"
