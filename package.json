@@ -7,8 +7,7 @@
   "devmodule": "dist/horseless.esm.js",
   "scripts": {
     "test": "nyc --reporter html --reporter text-summary _mocha --require esm --require ./ununpkgify.js",
-    "start": "serve -S ./docs",
-    "breakdown": "node serve.js",
+    "start": "node server.js",
     "prepublishOnly": "rollup -c"
   },
   "repository": {

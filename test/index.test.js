@@ -1,6 +1,6 @@
 /* global before after describe it */
 
-import { assert } from 'chai'
+// import { assert } from 'chai'
 import puppeteer from 'puppeteer'
 import { h, render } from '../breakdown/index.js'
 
@@ -25,6 +25,8 @@ describe('render', function () {
   it('sandbox', async function () {
     const content = await page.content()
     console.log(content)
-    console.log(h`test`)
+    render(content.body, h`test`)
+    await page.waitFor(10)
+    console.log(content)
   })
 })
