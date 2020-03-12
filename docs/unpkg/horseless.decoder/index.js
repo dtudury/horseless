@@ -1,1 +1,1 @@
-export * from 'http://unpkg.com/horseless.decoder'
+export * from 'https://unpkg.com/horseless.decoder'

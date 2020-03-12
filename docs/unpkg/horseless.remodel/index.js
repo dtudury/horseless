@@ -1,1 +1,1 @@
-export * from 'http://unpkg.com/horseless.remodel'
+export * from 'https://unpkg.com/horseless.remodel'
