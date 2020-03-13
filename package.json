@@ -32,12 +32,13 @@
     "mocha": "^7.1.0",
     "nyc": "^15.0.0",
     "puppeteer": "^2.1.1",
+    "puppeteer-to-istanbul": "^1.2.2",
     "rollup": "^1.32.1",
     "rollup-plugin-uglify-es": "0.0.1",
     "standard": "^13.0.0"
   },
   "dependencies": {
-    "horseless.decoder": "^1.0.0",
-    "horseless.remodel": "^1.0.2"
+    "horseless.decoder": "^1.0.1",
+    "horseless.remodel": "^1.0.3"
   }
 }
