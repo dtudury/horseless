@@ -6,7 +6,7 @@
   "module": "dist/horseless.min.esm.js",
   "devmodule": "dist/horseless.esm.js",
   "scripts": {
-    "test": "nyc --reporter html --reporter text-summary _mocha --require esm --require ./ununpkgify.js",
+    "test": "rm -rf ./.nyc_output ; node testrunner.js && nyc report --reporter=html",
     "start": "node server.js 5000",
     "prepublishOnly": "rollup -c"
   },
@@ -27,7 +27,6 @@
     "@rollup/plugin-alias": "^3.0.1",
     "acorn": "^7.1.1",
     "chai": "^4.2.0",
-    "esm": "^3.2.25",
     "express": "^4.17.1",
     "mocha": "^7.1.0",
     "nyc": "^15.0.0",

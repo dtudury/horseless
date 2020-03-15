@@ -8,19 +8,15 @@
   <link rel="stylesheet" href="/unpkg/mocha/mocha.css" />
   <script src="/unpkg/chai/chai.js"></script>
   <script src="/unpkg/mocha/mocha.js"></script>
-  <script type="module" src="/unpkg/horseless/index.js"></script>
 </head>
 
 <body>
   <div id="mocha"></div>
   <div id="sandbox" style="display: none;"></div>
-  <script class="mocha-init">
-    mocha.setup('bdd');
-    mocha.checkLeaks();
-  </script>
+  <script src="setup.js"></script>
   <script type="module" src="index.test.js"></script>
-  <script type="module" class="mocha-exec">
-    mocha.run();
+  <script type="module">
+    runTests()
   </script>
 </body>
 

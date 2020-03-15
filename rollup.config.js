@@ -3,7 +3,7 @@ import uglify from 'rollup-plugin-uglify-es'
 import alias from '@rollup/plugin-alias'
 
 export default [{
-  input: 'breakdown/index.js',
+  input: 'lib/horseless.js',
   plugins: [alias({ entries: [{ find: './unpkg', replacement: './node_modules' }] }), uglify()],
   output: [{ file: pkg.module, format: 'es' }]
   /*
