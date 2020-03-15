@@ -1,28 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <title>Mocha Tests</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="/unpkg/mocha/mocha.css" />
-    <script src="/unpkg/chai/chai.js"></script>
-    <script src="/unpkg/mocha/mocha.js"></script>
-  </head>
-  <body>
-    <div id="mocha"></div>
 
+<head>
+  <meta charset="utf-8" />
+  <title>Mocha Tests</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="/unpkg/mocha/mocha.css" />
+  <script src="/unpkg/chai/chai.js"></script>
+  <script src="/unpkg/mocha/mocha.js"></script>
+  <script type="module" src="/unpkg/horseless/index.js"></script>
+</head>
 
-    <script class="mocha-init">
-      mocha.setup('bdd');
-      mocha.checkLeaks();
-    </script>
-    <!--
-    <script src="test.array.js"></script>
-    <script src="test.object.js"></script>
-    <script src="test.xhr.js"></script>
-    -->
-    <script class="mocha-exec">
-      mocha.run();
-    </script>
-  </body>
+<body>
+  <div id="mocha"></div>
+  <div id="sandbox" style="display: none;"></div>
+  <script class="mocha-init">
+    mocha.setup('bdd');
+    mocha.checkLeaks();
+  </script>
+  <script type="module" src="index.test.js"></script>
+  <script type="module" class="mocha-exec">
+    mocha.run();
+  </script>
+</body>
+
 </html>
