@@ -1,12 +1,10 @@
-/* global before after describe it */
+/* global describe it */
 
 import { h, render } from '/unpkg/horseless/horseless.js'
 
 const sandbox = document.querySelector('#sandbox')
 
-it('top level', function () {
-  console.log('maybe')
-  // throw new Error('asdf')
+it('basic rendering', function () {
 })
 
 describe('nest', function () {

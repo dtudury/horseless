@@ -1,3 +1,4 @@
+/* global mocha */
 
 mocha.setup('bdd')
 mocha.checkLeaks()
@@ -35,3 +36,5 @@ function runTests () {
     })
   })
 }
+
+global.runTests = runTests
