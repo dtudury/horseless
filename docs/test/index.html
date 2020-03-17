@@ -13,9 +13,10 @@
 <body>
   <div id="mocha"></div>
   <div id="sandbox" style="display: none;"></div>
-  <script src="setup.js"></script>
+  <script src="_mocha-setup.js"></script>
   <script type="module" src="index.test.js"></script>
   <script type="module">
+    // needs to be run from a module to happen in order relative to the modules
     runTests()
   </script>
 </body>

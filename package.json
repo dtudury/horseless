@@ -37,7 +37,7 @@
     "standard": "^13.0.0"
   },
   "dependencies": {
-    "horseless.decoder": "^1.0.1",
-    "horseless.remodel": "^1.0.3"
+    "horseless.decoder": "^1.0.2",
+    "horseless.remodel": "^1.0.5"
   }
 }
