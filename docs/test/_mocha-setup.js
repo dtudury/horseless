@@ -37,4 +37,4 @@ function runTests () {
   })
 }
 
-global.runTests = runTests
+window.runTests = runTests
