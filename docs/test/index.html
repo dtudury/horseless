@@ -12,12 +12,13 @@
 
 <body>
   <div id="mocha"></div>
-  <div id="sandbox" style="display: none;"></div>
+  <div id="sandbox" style="display: non;"></div>
   <script src="_mocha-setup.js"></script>
   <script type="module" src="index.test.js"></script>
   <script type="module">
     // needs to be run from a module to happen in order relative to the modules
-    runTests()
+    // setTimeout to give puppeteer a chance to kick it off
+    setTimeout(runTests, 200)
   </script>
 </body>
 

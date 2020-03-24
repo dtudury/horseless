@@ -15,8 +15,8 @@ const port = server.address().port
   })
   */
   const page = await browser.newPage()
-  await page.goto(`http://localhost:${port}/test/`)
   await page.coverage.startJSCoverage()
+  await page.goto(`http://localhost:${port}/test/`)
   const count = await page.evaluate(() => {
     return runTests()
   })

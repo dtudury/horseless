@@ -2,7 +2,12 @@
 
 mocha.setup('bdd')
 mocha.checkLeaks()
+let _hasRun = false
 function runTests () {
+  if (_hasRun) {
+    return
+  }
+  _hasRun = true
   function cloneSuiteTests (suite) {
     return {
       tests: suite.tests.map(test => ({ ...test })),
