@@ -1,7 +1,7 @@
 const express = require('express')
 const app = express()
 
-app.use('/unpkg/horseless/', express.static('lib'))
+app.use('/unpkg/horseless/', express.static('.'))
 app.use('/unpkg/', express.static('node_modules'))
 app.use(express.static('docs'))
 
