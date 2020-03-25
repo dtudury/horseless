@@ -12,9 +12,11 @@
 
 <body>
   <div id="mocha"></div>
-  <div id="sandbox" style="display: non;"></div>
+  <div id="sandbox"></div>
   <script src="_mocha-setup.js"></script>
-  <script type="module" src="index.test.js"></script>
+  <script type="module" src="horseless.test.js"></script>
+  <script type="module" src="remodel.test.js"></script>
+  <script type="module" src="decoding.test.js"></script>
   <script type="module">
     // needs to be run from a module to happen in order relative to the modules
     // setTimeout to give puppeteer a chance to kick it off

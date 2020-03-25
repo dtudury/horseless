@@ -6,7 +6,7 @@
   "module": "dist/horseless.min.esm.js",
   "devmodule": "dist/horseless.esm.js",
   "scripts": {
-    "test": "rm -rf ./.nyc_output ; node testrunner.js && nyc report --reporter=html",
+    "test": "rm -rf ./.nyc_output ; node testrunner.js && nyc report --reporter=html --report-dir=./docs/coverage",
     "start": "node server.js 5000",
     "prepublishOnly": "rollup -c"
   },
