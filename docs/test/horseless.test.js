@@ -14,12 +14,12 @@ function afterUpdate () {
 }
 
 describe('horseless', function () {
-  this.timeout(5000)
   it('returns an array of nodes when passed descriptions only', async function () {
     assert.instanceOf(render(h`abc`)[0], Text)
   })
-  it('updates attributes', async function () {
+  it.only('updates attributes', async function () {
     const p = proxy({ a: 'a' })
+    console.log(JSON.stringify(h`test<span id="attribute-test" a="x-${() => p.a}">asdf</span>`, null, '  '))
     render(sandbox, h`test<span id="attribute-test" a="x-${() => p.a}">asdf</span>`)
     const a = document.querySelector('#attribute-test').attributes.a
     assert.equal(a.value, 'x-a')
@@ -74,6 +74,16 @@ describe('horseless', function () {
       await afterUpdate()
       assert.equal(cn1[0], cn2[1])
       assert.equal(cn1[1], cn2[0])
+    })
+    it('handles functions that return objects', async function () {
+      const p = proxy([1, 2, 3, 4, 5, 6])
+      render(sandbox, mapEntries(() => p.filter(v => v % 2), (value, name) => {
+        return h`<div><span>value: ${value}</span> <span>name: ${name}</span></div>`
+      }))
+      assert.equal(sandbox.childElementCount, 3)
+      p.splice(6, 0, 7, 8, 9)
+      await afterUpdate()
+      assert.equal(sandbox.childElementCount, 5)
     })
   })
 })

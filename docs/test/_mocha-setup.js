@@ -15,6 +15,7 @@ function runTests () {
     }
   }
   function resetSuiteTests (suite, suiteTestsClone) {
+    if (!suiteTestsClone) return
     suite.tests.forEach((test, i) => {
       Object.keys(test).forEach(key => delete test[key])
       Object.assign(test, suiteTestsClone.tests[i])
