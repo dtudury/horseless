@@ -13,23 +13,63 @@ function afterUpdate () {
   })
 }
 
+function attributesToObject (attributes) {
+  const obj = {}
+  for (let i = 0; i < attributes.length; i++) {
+    obj[attributes[i].name] = attributes[i].value
+  }
+  return obj
+}
+
 describe('horseless', function () {
   it('returns an array of nodes when passed descriptions only', async function () {
     assert.instanceOf(render(h`abc`)[0], Text)
   })
-  it.only('updates attributes', async function () {
-    const p = proxy({ a: 'a' })
-    console.log(JSON.stringify(h`test<span id="attribute-test" a="x-${() => p.a}">asdf</span>`, null, '  '))
-    render(sandbox, h`test<span id="attribute-test" a="x-${() => p.a}">asdf</span>`)
-    const a = document.querySelector('#attribute-test').attributes.a
+  it('assigns functions', function () {
+    function f1 () { }
+    function f2 () {
+      return f1
+    }
+    const element = h`<hr a="${f2}" b=${f2}>`
+    render(sandbox, element)
+    assert.equal(sandbox.firstChild.a, f1)
+    assert.equal(sandbox.firstChild.b, f1)
+  })
+  it('renders attributes', function () {
+    render(sandbox, h`
+      <hr a=b c="d" e=${'f'} g ${'h'} ${null}>
+      <hr ${['a', 'b']} ${{ c: 'd', e: 'f' }} ${() => 'g'}>
+    `)
+    assert.deepEqual({ a: 'b', c: 'd', e: 'f', g: 'g', h: 'h' }, attributesToObject(sandbox.children[0].attributes))
+    assert.deepEqual({ a: 'a', b: 'b', c: 'd', e: 'f', g: 'g' }, attributesToObject(sandbox.children[1].attributes))
+  })
+  it('renders lack-of attributes', function () {
+    render(sandbox, h`
+      <hr ${null} a="z${null}z">
+    `)
+    assert.deepEqual(attributesToObject(sandbox.firstElementChild.attributes), { a: 'zz' })
+  })
+  it('updates attributes', async function () {
+    const p = proxy({ a: 'a', b: 'b' })
+    render(sandbox, h`test<span a="x-${() => p.a}" ${() => p.b || null}>asdf</span>`)
+    const a = sandbox.firstElementChild.attributes.a
+    const b = sandbox.firstElementChild.attributes.b
     assert.equal(a.value, 'x-a')
+    assert(sandbox.firstElementChild.hasAttribute('b'))
+    assert.equal(b.value, 'b')
     p.a = 'b'
     assert.equal(a.value, 'x-a')
+    delete p.b
     await afterUpdate()
     assert.equal(a.value, 'x-b')
+    assert(!sandbox.firstElementChild.hasAttribute('b'))
+  })
+  it('uses first of duplicate attributes', function () {
+    render(sandbox, h`<hr a=1 a=1 ${'a'} ${{ a: 3 }}>`)
+    assert.deepEqual(attributesToObject(sandbox.firstChild.attributes), { a: '1' })
   })
   it('handles svg', function () {
-    render(sandbox, h('http://www.w3.org/2000/svg')`<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="50"/></svg>`)
+    render(sandbox, h`<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="50"/></svg>`)
     assert.equal(document.querySelector('circle').getPointAtLength(0).x, 100)
   })
   it('updates children', async function () {
@@ -84,6 +124,9 @@ describe('horseless', function () {
       p.splice(6, 0, 7, 8, 9)
       await afterUpdate()
       assert.equal(sandbox.childElementCount, 5)
+      p.splice(0)
+      await afterUpdate()
+      assert.equal(sandbox.childElementCount, 0)
     })
   })
 })

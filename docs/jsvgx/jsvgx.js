@@ -1,7 +1,7 @@
-import { h, render, remodel, mapList, mapObject } from '../../lib/index.js'
+import { h, render, proxy, mapEntries, renderAttributes } from '/unpkg/horseless/horseless.js'
 const ENTER_KEY = 13
 const ESCAPE_KEY = 27
-const model = remodel(
+const model = proxy(
   h`<svg id="hypnoface" style="background:lightgray; display:block;" width="100%" height="100%" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
     <circle id="face" cx="150" cy="150" r="100" fill="yellow" stroke="black" stroke-width="30"/>
     <circle id="left-eye" class="eye" cx="110" cy="130" r="15" fill="black"/>
@@ -16,25 +16,25 @@ const clickEater = el => e => {
   return false
 }
 
-function renderChildren (model) {
+function _children (model) {
   const addChild = el => e => {
     const xmlns = model.xmlns && model.xmlns.join('')
     model.children.push(h(xmlns)`<${el.parentNode.querySelector('input').value}/>`[0])
   }
   return h`
     <ul ${{ title: model.tag ? 'children' : '' }} onclick="${clickEater}">
-      ${mapList(() => model.children, child => renderChild(child))}
+      ${mapEntries(() => model.children, child => _child(child))}
       <li>
         <label><input /><button onclick=${addChild} >+ Child</button></label>
       </li>
     </ul>
   `
 }
-function renderChild (model, isTopLevel) {
+function _child (model, isTopLevel) {
   if (!model.tag) {
     return null
   }
-  const state = remodel({
+  const state = proxy({
     expanded: false
   })
   function expanded (el) {
@@ -47,11 +47,12 @@ function renderChild (model, isTopLevel) {
   }
   function longName () {
     const nameParts = [model.tag]
-    if (model.attributes.obj.id) {
-      nameParts.push(`#${model.attributes.obj.id}`)
+    const attributes = renderAttributes(model.attributes)
+    if (attributes.id) {
+      nameParts.push(`#${attributes.id}`)
     }
-    if (model.attributes.obj.class) {
-      nameParts.push(`.${model.attributes.obj.class}`)
+    if (attributes.class) {
+      nameParts.push(`.${attributes.class}`)
     }
     return nameParts.join('')
   }
@@ -62,19 +63,20 @@ function renderChild (model, isTopLevel) {
           <path d="M 0.5 0.5 L 8.5 8.5 L 16.5 0.5" fill="none" stroke="black" stroke-width="1"></path>
         </svg>
       </label>
-      ${() => renderAttributes(model)}
-      ${() => renderChildren(model)}
+      ${() => _attributes(model)}
+      ${() => _children(model)}
     </li>
   `
 }
-function renderAttributes (model) {
+function _attributes (model) {
   const addAttribute = el => e => {
-    model.attributes.obj[el.parentNode.querySelector('input').value] = ''
+    console.log(JSON.parse(JSON.stringify(model.attributes)))
+    model.attributes.push({ type: 'attribute', name: el.parentNode.querySelector('input').value, value: [] })
   }
   return h`
     <ul title="attributes" onclick="${clickEater}">
       ${ /* eslint-disable indent */
-        mapObject(() => model.attributes.obj, (value, name) => {
+        mapEntries(() => renderAttributes(model.attributes), (value, name) => {
           const liveEdit = el => e => { model.attributes.obj[name] = el.value.trim() }
           const handleEditKeyDown = el => e => {
             switch (e.keyCode) {
@@ -105,7 +107,7 @@ render(document.body, h`
 </header>
 
 <nav class="app">
-  ${renderChildren({ children: model })}
+  ${_children({ children: model })}
 </nav>
 
 <main class="app">
