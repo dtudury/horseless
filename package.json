@@ -1,12 +1,13 @@
 {
   "name": "horseless",
-  "version": "0.0.24",
+  "version": "0.1.0",
   "description": "a framework?",
   "main": "dist/horseless.cjs.js",
   "module": "dist/horseless.min.esm.js",
   "devmodule": "dist/horseless.esm.js",
   "scripts": {
-    "start": "serve -S ./docs",
+    "test": "rm -rf ./.nyc_output ; node testrunner.js && nyc report --reporter=html --report-dir=./docs/coverage",
+    "start": "node server.js 5000",
     "prepublishOnly": "rollup -c"
   },
   "repository": {
@@ -19,14 +20,24 @@
     "url": "https://github.com/dtudury/horseless/issues"
   },
   "homepage": "https://horseless.info",
-  "devDependencies": {
-    "acorn": "^6.4.0",
-    "rollup": "^1.27.8",
-    "rollup-plugin-uglify-es": "0.0.1",
-    "serve": "^11.2.0",
-    "standard": "^13.0.0"
-  },
   "files": [
     "dist"
-  ]
+  ],
+  "devDependencies": {
+    "@rollup/plugin-alias": "^3.0.1",
+    "acorn": "^7.1.1",
+    "chai": "^4.2.0",
+    "express": "^4.17.1",
+    "mocha": "^7.1.1",
+    "nyc": "^15.0.0",
+    "puppeteer": "^2.1.1",
+    "puppeteer-to-istanbul": "^1.2.2",
+    "rollup": "^1.32.1",
+    "rollup-plugin-terser": "^5.3.0",
+    "standard": "^13.0.0"
+  },
+  "dependencies": {
+    "horseless.decoder": "^1.1.1",
+    "horseless.remodel": "^1.0.8"
+  }
 }

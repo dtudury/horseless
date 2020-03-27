@@ -1,4 +1,4 @@
-import { h, render } from '../lib/index.js'
+import { h, render } from '/unpkg/horseless/horseless.js'
 
 function fourFiveSix () {
   return h`<div>4</div><div>5</div><div>6</div>`

@@ -1,7 +1,7 @@
-import { h, render, showIf, mapList, remodel } from '../lib/index.js'
+import { h, render, mapConditional, mapEntries, proxy, after } from '/unpkg/horseless/horseless.js'
 const ENTER_KEY = 13
 const ESCAPE_KEY = 27
-const model = window.model = remodel({
+const model = window.model = proxy({
   todos: [
     { label: 'Taste Javascript', completed: false },
     { label: 'Buy a unicorn', completed: false }
@@ -16,10 +16,14 @@ const newTodoChange = el => e => {
 const clearCompleted = el => e => {
   model.todos = model.todos.filter(todo => !todo.completed)
 }
+const toggleAll = el => e => {
+  const completed = !!incompletedCount()
+  model.todos.forEach(todo => { todo.completed = completed })
+}
 
 // model transformations
 function selected (el) {
-  return (model.hash === el.hash) ? 'selected' : ''
+  return (el && el.hash === model.hash) ? 'selected' : ''
 }
 function incompletedCount () {
   return model.todos.filter(todo => !todo.completed).length
@@ -44,13 +48,13 @@ render(document.body, h`
       <h1>todos</h1>
       <input class="new-todo" onchange=${newTodoChange} placeholder="What needs to be done?" autofocus=""/>
     </header>
-    ${showIf(() => model.todos.length, () => h`
+    ${mapConditional(() => model.todos.length, h`
       <section class="main">
-        <input id="toggle-all" class="toggle-all" type="checkbox"/>
+        <input id="toggle-all" class="toggle-all" onchange=${toggleAll} type="checkbox" checked=${() => incompletedCount() === 0}/>
         <label for="toggle-all">Mark all as complete</label>
         <ul class="todo-list">
           ${ /* eslint-disable indent */
-            mapList(visibleTodosList, todo => {
+            mapEntries(visibleTodosList, todo => {
               // event handlers
               const editLabel = el => e => { todo.editing = true }
               const toggleComplete = el => e => { todo.completed = !todo.completed }
@@ -75,28 +79,24 @@ render(document.body, h`
                 }
               }
 
-              // model transformations
-              function completed (el) {
-                return todo.completed ? 'completed' : ''
-              }
-              function editing (el) {
-                return todo.editing ? 'editing' : ''
-              }
-
-              // callback
-              function classCallback (attributes) {
-                attributes.class.callback = el => {
-                  // actual input is display:none unless .editing is set (so we can't set focus until after)
-                  if (el.classList.contains('editing')) {
-                    el.querySelector('.edit').focus()
-                  }
+              function completedAndOrEditing (el) {
+                const classes = []
+                if (todo.completed) {
+                  classes.push('completed')
+                }
+                if (todo.editing) {
+                  after(() => { el.querySelector('.edit').focus() })
+                  classes.push('editing')
+                }
+                if (classes.length) {
+                  return { class: classes.join(' ') }
                 }
               }
 
               return h`
-                <li class="${completed} ${editing}" ${classCallback}>
+                <li ${completedAndOrEditing}>
                   <div class="view" ondblclick=${editLabel}>
-                    <input class="toggle" type="checkbox" onchange=${toggleComplete}/>
+                    <input class="toggle" type="checkbox" checked=${() => todo.completed} onchange=${toggleComplete}/>
                     <label>${() => todo.label}</label>
                     <button class="destroy" onclick=${selfDestruct}></button>
                   </div>
@@ -120,13 +120,15 @@ render(document.body, h`
             <a class="${selected}" href="#/completed">Completed</a>
           </li>
         </ul>
-        <button class="clear-completed" onclick=${clearCompleted}>Clear completed</button>
+        ${mapConditional(() => model.todos.some(todo => todo.completed), h`
+          <button class="clear-completed" onclick=${clearCompleted}>Clear completed</button>
+        `)}
       </footer>
     `)}
   </section>
   <footer class="info">
     <p>Double-click to edit a todo</p>
-    <p>Created by <a href="http://todomvc.com">you</a></p>
+    <p>Created by <a href="https://github.com/dtudury/horseless">David</a></p>
     <p>Part of <a href="http://todomvc.com">TodoMVC</a></p>
   </footer>
 `)

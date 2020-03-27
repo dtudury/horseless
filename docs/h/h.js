@@ -1,4 +1,4 @@
-import { h, render } from '../lib/index.js'
+import { h, render } from '/unpkg/horseless/horseless.js'
 
 const astronaut = 'Dave'
 const obj = { feeling: 'not sorry' }

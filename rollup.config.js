@@ -1,12 +1,15 @@
 import pkg from './package.json'
-import uglify from 'rollup-plugin-uglify-es'
+import { terser } from 'rollup-plugin-terser'
+import alias from '@rollup/plugin-alias'
 
 export default [{
-  input: 'lib/index.js',
-  plugins: [uglify()],
+  input: 'horseless.js',
+  inlineDynamicImports: true,
+  plugins: [alias({ entries: [{ find: '/unpkg', replacement: './node_modules' }] }), terser()],
   output: [{ file: pkg.module, format: 'es' }]
 }, {
-  input: 'lib/index.js',
+  input: 'horseless.js',
+  plugins: [alias({ entries: [{ find: '/unpkg', replacement: './node_modules' }] })],
   output: [{
     file: pkg.main, format: 'cjs'
   }, {

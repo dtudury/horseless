@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <title>Mocha Tests</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="/unpkg/mocha/mocha.css" />
+  <script src="/unpkg/chai/chai.js"></script>
+  <script src="/unpkg/mocha/mocha.js"></script>
+</head>
+
+<body>
+  <div id="mocha"></div>
+  <div id="sandbox"></div>
+  <script src="_mocha-setup.js"></script>
+  <script type="module" src="horseless.test.js"></script>
+  <script type="module" src="remodel.test.js"></script>
+  <script type="module" src="decoding.test.js"></script>
+  <script type="module">
+    // needs to be run from a module to happen in order relative to the modules
+    // setTimeout to give puppeteer a chance to kick it off
+    setTimeout(runTests, 200)
+  </script>
+</body>
+
+</html>
