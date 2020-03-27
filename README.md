@@ -3,7 +3,7 @@
 ## HTML-like markup. Auto-updating elements.
 Paste your html into a template and use functions of your model for the arguments. When you update your model the DOM updates itself. No compiling and nothing is virtual.
 
-### Three main parts: `h`, `render`, `remodel`
+### Three main parts: `h`, `render`, `proxy`
 
 #### Part 1: `h`, a template tag
 
@@ -39,21 +39,21 @@ render(document.querySelector('.count'), h`
 
 Functions used as arguments (`fourFiveSix`) are evaluated at render time. Arrays are expanded recursively. So if your argument is a function that returns an array of functions that return arrays themselves you still get a flat DOM.
 
-#### Part 3: `remodel` your model
+#### Part 3: `proxy` your model
 
-`remodel` creates a proxy of whatever object you give it. The proxy keeps track of which values were read during renders. If any of those values are changed later the corresponding child node or attribute are updated.
+`proxy` creates a proxy of whatever object you give it. The proxy keeps track of which values were read during renders. If any of those values are changed later the corresponding child node or attribute are updated.
 
 ```
-import { h, render, remodel } from 'horseless'
+import { h, render, proxy } from 'horseless'
 
-const model = remodel({seconds: 0})
+const model = proxy({seconds: 0})
 setInterval(() => model.seconds++, 1000)
 
 render(document.body, h`
   <span>hello world! seconds running: ${() => model.seconds.toString()}</span>
 `)
 ```
-[see it working](https://horseless.info/remodel/)
+[see it working](https://horseless.info/proxy/)
 
 
 #### more complete example
@@ -101,7 +101,4 @@ The gzipped minified version is 2k
 
 ## todo
 * documentation...
-* better handle xml != html?
-  * handle boolean attributes (without values `<input autofocus/>`)
-  * handle void elements (without closing tags `<br>`)
 * less adding and removing when splicing child nodes lists

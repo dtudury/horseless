@@ -38,6 +38,6 @@
   },
   "dependencies": {
     "horseless.decoder": "^1.1.1",
-    "horseless.remodel": "^1.0.7"
+    "horseless.remodel": "^1.0.8"
   }
 }
