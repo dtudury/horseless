@@ -1,7 +1,7 @@
 /* global describe it chai Text */
 
 // import { assert } from '/unpkg/chai/chai.js'
-import { h, mapConditional, mapEntries, render, proxy, after } from '/unpkg/horseless/horseless.js'
+import { h, showIfElse, mapEntries, render, proxy, after } from '/unpkg/horseless/horseless.js'
 
 const assert = chai.assert
 
@@ -92,7 +92,7 @@ describe('horseless', function () {
   describe('helpers', function () {
     it('handles conditionals', async function () {
       const p = proxy({ v: true })
-      render(sandbox, mapConditional(() => p.v, h`<span>true</span>`, h`<span>false</span>`))
+      render(sandbox, showIfElse(() => p.v, h`<span>true</span>`, h`<span>false</span>`))
       const trueSpan = sandbox.firstChild
       p.v = false
       await afterUpdate()
