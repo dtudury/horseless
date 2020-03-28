@@ -1,1 +1,1 @@
-export * from 'https://unpkg.com/horseless'
+export * from 'https://unpkg.com/horseless?module'
