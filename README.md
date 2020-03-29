@@ -3,6 +3,9 @@
 ## HTML-like markup. Auto-updating elements.
 Paste your html into a template and use functions of your model for the arguments. When you update your model the DOM updates itself. No compiling and nothing is virtual.
 
+[tests](https://horseless.info/test/) 
+[coverage](https://horseless.info/coverage/) 
+
 ### Three main parts: `h`, `proxy`, `render`
 
 #### Part 1: `h`, a template tag
