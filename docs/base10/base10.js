@@ -14,8 +14,9 @@ function r (values, amount = 1) {
 
 function arrow (x, y, v, sign) {
   const inc = Math.pow(10, v)
+  const result = Math.min(9999, Math.max(0, model.v + sign * inc))
   const onclick = el => e => {
-    model.v = Math.min(9999, Math.max(0, model.v + sign * inc))
+    model.v = result
   }
   const triangle = r([
     (x + 0.2) * 20, (y - sign * 0.5) * 20,
@@ -23,14 +24,19 @@ function arrow (x, y, v, sign) {
     (x + 0.8) * 20, (y - sign * 0.5) * 20
   ], 2)
   if (sign === -1) {
-    y += 2.6
+    y += 2.5
   }
-  return h`
-    <g onclick=${onclick} style="cursor: pointer; pointer-events: bounding-box;">
-      <path d="M${triangle.join(' ')}Z"/>
-      ${digits(x - 0.25 * v, y - 1, 0.3, (sign === 1 ? '+' : '-') + inc, 20, 1.3)}
-    </g>
-  `
+  if (result === model.v + sign * inc) {
+    return h`
+      <g onclick=${onclick} style="cursor: pointer; pointer-events: bounding-box;">
+        <rect x=${x * 20 - 10} y=${y * 20 - 70} width=${40} height=${90} stroke-opacity="0"/>
+        <path d="M${triangle.join(' ')}Z"/>
+        ${digits(x - 0.20 * v, y - 0.9 - sign * 0.3, 0.3, (sign === 1 ? '+' : '-') + inc, 20, 1.3)}
+      </g>
+    `
+  } else {
+    return []
+  }
 }
 
 function boxes (el) {
