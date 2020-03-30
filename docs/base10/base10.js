@@ -28,10 +28,10 @@ function arrow (x, y, v, sign) {
   }
   if (result === model.v + sign * inc) {
     return h`
-      <g onclick=${onclick} style="cursor: pointer; pointer-events: bounding-box;">
-        <rect x=${x * 20 - 10} y=${y * 20 - 70} width=${40} height=${90} stroke-opacity="0"/>
+      <g onclick=${onclick} style="cursor: pointer;">
+        <rect x=${x * 20 - 10} y=${y * 20 - 70} width=${40} height=${90} fill="black" fill-opacity="0" stroke-opacity="0"/>
         <path d="M${triangle.join(' ')}Z"/>
-        ${digits(x - 0.20 * v, y - 0.9 - sign * 0.3, 0.3, (sign === 1 ? '+' : '-') + inc, 20, 1.3)}
+        ${digits(x - 0.2 * v, y - 0.9 - sign * 0.3, 0.3, (sign === 1 ? '+' : '-') + inc, 20, 1.3)}
       </g>
     `
   } else {
@@ -46,15 +46,15 @@ function boxes (el) {
     hundreds(5, 23, Math.floor((model.v % 1000) / 100)),
     tens(18.5, 16, Math.floor((model.v % 100) / 10)),
     ones(29, 23, model.v % 10),
+    h`<g stroke-width="2">
+      ${digits(18, 21, 1, ('   ' + model.v).substr(-4), 20, 2)}
+    </g>`,
     arrow(20, 19, 2, 1),
     arrow(20, 21, 2, -1),
     arrow(22, 19, 1, 1),
     arrow(22, 21, 1, -1),
     arrow(24, 19, 0, 1),
-    arrow(24, 21, 0, -1),
-    h`<g stroke-width="2">
-      ${digits(18, 21, 1, ('   ' + model.v).substr(-4), 20, 2)}
-    </g>`
+    arrow(24, 21, 0, -1)
   ]
 }
 
