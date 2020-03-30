@@ -13,17 +13,17 @@
     }
 
     body {
-      height: 100%;
       background: linear-gradient(#ff8888, #8888ff);
       background-attachment: fixed;
-      width: 550px;
       margin: 0 auto;
+      padding: 0 10vw;
     }
 
     header {
       font-size: 3em;
       text-align: center;
-      padding: 40px;
+      height: 15vh;
+      line-height: 15vh;
       background-color: linen;
       color: transparent;
       letter-spacing: .7em;
@@ -31,12 +31,18 @@
       background-clip: text;
       -webkit-background-clip: text;
       -moz-background-clip: text;
+      user-select: none;
     }
 
     main.card {
+      max-height: 80vh;
       background-color: linen;
       border-radius: 50px;
       box-shadow: 0 0 25px linen, inset 0 2px 5px #ff8888, inset 0 -3px 5px #8888ff
+    }
+
+    main.card svg {
+      max-height: 80vh;
     }
   </style>
 </head>
