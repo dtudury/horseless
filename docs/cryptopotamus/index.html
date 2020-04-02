@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>cryptopotamus • Horseless</title>
+  <style type="text/css">
+    html {
+      height: 100%;
+      font-family: monospace;
+      font-weight: 100;
+    }
+
+    body {
+      background: linear-gradient(#aaa, #444);
+      background-attachment: fixed;
+      margin: 0 auto;
+      padding: 0 10vw;
+    }
+
+    header {
+      font-size: 3em;
+      text-align: center;
+      height: 15vh;
+      line-height: 15vh;
+      background-color: #444;
+      color: transparent;
+      letter-spacing: .2em;
+      text-shadow: 1px -1px 3px #aaa;
+      background-clip: text;
+      -webkit-background-clip: text;
+      -moz-background-clip: text;
+      user-select: none;
+    }
+
+    main {
+      position: relative;
+      background: #ccc;
+      color: #666;
+      border-radius: 16px;
+      padding: 32px 0;
+      box-shadow: inset 0px 2px 32px #fff;
+    }
+
+    main h2 {
+      text-align: center;
+    }
+
+    main form label {
+      padding: 16px 32px 0px;
+      display: block;
+    }
+
+    main form input[type="text"],
+    main form input[type="password"] {
+      width: 100%;
+    }
+
+    main form input {
+      box-sizing: border-box;
+      display: block;
+      padding: 4px 32px; 
+      background: #ddd;
+      border-style: none;
+      font-family: monospace;
+    }
+
+    main form input:focus {
+      outline: 1px dotted #eee;
+    }
+
+    main form input[type="submit"] {
+      margin: 32px auto;
+    }
+
+    main form span.info {
+      margin: 4px 20%;
+      font-style: italic;
+      font-size: 0.8em;
+      display: block;
+    }
+    main form span.info .important {
+      color: #d66;
+    }
+
+    main form .advanced-toggle {
+      cursor: pointer;
+      padding: 4px 32px; 
+    }
+
+    main div.status {
+      text-align: center;
+    }
+
+    main div.file {
+      display: block;
+      padding: 0 32px;
+    }
+
+    main div.file:hover {
+      background: #ddd;
+    }
+
+    main::after {
+      content: '';
+      pointer-events: none;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      box-shadow: inset 0px 2px 8px #666;
+      border-radius: 14px;
+    }
+  </style>
+</head>
+
+<body>
+  <header>cryptopotamus</header>
+  <main>
+    <!--
+
+    <div class="file">
+      ▿ usr/
+    </div>
+    <div class="file">
+      │ ▹ bin/
+    </div>
+    <div class="file">
+      └ ▹ etc/
+    </div>
+    <div class="file">
+      ▹ misc/
+    </div>
+    -->
+  </main>
+  <script type="module" src="cryptopotamus.js"></script>
+</body>
+
+</html>
