@@ -38,9 +38,9 @@
       position: relative;
       background: #ccc;
       color: #666;
-      border-radius: 16px;
-      padding: 32px 0;
-      box-shadow: inset 0px 2px 32px #fff;
+      border-radius: 1em;
+      padding: 3em 0;
+      box-shadow: inset 0px 0.1em 3em #fff;
     }
 
     main h2 {
@@ -48,7 +48,7 @@
     }
 
     main form label {
-      padding: 16px 32px 0px;
+      padding: 2em 3.5em 0;
       display: block;
     }
 
@@ -60,7 +60,7 @@
     main form input {
       box-sizing: border-box;
       display: block;
-      padding: 4px 32px; 
+      padding: 0.2em 3.5em;
       background: #ddd;
       border-style: none;
       font-family: monospace;
@@ -71,22 +71,23 @@
     }
 
     main form input[type="submit"] {
-      margin: 32px auto;
+      margin: 3em auto;
     }
 
     main form span.info {
-      margin: 4px 20%;
+      margin: 0.2em 20%;
       font-style: italic;
       font-size: 0.8em;
       display: block;
     }
+
     main form span.info .important {
       color: #d66;
     }
 
     main form .advanced-toggle {
       cursor: pointer;
-      padding: 4px 32px; 
+      padding: 0.2em 3.5em;
     }
 
     main div.status {
@@ -96,12 +97,29 @@
     main div.repo {
       cursor: pointer;
       display: block;
-      padding: 0 32px;
+      padding: 0.2em 3.5em;
     }
 
     main div.repo:hover {
       background: #ddd;
     }
+
+    main div.file {
+      cursor: pointer;
+      display: block;
+      padding: 0.2em 3.5em;
+    }
+
+    main div.file:hover {
+      background: #ddd;
+    }
+
+    main div.repo svg,
+    main div.file svg {
+      position: absolute;
+      left: 2em;
+    }
+
 
     main::after {
       content: '';
@@ -111,31 +129,15 @@
       left: 0;
       width: 100%;
       height: 100%;
-      box-shadow: inset 0px 2px 8px #666;
-      border-radius: 14px;
+      box-shadow: inset 0px 0.2em 0.5em #666;
+      border-radius: 1em;
     }
   </style>
 </head>
 
 <body>
   <header>cryptopotamus</header>
-  <main>
-    <!--
-
-    <div class="repo">
-      ▿ usr/
-    </div>
-    <div class="repo">
-      │ ▹ bin/
-    </div>
-    <div class="repo">
-      └ ▹ etc/
-    </div>
-    <div class="repo">
-      ▹ misc/
-    </div>
-    -->
-  </main>
+  <main></main>
   <script type="module" src="cryptopotamus.js"></script>
 </body>
 
