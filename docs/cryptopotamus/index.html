@@ -10,6 +10,7 @@
       height: 100%;
       font-family: monospace;
       font-weight: 100;
+      font-size: 15px;
     }
 
     body {
@@ -19,8 +20,41 @@
       padding: 0 10vw;
     }
 
+    main {
+      position: relative;
+      background: #ccc;
+      color: #666;
+      border-radius: 0.5rem;
+      padding: 1em 0;
+      box-shadow: inset 0px 0.1rem 3rem #fff;
+    }
+
+    main::after {
+      content: '';
+      pointer-events: none;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      box-shadow: inset 0px 0.2rem 0.5rem #666;
+      border-radius: 0.5rem;
+    }
+
     h2 {
       justify-content: center;
+      letter-spacing: 0.1em;
+      margin: 0 0 1rem;
+    }
+
+    h3 {
+      letter-spacing: 0.05em;
+      margin: 1.5rem 0 1rem;
+    }
+
+    hr {
+      border: none;
+      border-top: 1px solid #ccc;
     }
 
     .line span.fill {
@@ -30,19 +64,6 @@
 
     .line span.title {
       flex: auto 0;
-    }
-
-    h2 {
-      margin: 0 0 1rem;
-    }
-
-    h3 {
-      margin: 1.5rem 0 1rem;
-    }
-
-    hr {
-      border: none;
-      border-top: 1px solid #ccc;
     }
 
     .nested {
@@ -63,12 +84,6 @@
     }
 
     .nesting {
-      /*
-      color: #888;
-      fill: #888;
-    }
-    .nesting:hover {
-    */
       color: #666;
       fill: #666;
     }
@@ -107,6 +122,10 @@
       padding: 0 1rem;
     }
 
+    .line span.narrow {
+      flex: auto 0;
+    }
+
     .file {
       height: 1.5em;
       cursor: pointer;
@@ -140,27 +159,6 @@
       user-select: none;
     }
 
-    main {
-      position: relative;
-      background: #ccc;
-      color: #666;
-      border-radius: 1rem;
-      padding: 1em 0;
-      box-shadow: inset 0px 0.1rem 3rem #fff;
-    }
-
-    main::after {
-      content: '';
-      pointer-events: none;
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      box-shadow: inset 0px 0.2rem 0.5rem #666;
-      border-radius: 1rem;
-    }
-
     span.back {
       padding: 0;
     }
@@ -189,6 +187,7 @@
       border: none;
       outline: 1px solid #ddd;
       padding: 0.2rem 1rem;
+      font-size: 1rem;
     }
 
     form [type="password"]:focus {
@@ -206,89 +205,14 @@
       outline: 1px solid #ddd;
       color: #888;
       cursor: pointer;
+      font-size: 1rem;
+      font-family: inherit;
     }
     form [type="submit"]:hover {
       background: #ddd;
       color: #666;
     }
 
-    /*
-    main h2 {
-    }
-
-    main form label {
-      padding: 2em 3.5em 0;
-      display: block;
-    }
-
-    main form input[type="text"],
-    main form input[type="password"] {
-      width: 100%;
-    }
-
-    main form input {
-      box-sizing: border-box;
-      display: block;
-      padding: 0.2em 3.5em;
-      background: #ddd;
-      border-style: none;
-      font-family: monospace;
-    }
-
-    main form input:focus {
-      outline: 1px dotted #eee;
-    }
-
-    main form input[type="submit"] {
-      margin: 3em auto;
-    }
-
-    main form span.info {
-      margin: 0.2em 20%;
-      font-style: italic;
-      font-size: 0.8em;
-      display: block;
-    }
-
-    main form span.info .important {
-      color: #d66;
-    }
-
-    main form .advanced-toggle {
-      cursor: pointer;
-      padding: 0.2em 3.5em;
-    }
-
-    main div.status {
-      text-align: center;
-    }
-
-    main div.repo {
-      cursor: pointer;
-      display: block;
-      padding: 0.2em 3.5em;
-    }
-
-    main div.repo:hover {
-      background: #ddd;
-    }
-
-    main div.file {
-      cursor: pointer;
-      display: block;
-      padding: 0.2em 3.5em;
-    }
-
-    main div.file:hover {
-      background: #ddd;
-    }
-
-    main div.repo svg,
-    main div.file svg {
-      position: absolute;
-      left: 2em;
-    }
-    */
   </style>
 </head>
 

@@ -3,7 +3,7 @@ import { h, after } from '/unpkg/horseless/horseless.js'
 import { model, setKey } from '../model.js'
 import { ERROR, MAIN, WORKING, REPO_SELECT, DECRYPT } from '../constants.js'
 import { db } from '../db.js'
-import { iconRepo, iconReply, iconLock } from '../icons.js'
+import { iconRepo, iconReply, iconLock, iconKey } from '../icons.js'
 
 const encoder = new TextEncoder()
 const decoder = new TextDecoder()
@@ -75,21 +75,30 @@ export const repoDecrypt = h`
   <h2 class="line">
     <span class="back" onclick=${back}>${iconReply}</span>
     ${iconRepo}
-    <span class="title">Open: ${() => model.name}</span>
+    <span class="title">Open Repository</span>
     <span class="back"></span>
   </h2>
   <div class="nesting">
     <div class="nested">
-      <div class="bracket" style="left: 16px; z-index: 100;"></div>
-      <div class="line">
-        ${iconLock}
-        <span>
-          <form onsubmit=${decryptRepo}>
-            <label for="passphrase">Passphrase:</label>
-            <input type="password" id="passphrase" name="passphrase" ${autofocus} required>
-            <input type="submit" value="OPEN">
-          </form>
-        </span>
+      <div class="bracket" style="left: 16px; z-index: 1;"></div>
+
+        <div class="nesting">
+          <h3 class="line">${iconLock}<span>Decrypt Repository: ${() => model.name}</span></h3>
+          <div class="nested">
+            <div class="bracket" style="left: 21px;"></div>
+
+            <div class="line">
+              ${iconKey}
+              <span class="narrow"><label for="passphrase">Passphrase:</label></span>
+              <span>
+                <form onsubmit=${decryptRepo}>
+                  <input type="password" id="passphrase" name="passphrase" ${autofocus} required>
+                  <input type="submit" value="OPEN">
+                </form>
+              </span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
