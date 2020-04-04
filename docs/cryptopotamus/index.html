@@ -45,8 +45,7 @@
       padding: 0.5rem 0 0.2rem;
     }
 
-    .nested::before {
-      left: 16px;
+    .nested>.bracket {
       content: "";
       position: absolute;
       top: -5px;
@@ -56,32 +55,23 @@
       height: calc(100% + 5px);
       width: 16px;
       pointer-events: none;
-      z-index: 100;
     }
 
     .nesting {
+    /*
       color: #888;
       fill: #888;
     }
     .nesting:hover {
-      color: #555;
-      fill: #555;
+    */
+      color: #666;
+      fill: #666;
     }
 
-    .nesting:hover>.nested::before {
+    .nesting:hover>.nested>.bracket {
       border-left: 1px solid #999;
       border-top: 1px solid #999;
       border-bottom: 1px solid #999;
-    }
-
-    .nested>.nesting>.nested::before {
-      left: 21px;
-      z-index: 99;
-    }
-
-    .nested>.nesting>.nested>.nesting>.nested::before {
-      left: 26px;
-      z-index: 98;
     }
 
     .line {

@@ -1,9 +1,11 @@
 /* global atob btoa */
 import { h, render, mapEntries, showIfElse, after } from '/unpkg/horseless/horseless.js'
-import { iconGitBranch, iconGitMerge, iconFile, iconFilePlusFile, iconRepo, iconRepoPull, iconRepoPush, iconRepoTemplate, iconDatabase, iconRepoClone, iconArrowRight, iconReply } from './icons.js'
+import { iconGitBranch, iconGitMerge, iconFile, iconFilePlusFile, iconRepoPull } from './icons.js'
 import { ENTER_KEY, ESCAPE_KEY, CREATE_NEW_REPO, DECRYPT, ERROR, MAIN, REPO_SELECT, SAVE_AS, WORKING } from './constants.js'
 import { model } from './model.js'
 import { db } from './db.js'
+import { repoSelect } from './screens/repoSelect.js'
+
 const encoder = new TextEncoder()
 const decoder = new TextDecoder()
 const b64ToUi8 = b64 => new Uint8Array(atob(b64).split('').map(c => c.charCodeAt(0)))
@@ -142,15 +144,6 @@ const decryptRepo = el => async e => {
   })
 }
 
-const selectRepo = el => e => {
-  model.name = el.attributes.name.value
-  model.page = DECRYPT
-}
-
-const newRepo = el => e => {
-  model.page = CREATE_NEW_REPO
-}
-
 const newFile = el => e => {
   model.files.unshift({ name: '', editingName: true, type: 'file', content: '' })
   model.modified = true
@@ -196,25 +189,7 @@ render(document.querySelector('main'), () => {
         <input type="submit" value="OPEN">
       </form>
     `
-    case REPO_SELECT: return h`
-    <hr>
-      <div class="nesting">
-        <h2 class="line"><span class="fill">${iconReply()}</span>${iconRepoClone}<span>Repositories</span><span class="fill"></span></h2>
-        <div class="nested">
-          <div class="file line" onclick=${newRepo}>${iconRepoTemplate()}<span>New Repository</span>${iconArrowRight({ class: 'hover' })}</div>
-          <div class="file line" onclick=${newRepo}>${iconRepoPush()}<span>Upload Repository</span>${iconArrowRight({ class: 'hover' })}</div>
-          ${showIfElse(() => model.repoList.length, h`
-            <div class="nesting">
-              <h3 class="line">${iconDatabase()}<span>Saved Repositories:</span></h3>
-              <div class="nested">
-                ${mapEntries(model.repoList, reponame => h`<div class="file line" onclick=${selectRepo} name=${reponame}>${iconRepo()}<span>${reponame}</span>${iconArrowRight({ class: 'hover' })}</div>`)}
-              </div>
-            </div>
-          `)}
-        </div>
-      </div>
-    <hr>
-    `
+    case REPO_SELECT: return repoSelect
     case CREATE_NEW_REPO: return h`
       <h2>Create New Repository</h2>
       <form onsubmit=${createNewRepository}>
