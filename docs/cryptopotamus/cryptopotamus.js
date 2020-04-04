@@ -1,18 +1,14 @@
-/* global atob btoa */
+/* global btoa */
 import { h, render, mapEntries, showIfElse, after } from '/unpkg/horseless/horseless.js'
 import { iconGitBranch, iconGitMerge, iconFile, iconFilePlusFile, iconRepoPull } from './icons.js'
 import { ENTER_KEY, ESCAPE_KEY, CREATE_NEW_REPO, DECRYPT, ERROR, MAIN, REPO_SELECT, SAVE_AS, WORKING } from './constants.js'
-import { model } from './model.js'
+import { model, setKey, getKey } from './model.js'
 import { db } from './db.js'
 import { repoSelect } from './screens/repoSelect.js'
+import { repoDecrypt } from './screens/repoDecrypt.js'
 
 const encoder = new TextEncoder()
-const decoder = new TextDecoder()
-const b64ToUi8 = b64 => new Uint8Array(atob(b64).split('').map(c => c.charCodeAt(0)))
 const ui8ToB64 = ui8 => btoa(String.fromCharCode.apply(null, ui8))
-let key
-let salt
-let iterations
 
 const createNewRepository = el => async e => {
   e.preventDefault()
@@ -25,14 +21,14 @@ const createNewRepository = el => async e => {
     { name: 'PBKDF2' }, false, ['deriveKey']
   )
   data.delete('passphrase')
-  salt = data.get('salt')
-  iterations = Number(data.get('iterations'))
-  key = await window.crypto.subtle.deriveKey({
+  model.salt = data.get('salt')
+  model.iterations = Number(data.get('iterations'))
+  setKey(await window.crypto.subtle.deriveKey({
     name: 'PBKDF2',
-    salt: encoder.encode(salt),
-    iterations,
+    salt: encoder.encode(model.salt),
+    iterations: model.iterations,
     hash: 'SHA-256'
-  }, keyMaterial, { name: 'AES-GCM', length: 256 }, false, ['encrypt', 'decrypt'])
+  }, keyMaterial, { name: 'AES-GCM', length: 256 }, false, ['encrypt', 'decrypt']))
   model.files = []
   model.modified = true
   model.page = MAIN
@@ -85,63 +81,13 @@ async function saveRepo (method) {
 async function encryptRepo () {
   const plaintext = encoder.encode(JSON.stringify(model.files))
   const iv = window.crypto.getRandomValues(new Uint8Array(12))
-  const encrypted = await window.crypto.subtle.encrypt({ name: 'AES-GCM', iv }, key, plaintext)
-  const cleartext = encoder.encode(JSON.stringify({ iterations, salt, iv: ui8ToB64(iv) }))
+  const encrypted = await window.crypto.subtle.encrypt({ name: 'AES-GCM', iv }, getKey(), plaintext)
+  const cleartext = encoder.encode(JSON.stringify({ iterations: model.iterations, salt: model.salt, iv: ui8ToB64(iv) }))
   const ui8 = new Uint8Array(cleartext.byteLength + 1 + encrypted.byteLength)
   ui8.set(cleartext)
   ui8[cleartext.byteLength] = 0
   ui8.set(new Uint8Array(encrypted), cleartext.byteLength + 1)
   return ui8.buffer
-}
-
-const decryptRepo = el => async e => {
-  e.preventDefault()
-  const data = new window.FormData(el)
-  el.reset()
-
-  model.page = WORKING
-  const keyMaterial = await window.crypto.subtle.importKey(
-    'raw',
-    encoder.encode(data.get('passphrase')),
-    { name: 'PBKDF2' }, false, ['deriveKey']
-  )
-  data.delete('passphrase')
-
-  Object.assign(db().transaction(['repos']).objectStore('repos').get(model.name), {
-    onsuccess: async e => {
-      try {
-        const result = new Uint8Array(e.target.result)
-        const i = result.indexOf(0)
-        const cleartext = JSON.parse(decoder.decode(result.subarray(0, i)))
-        const _key = await window.crypto.subtle.deriveKey({
-          name: 'PBKDF2',
-          salt: encoder.encode(cleartext.salt),
-          iterations: cleartext.iterations,
-          hash: 'SHA-256'
-        }, keyMaterial, { name: 'AES-GCM', length: 256 }, false, ['encrypt', 'decrypt'])
-        const ciphertext = result.subarray(i + 1)
-        model.files = JSON.parse(
-          decoder.decode(
-            await window.crypto.subtle.decrypt({ name: 'AES-GCM', iv: b64ToUi8(cleartext.iv) }, _key, ciphertext)
-          )
-        )
-        iterations = cleartext.iterations
-        salt = cleartext.salt
-        key = _key
-        model.page = MAIN
-      } catch (e) {
-        console.error(e)
-        model.errorName = 'Decryption Error'
-        model.errorMessage = 'Unable to decrypt repository'
-        model.page = ERROR
-      }
-    },
-    onerror: e => {
-      console.error('error', e)
-      model.error = e
-      model.page = ERROR
-    }
-  })
 }
 
 const newFile = el => e => {
@@ -181,14 +127,7 @@ function renderFile (file) {
 render(document.querySelector('main'), () => {
   switch (model.page) {
     case WORKING: return h`<div class="status">working...</div>`
-    case DECRYPT: return h`
-      <h2>Open ${model.name}</h2>
-      <form onsubmit=${decryptRepo}>
-        <label for="passphrase">Passphrase:</label>
-        <input type="password" id="passphrase" name="passphrase" required>
-        <input type="submit" value="OPEN">
-      </form>
-    `
+    case DECRYPT: return repoDecrypt
     case REPO_SELECT: return repoSelect
     case CREATE_NEW_REPO: return h`
       <h2>Create New Repository</h2>

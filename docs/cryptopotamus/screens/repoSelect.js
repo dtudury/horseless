@@ -1,6 +1,6 @@
 
 import { h, mapEntries, showIfElse } from '/unpkg/horseless/horseless.js'
-import { iconRepo, iconRepoPush, iconRepoTemplate, iconDatabase, iconRepoClone, iconArrowRight, iconReply } from '../icons.js'
+import { iconRepo, iconRepoPush, iconRepoTemplate, iconDatabase, iconRepoClone, iconArrowRight } from '../icons.js'
 import { CREATE_NEW_REPO, DECRYPT } from '../constants.js'
 import { model } from '../model.js'
 
@@ -16,7 +16,7 @@ const selectRepo = el => e => {
 const savedRepos = mapEntries(() => model.repoList,
   reponame => h`
     <div class="file line" onclick=${selectRepo} name=${reponame}>
-      ${iconRepo()}
+      ${iconRepo}
       <span>${reponame}</span>
       ${iconArrowRight({ class: 'hover' })}
     </div>
@@ -25,29 +25,30 @@ const savedRepos = mapEntries(() => model.repoList,
 
 export const repoSelect = h`
   <hr>
+  <h2 class="line">
+    <span></span>
+    ${iconRepoClone}
+    <span>Repositories</span>
+    <span></span>
+  </h2>
   <div class="nesting">
-    <h2 class="line">
-      <span class="fill">${iconReply()}</span>
-      ${iconRepoClone}
-      <span>Repositories</span>
-      <span class="fill"></span></h2>
     <div class="nested">
-      <div class="bracket" style="left: 16px; z-index: 100;"></div>
+      <div class="bracket" style="left: 16px; z-index: 1;"></div>
       <div class="file line" onclick=${newRepo}>
-        ${iconRepoTemplate()}
+        ${iconRepoTemplate}
         <span>New Repository</span>
         ${iconArrowRight({ class: 'hover' })}
       </div>
       <div class="file line" onclick=${newRepo}>
-        ${iconRepoPush()}
+        ${iconRepoPush}
         <span>Upload Repository</span>
         ${iconArrowRight({ class: 'hover' })}
       </div>
       ${showIfElse(() => model.repoList.length, h`
         <div class="nesting">
-          <h3 class="line">${iconDatabase()}<span>Saved Repositories:</span></h3>
+          <h3 class="line">${iconDatabase}<span>Saved Repositories:</span></h3>
           <div class="nested">
-            <div class="bracket" style="left: 21px; z-index: 99;"></div>
+            <div class="bracket" style="left: 21px;"></div>
             ${savedRepos}
           </div>
         </div>

@@ -31,6 +31,7 @@
     h2 {
       margin: 0 0 1rem;
     }
+
     h3 {
       margin: 1.5rem 0 1rem;
     }
@@ -58,7 +59,7 @@
     }
 
     .nesting {
-    /*
+      /*
       color: #888;
       fill: #888;
     }
@@ -154,6 +155,57 @@
       height: 100%;
       box-shadow: inset 0px 0.2rem 0.5rem #666;
       border-radius: 1rem;
+    }
+
+    span.back {
+      padding: 0;
+    }
+
+    .back svg {
+      cursor: pointer;
+      fill: #888;
+      padding: 0.2rem 1rem;
+    }
+    .back svg:hover {
+      background: #ddd;
+      fill: #666;
+    }
+
+    form {
+      display: flex;
+    }
+
+    form label {
+      margin-right: 1rem;
+    }
+
+    form [type="password"] {
+      flex: 1;
+      background: #ccc;
+      border: none;
+      outline: 1px solid #ddd;
+      padding: 0.2rem 1rem;
+    }
+
+    form [type="password"]:focus {
+      flex: 1;
+      background: #ddd;
+      outline: 1px solid #ccc;
+    }
+
+    form [type="submit"] {
+      min-width: 10em;
+      margin-left: 1rem;
+      border: 0;
+      border-radius: 0;
+      background: #ccc;
+      outline: 1px solid #ddd;
+      color: #888;
+      cursor: pointer;
+    }
+    form [type="submit"]:hover {
+      background: #ddd;
+      color: #666;
     }
 
     /*
