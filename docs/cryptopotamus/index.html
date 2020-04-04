@@ -19,15 +19,114 @@
       padding: 0 10vw;
     }
 
-    header {
-      font-size: 3em;
+    h2 {
+      justify-content: center;
+    }
+
+    .line span.fill {
+      flex: 1;
+      padding: 0;
+    }
+
+    h2 {
+      margin: 0 0 1rem;
+    }
+    h3 {
+      margin: 1.5rem 0 1rem;
+    }
+
+    hr {
+      border: none;
+      border-top: 1px solid #ccc;
+    }
+
+    .nested {
+      position: relative;
+      padding: 0.5rem 0 0.2rem;
+    }
+
+    .nested::before {
+      left: 16px;
+      content: "";
+      position: absolute;
+      top: -5px;
+      border-left: 1px solid #ccc;
+      border-top: 1px solid #ccc;
+      border-bottom: 1px solid #ccc;
+      height: calc(100% + 5px);
+      width: 16px;
+      pointer-events: none;
+      z-index: 100;
+    }
+
+    .nesting:hover>.nested::before {
+      border-left: 1px solid #999;
+      border-top: 1px solid #999;
+      border-bottom: 1px solid #999;
+    }
+
+    .nested>.nesting>.nested::before {
+      left: 21px;
+      z-index: 99;
+    }
+
+    .nested>.nesting>.nested>.nesting>.nested::before {
+      left: 26px;
+      z-index: 98;
+    }
+
+    .line {
+      display: flex;
+      align-items: center;
+      padding-right: 21px;
+      padding-left: 16px;
+    }
+
+    .nested .line {
+      padding-left: 21px;
+    }
+
+    .nested>.nesting>.nested .line {
+      padding-left: 26px;
+    }
+
+    .nested>.nesting>.nested>.nesting>.nested .line {
+      padding-left: 31px;
+    }
+
+    .line svg {
+      flex: 16px 0;
+      fill: #666;
+    }
+
+    .line span {
+      flex: 1;
+      padding: 0 1rem;
+    }
+
+    .file {
+      height: 1.5em;
+      cursor: pointer;
+    }
+
+    .file:hover {
+      background: #ddd;
+    }
+
+    .file .hover {
+      visibility: hidden;
+    }
+
+    .file:hover .hover {
+      visibility: visible;
+    }
+
+    h1 {
       text-align: center;
-      height: 15vh;
-      line-height: 15vh;
       background-color: #444;
       color: transparent;
-      letter-spacing: .2em;
-      text-shadow: 1px -1px 3px #aaa;
+      letter-spacing: .5em;
+      text-shadow: 0.1rem -0.1rem 0.3rem #aaa;
       background-clip: text;
       -webkit-background-clip: text;
       -moz-background-clip: text;
@@ -38,13 +137,25 @@
       position: relative;
       background: #ccc;
       color: #666;
-      border-radius: 1em;
-      padding: 3em 0;
-      box-shadow: inset 0px 0.1em 3em #fff;
+      border-radius: 1rem;
+      padding: 1em 0;
+      box-shadow: inset 0px 0.1rem 3rem #fff;
     }
 
+    main::after {
+      content: '';
+      pointer-events: none;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      box-shadow: inset 0px 0.2rem 0.5rem #666;
+      border-radius: 1rem;
+    }
+
+    /*
     main h2 {
-      text-align: center;
     }
 
     main form label {
@@ -119,24 +230,12 @@
       position: absolute;
       left: 2em;
     }
-
-
-    main::after {
-      content: '';
-      pointer-events: none;
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      box-shadow: inset 0px 0.2em 0.5em #666;
-      border-radius: 1em;
-    }
+    */
   </style>
 </head>
 
 <body>
-  <header>cryptopotamus</header>
+  <h1>cryptopotamus</h1>
   <main></main>
   <script type="module" src="cryptopotamus.js"></script>
 </body>
