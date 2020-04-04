@@ -59,6 +59,15 @@
       z-index: 100;
     }
 
+    .nesting {
+      color: #888;
+      fill: #888;
+    }
+    .nesting:hover {
+      color: #555;
+      fill: #555;
+    }
+
     .nesting:hover>.nested::before {
       border-left: 1px solid #999;
       border-top: 1px solid #999;
@@ -96,7 +105,6 @@
 
     .line svg {
       flex: 16px 0;
-      fill: #666;
     }
 
     .line span {
@@ -107,10 +115,14 @@
     .file {
       height: 1.5em;
       cursor: pointer;
+      color: #888;
+      fill: #888;
     }
 
     .file:hover {
       background: #ddd;
+      color: #666;
+      fill: #666;
     }
 
     .file .hover {
