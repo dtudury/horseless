@@ -60,9 +60,8 @@ const decryptRepo = el => async e => {
 }
 
 function autofocus (el) {
-  console.log(el)
   if (el && model.page === DECRYPT) {
-    el.focus()
+    after(() => el.focus())
   }
   return 'autofocus'
 }
@@ -76,8 +75,8 @@ export const repoDecrypt = h`
   <h2 class="line">
     <span class="back" onclick=${back}>${iconReply}</span>
     ${iconRepo}
-    <span>Open: ${() => model.name}</span>
-    <span></span>
+    <span class="title">Open: ${() => model.name}</span>
+    <span class="back"></span>
   </h2>
   <div class="nesting">
     <div class="nested">

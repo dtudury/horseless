@@ -28,7 +28,7 @@ export const repoSelect = h`
   <h2 class="line">
     <span></span>
     ${iconRepoClone}
-    <span>Repositories</span>
+    <span class="title">Repositories</span>
     <span></span>
   </h2>
   <div class="nesting">
