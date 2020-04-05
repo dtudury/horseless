@@ -95,10 +95,13 @@
     }
 
     .line {
+      height: 1.5em;
       display: flex;
       align-items: center;
       padding-right: 21px;
       padding-left: 16px;
+      color: #888;
+      fill: #888;
     }
 
     .nested .line {
@@ -127,13 +130,10 @@
     }
 
     .file {
-      height: 1.5em;
       cursor: pointer;
-      color: #888;
-      fill: #888;
     }
 
-    .file:hover {
+    .line:hover {
       background: #ddd;
       color: #666;
       fill: #666;
@@ -171,10 +171,6 @@
     .back svg:hover {
       background: #ddd;
       fill: #666;
-    }
-
-    form {
-      display: flex;
     }
 
     form label {

@@ -1,6 +1,7 @@
 
 import { h, mapEntries, showIfElse } from '/unpkg/horseless/horseless.js'
 import { iconRepo, iconRepoPush, iconRepoTemplate, iconDatabase, iconRepoClone, iconArrowRight } from '../icons.js'
+import { title } from './screenBuilder.js'
 import { CREATE_NEW_REPO, DECRYPT } from '../constants.js'
 import { model } from '../model.js'
 
@@ -24,13 +25,7 @@ const savedRepos = mapEntries(() => model.repoList,
 )
 
 export const repoSelect = h`
-  <hr>
-  <h2 class="line">
-    <span></span>
-    ${iconRepoClone}
-    <span class="title">Select Repository</span>
-    <span></span>
-  </h2>
+  ${title('Select Repository', iconRepoClone)}
   <div class="nesting">
     <div class="nested">
       <div class="bracket" style="left: 16px; z-index: 1;"></div>
@@ -55,5 +50,4 @@ export const repoSelect = h`
       `)}
     </div>
   </div>
-  <hr>
 `

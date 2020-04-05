@@ -3,7 +3,8 @@ import { h, after } from '/unpkg/horseless/horseless.js'
 import { model, setKey } from '../model.js'
 import { ERROR, MAIN, WORKING, REPO_SELECT, DECRYPT } from '../constants.js'
 import { db } from '../db.js'
-import { iconRepo, iconReply, iconLock, iconKey } from '../icons.js'
+import { iconRepo, iconLock, iconKey } from '../icons.js'
+import { title } from './screenBuilder.js'
 
 const encoder = new TextEncoder()
 const decoder = new TextDecoder()
@@ -66,41 +67,29 @@ function autofocus (el) {
   return 'autofocus'
 }
 
-const back = el => e => {
-  model.page = REPO_SELECT
-}
-
 export const repoDecrypt = h`
-  <hr>
-  <h2 class="line">
-    <span class="back" onclick=${back}>${iconReply}</span>
-    ${iconRepo}
-    <span class="title">Open Repository</span>
-    <span class="back"></span>
-  </h2>
+  ${title('Open Repository', iconRepo, REPO_SELECT)}
   <div class="nesting">
     <div class="nested">
       <div class="bracket" style="left: 16px; z-index: 1;"></div>
-
         <div class="nesting">
           <h3 class="line">${iconLock}<span>Decrypt Repository: ${() => model.name}</span></h3>
-          <div class="nested">
-            <div class="bracket" style="left: 21px;"></div>
 
-            <div class="line">
-              ${iconKey}
-              <span class="narrow"><label for="passphrase">Passphrase:</label></span>
-              <span>
-                <form onsubmit=${decryptRepo}>
-                  <input type="password" id="passphrase" name="passphrase" ${autofocus} required>
-                  <input type="submit" value="OPEN">
-                </form>
-              </span>
-            </div>
-          </div>
+            <form class="nested" onsubmit=${decryptRepo}>
+              <div class="bracket" style="left: 21px;"></div>
+              <div class="line">
+                ${iconKey}
+                <span class="narrow"><label for="passphrase">Passphrase:</label></span>
+                <input type="password" id="passphrase" name="passphrase" ${autofocus} required>
+              </div>
+              <div class="line">
+                <span></span>
+                <input type="submit" value="OPEN">
+              </div>
+            </form>
+
         </div>
       </div>
     </div>
   </div>
-  <hr>
 `
