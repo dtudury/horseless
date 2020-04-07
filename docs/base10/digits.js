@@ -164,6 +164,17 @@ function _minus (x, y, scale) {
   return h`<path d="M${ps.join(' ')}"/>`
 }
 
+function _times (x, y, scale) {
+  const [ps1, ps2] = pToXY(x, y, scale, [[
+    0, 1,
+    4, 3
+  ], [
+    0, 3,
+    4, 1
+  ]])
+  return h`<path d="M${ps1.join(' ')}M${ps2.join(' ')}"/>`
+}
+
 function digit (char, x, y, scale) {
   switch (char) {
     case '0':
@@ -190,6 +201,8 @@ function digit (char, x, y, scale) {
       return _plus(x, y, scale)
     case '-':
       return _minus(x, y, scale)
+    case '*':
+      return _times(x, y, scale)
     default:
       return []
   }

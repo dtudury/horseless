@@ -71,14 +71,14 @@
       padding: 0.5rem 0 0.2rem;
     }
 
-    .nested>.bracket {
+    .bracket {
       content: "";
       position: absolute;
       top: -5px;
       border-left: 1px solid #ccc;
       border-top: 1px solid #ccc;
       border-bottom: 1px solid #ccc;
-      height: calc(100% + 5px);
+      height: 100%;
       width: 16px;
       pointer-events: none;
     }
@@ -88,7 +88,7 @@
       fill: #666;
     }
 
-    .nesting:hover>.nested>.bracket {
+    :hover .bracket {
       border-left: 1px solid #999;
       border-top: 1px solid #999;
       border-bottom: 1px solid #999;

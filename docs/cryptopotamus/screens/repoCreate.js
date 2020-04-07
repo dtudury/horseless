@@ -2,6 +2,7 @@ import { h } from '/unpkg/horseless/horseless.js'
 import { MAIN, WORKING, REPO_SELECT } from '../constants.js'
 import { model, setKey } from '../model.js'
 import { iconRepoTemplate, iconReply, iconLock, iconKey } from '../icons.js'
+import { title } from './screenBuilder.js'
 
 const encoder = new TextEncoder()
 
@@ -37,18 +38,8 @@ function defaultSalt () {
   return salt.substring(0, 32)
 }
 
-const back = el => e => {
-  model.page = REPO_SELECT
-}
-
 export const repoCreate = h`
-  <hr>
-  <h2 class="line">
-    <span class="back" onclick=${back}>${iconReply}</span>
-    ${iconRepoTemplate}
-    <span class="title">Create New Repository</span>
-    <span class="back"></span>
-  </h2>
+  ${title('Create New Repository', iconRepoTemplate, REPO_SELECT)}
   <form class="nesting" onsubmit=${createNewRepository}>
     <div class="nested">
       <div class="bracket" style="left: 16px; z-index: 1;"></div>
@@ -85,6 +76,5 @@ export const repoCreate = h`
 
     </div>
   </form>
-  <hr>
 
 `

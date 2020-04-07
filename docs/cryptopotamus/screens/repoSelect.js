@@ -1,7 +1,7 @@
 
 import { h, mapEntries, showIfElse } from '/unpkg/horseless/horseless.js'
 import { iconRepo, iconRepoPush, iconRepoTemplate, iconDatabase, iconRepoClone, iconArrowRight } from '../icons.js'
-import { title } from './screenBuilder.js'
+import { title, lines, bracket } from './screenBuilder.js'
 import { CREATE_NEW_REPO, DECRYPT } from '../constants.js'
 import { model } from '../model.js'
 
@@ -25,29 +25,25 @@ const savedRepos = mapEntries(() => model.repoList,
 )
 
 export const repoSelect = h`
-  ${title('Select Repository', iconRepoClone)}
-  <div class="nesting">
-    <div class="nested">
-      <div class="bracket" style="left: 16px; z-index: 1;"></div>
-      <div class="file line" onclick=${newRepo}>
-        ${iconRepoTemplate}
-        <span>New Repository</span>
-        ${iconArrowRight({ class: 'hover' })}
-      </div>
-      <div class="file line" onclick=${newRepo}>
-        ${iconRepoPush}
-        <span>Upload Repository</span>
-        ${iconArrowRight({ class: 'hover' })}
-      </div>
-      ${showIfElse(() => model.repoList.length, h`
-        <div class="nesting">
-          <h3 class="line">${iconDatabase}<span>Saved Repositories:</span></h3>
-          <div class="nested">
-            <div class="bracket" style="left: 21px;"></div>
-            ${savedRepos}
-          </div>
-        </div>
-      `)}
+  ${lines(0, h`
+    ${title('Select Repository', iconRepoClone)}
+    ${bracket(0)}
+    <div class="file line" onclick=${newRepo}>
+      ${iconRepoTemplate}
+      <span>New Repository</span>
+      ${iconArrowRight({ class: 'hover' })}
     </div>
-  </div>
+    <div class="file line" onclick=${newRepo}>
+      ${iconRepoPush}
+      <span>Upload Repository</span>
+      ${iconArrowRight({ class: 'hover' })}
+    </div>
+    ${showIfElse(() => model.repoList.length, h`
+        <h3 class="line">${iconDatabase}<span>Saved Repositories:</span></h3>
+        ${lines(1, h`
+          ${bracket(1)}
+          ${savedRepos}
+        `)}
+    `)}
+  `)}
 `
