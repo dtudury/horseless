@@ -2,7 +2,7 @@
 import { h, mapEntries, showIfElse } from '/unpkg/horseless/horseless.js'
 import { iconRepo, iconRepoPush, iconRepoTemplate, iconDatabase, iconRepoClone, iconArrowRight } from '../icons.js'
 import { title, lines, bracket } from './screenBuilder.js'
-import { CREATE_NEW_REPO, DECRYPT } from '../constants.js'
+import { CREATE_NEW_REPO, DECRYPT, CONTAINER } from '../constants.js'
 import { model } from '../model.js'
 
 const newRepo = el => e => {
@@ -25,6 +25,10 @@ const savedRepos = mapEntries(() => model.repoList,
 )
 
 export const repoSelect = h`
+  <${CONTAINER}>
+    <hr>
+    <hr>
+  </${CONTAINER}>
   ${lines(0, h`
     ${title('Select Repository', iconRepoClone)}
     ${bracket(0)}

@@ -1,3 +1,4 @@
+import { defineContainer } from './screens/Container.js'
 
 export const ENTER_KEY = 13
 export const ESCAPE_KEY = 27
@@ -9,3 +10,5 @@ export const MAIN = 'main'
 export const REPO_SELECT = 'repo-select'
 export const SAVE_AS = 'save-as'
 export const WORKING = 'working'
+
+export const CONTAINER = defineContainer('container-element')
