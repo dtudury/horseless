@@ -7,7 +7,7 @@ function r (values, amount = 1) {
   return values + amount * Math.random() * 1 - 0.5
 }
 
-export function box (x, y, z, width, height, depth, shadow, unitWidth = 20, unitHeight = unitWidth) {
+export function box (x, y, z, width, height, depth, shadow, unitWidth = 20, unitHeight = unitWidth, color) {
   const scale = Math.min(unitHeight, unitWidth)
   const unitDepthX = scale / 3
   const unitDepthY = scale / 2
@@ -99,9 +99,9 @@ export function box (x, y, z, width, height, depth, shadow, unitWidth = 20, unit
   }
   return h`
     ${_shadow}
-    <path d=${top} stroke-width="2"fill="#fffff8"/>
-    <path d=${right} stroke-width="2"fill="beige"/>
-    <path d=${front} stroke-width="2"fill="ivory"/>
+    <path d=${top} stroke-width="2"fill="hsl(${color}, 100%, 95%)"/>
+    <path d=${right} stroke-width="2"fill="hsl(${color}, 100%, 85%)"/>
+    <path d=${front} stroke-width="2"fill="hsl(${color}, 100%, 90%)"/>
     <path d=${innerlines}/>
   `
 }

@@ -1,43 +1,37 @@
 import { h, showIfElse } from '/unpkg/horseless/horseless.js'
-import { iconReply } from '../icons.js'
+import { iconReply, iconArrowRight } from '../icons.js'
 import { model } from '../model.js'
 
-export function bracket (depth) {
-  return h`<div class="bracket" style="left: ${16 + depth * 5}px; z-index: ${100 - depth};"></div>`
-}
-
-export function lines (depth, elements) {
-  return () => {
-    elements.forEach(element => {
-      if (typeof element === 'function') {
-        element = element()
-      }
-      if (element && element.type === 'node') {
-        element.attributes.unshift({
-          type: 'attribute',
-          name: 'style',
-          value: `padding-left: ${21 + depth * 5}px; z-index: ${100 - depth};`
-        })
-      }
-    })
-    return h`<div style="position: relative;">${elements}</div>`
-  }
-}
-
-export function title (text, icon, back) {
+export function h2 (text, icon, back) {
   const goback = el => e => {
     model.page = back
   }
   return h`
-    <h2 class="line">
-      ${showIfElse(() => back, h`
-        <span class="back" onclick=${goback}>${iconReply}</span>
-      `, h`
-        <span></span>
-      `)}
-      ${icon}
-      <span class="title">${text}</span>
-      <span></span>
-    </h2>
+    ${showIfElse(() => back, h`
+      <span class="filler" onclick=${goback}>${iconReply}</span>
+    `, h`
+      <span class="filler"></span>
+    `)}
+    ${icon}
+    <h2 class="auto">${text}</h2>
+    <span class="filler"></span>
+  `
+}
+
+export function h3 (text, icon) {
+  return h`
+    <span class="filler"></span>
+    ${icon}
+    <h3 class="auto">${text}</h3>
+    <span class="filler"></span>
+  `
+}
+
+export function link (text, icon) {
+  return h`
+    ${icon}
+    <span class="auto">${text}</h2>
+    <span class="filler"></span>
+    ${iconArrowRight({ class: 'icon' })}
   `
 }

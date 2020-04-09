@@ -1,4 +1,4 @@
-import { defineContainer } from './screens/Container.js'
+import { defineContainer, defineLine } from './components.js'
 
 export const ENTER_KEY = 13
 export const ESCAPE_KEY = 27
@@ -12,3 +12,4 @@ export const SAVE_AS = 'save-as'
 export const WORKING = 'working'
 
 export const CONTAINER = defineContainer('container-element')
+export const LINE = defineLine('line-element')
