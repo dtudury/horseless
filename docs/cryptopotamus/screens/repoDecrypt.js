@@ -4,7 +4,7 @@ import { model, setKey } from '../model.js'
 import { ERROR, MAIN, WORKING, REPO_SELECT, DECRYPT } from '../constants.js'
 import { db } from '../db.js'
 import { iconRepo, iconLock, iconKey } from '../icons.js'
-import { h2 } from './screenBuilder.js'
+import { header } from './lineBuilder.js'
 
 const encoder = new TextEncoder()
 const decoder = new TextDecoder()
@@ -68,7 +68,7 @@ function autofocus (el) {
 }
 
 export const repoDecrypt = h`
-  ${h2('Open Repository', iconRepo, REPO_SELECT)}
+  ${header('Open Repository', iconRepo, 'h2', el => e => { model.page = REPO_SELECT })}
   <div class="nesting">
     <div class="nested">
       <div class="bracket" style="left: 16px; z-index: 1;"></div>

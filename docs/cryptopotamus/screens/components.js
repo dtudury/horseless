@@ -28,21 +28,27 @@ class Container extends window.HTMLElement {
     this.attachShadow({ mode: 'open' })
     render(this.shadowRoot, h`
       <style>
-        :host {
-          background: gray;
-        }
         .body {
           position: relative;
-          padding: 5px 0;
+          padding: 10px 0 5px;
         }
         .bracket {
           content: "";
           width: 5px;
           height: 100%;
-          border: 1px solid black;
+          border-color: #ccc;
+          border: 1px solid;
           border-right: none;
           position: absolute;
+          top: 0;
           left: ${() => this.model.depth * 10}px;
+          z-index: 1;
+        }
+        :host(:hover) .bracket {
+          border-color: #666;
+        }
+        .header {
+          padding-top: 10px;
         }
       </style>
       <div class="header">
@@ -56,7 +62,6 @@ class Container extends window.HTMLElement {
   }
 
   connectedCallback () {
-    console.log(this.getAttribute('collapsible'))
     this.model.depth = _countContainers(this)
   }
 }
@@ -64,16 +69,27 @@ class Container extends window.HTMLElement {
 class Line extends window.HTMLElement {
   constructor () {
     super()
+    this.model = proxy({ depth: 0 })
     this.attachShadow({ mode: 'open' })
     render(this.shadowRoot, h`
       <style>
-        :hover {
+        :host(:not([slot="header"])) {
+          cursor: pointer;
+        }
+        :host(:not([slot="header"])) :hover {
           background: #ddd;
         }
         slot {
           display: flex;
           align-items: center;
-          width: 100%;
+          padding-right: 20px;
+          padding-left: ${() => this.model.depth * 10 + 10}px;
+        }
+        :host(.h2) slot {
+          justify-content: center;
+        }
+        :host([slot="header"]) slot {
+          padding-left: ${() => this.model.depth * 10}px;
         }
       </style>
       <slot></slot>
@@ -81,7 +97,6 @@ class Line extends window.HTMLElement {
   }
 
   connectedCallback () {
-    console.log(this.getAttribute('slot'))
-    console.log(_countContainers(this))
+    this.model.depth = _countContainers(this)
   }
 }
