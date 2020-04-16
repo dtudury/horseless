@@ -7,9 +7,8 @@ function r (values, amount = 1) {
   return values + amount * Math.random() * 1 - 0.5
 }
 
-function box (x, y, z, width, height, depth, scale, shadow) {
-  const unitWidth = scale
-  const unitHeight = scale
+export function box (x, y, z, width, height, depth, shadow, unitWidth = 20, unitHeight = unitWidth, color) {
+  const scale = Math.min(unitHeight, unitWidth)
   const unitDepthX = scale / 3
   const unitDepthY = scale / 2
   const wiggle = scale / 12
@@ -77,7 +76,11 @@ function box (x, y, z, width, height, depth, scale, shadow) {
     return [0, 1].map(i => Math.pow(it, 3) * a[i] + 3 * Math.pow(it, 2) * t * b[i] + 3 * it * Math.pow(t, 2) * c[i] + Math.pow(t, 3) * d[i])
   }
   function mapLineGroup (lineGroup, g) {
-    return [...Array([width, depth, height][g] - 1).keys()].map((v, i, arr) => {
+    const len = [width, depth, height][g]
+    if (!len) {
+      return ''
+    }
+    return [...Array(len - 1).keys()].map((v, i, arr) => {
       const t = (i + 1 + Math.random() * 0.2 - 0.1) / (arr.length + 1)
       const [a, b, c] = lineGroup.map(line => interpolate(line, t))
       const [aab, abb] = getControlPoints(a, b)
@@ -96,54 +99,50 @@ function box (x, y, z, width, height, depth, scale, shadow) {
   }
   return h`
     ${_shadow}
-    <path d=${top} stroke-width="2"fill="#fffff8"/>
-    <path d=${right} stroke-width="2"fill="beige"/>
-    <path d=${front} stroke-width="2"fill="ivory"/>
+    <path d=${top} stroke-width="2"fill="hsl(${color}, 100%, 95%)"/>
+    <path d=${right} stroke-width="2"fill="hsl(${color}, 100%, 85%)"/>
+    <path d=${front} stroke-width="2"fill="hsl(${color}, 100%, 90%)"/>
     <path d=${innerlines}/>
   `
 }
 
-export function ones (x, y, count) {
+export function ones (x, y, count, scale = 20) {
   const width = 1
   const height = 1
   const depth = 1
-  const scale = 20
   return [
-    [...Array(Math.min(count, 5)).keys()].map(i => box(x, y - i * 1.75, 0, width, height, depth, scale, 'bottom')),
-    [...Array(Math.max(count - 5, 0)).keys()].map(i => box(x + 2, y - i * 1.75, 0, width, height, depth, scale, 'bottom'))
+    [...Array(Math.min(count, 5)).keys()].map(i => box(x, y - i * 1.75, 0, width, height, depth, 'bottom', scale, scale, 60)),
+    [...Array(Math.max(count - 5, 0)).keys()].map(i => box(x + 2, y - i * 1.75, 0, width, height, depth, 'bottom', scale, scale, 60))
   ]
 }
 
-export function tens (x, y, count) {
+export function tens (x, y, count, scale = 20) {
   const width = 1
   const height = 10
   const depth = 1
-  const scale = 20
   return [
-    [...Array(Math.max(count - 5, 0)).keys()].map(i => box(x + i * 2 + 1, y, 7, width, height, depth, scale, 'all')),
-    [...Array(Math.min(count, 5)).keys()].map(i => box(x + i * 2, y, 0, width, height, depth, scale, 'all'))
+    [...Array(Math.max(count - 5, 0)).keys()].map(i => box(x + i * 2 + 1, y, 7, width, height, depth, 'all', scale, scale, 120)),
+    [...Array(Math.min(count, 5)).keys()].map(i => box(x + i * 2, y, 0, width, height, depth, 'all', scale, scale, 120))
   ]
 }
 
-export function hundreds (x, y, count) {
+export function hundreds (x, y, count, scale = 20) {
   const width = 10
   const height = 10
   const depth = 1
-  const scale = 20
   return [
-    [...Array(Math.max(count - 5, 0)).keys()].map(i => box(x - i * 1.5 - 3, y, 14 + i * 2.5, width, height, depth, scale, 'all')).reverse(),
-    [...Array(Math.min(count, 5)).keys()].map(i => box(x - i * 1.5, y, i * 2.5, width, height, depth, scale, 'all')).reverse()
+    [...Array(Math.max(count - 5, 0)).keys()].map(i => box(x - i * 1.5 - 3, y, 14 + i * 2.5, width, height, depth, 'all', scale, scale, 240)).reverse(),
+    [...Array(Math.min(count, 5)).keys()].map(i => box(x - i * 1.5, y, i * 2.5, width, height, depth, 'all', scale, scale, 240)).reverse()
   ]
 }
 
-export function thousands (x, y, count) {
+export function thousands (x, y, count, scale = 5) {
   const width = 10
   const height = 10
   const depth = 10
-  const scale = 5
   x *= 4
   y *= 4
   return [
-    [...Array(count).keys()].map(i => box(x + i * 14, y, 0, width, height, depth, scale, 'bottom'))
+    [...Array(count).keys()].map(i => box(x + i * 14, y, 0, width, height, depth, 'bottom', scale, scale, 0))
   ]
 }

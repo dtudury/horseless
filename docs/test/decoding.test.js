@@ -74,7 +74,7 @@ describe('h', function () {
     })
     it('should handle void elements', function () {
       const decoded = h`<br><hr/></br>`
-      assert.equal(decoded.length, 3)
+      assert.equal(decoded.length, 2)
     })
   })
 })
