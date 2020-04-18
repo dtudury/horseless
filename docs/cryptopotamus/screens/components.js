@@ -41,8 +41,9 @@ class Container extends window.HTMLElement {
           border-right: none;
           position: absolute;
           top: 0;
-          left: ${() => this.model.depth * 10}px;
+          left: ${() => this.model.depth * 10 + 10}px;
           z-index: 1;
+          pointer-events: none;
         }
         :host(:hover) .bracket {
           border-color: #666;
@@ -73,23 +74,23 @@ class Line extends window.HTMLElement {
     this.attachShadow({ mode: 'open' })
     render(this.shadowRoot, h`
       <style>
-        :host(:not([slot="header"])) {
+        :host(.link) {
           cursor: pointer;
         }
-        :host(:not([slot="header"])) :hover {
+        :host(.link) :hover {
           background: #ddd;
         }
         slot {
           display: flex;
           align-items: center;
           padding-right: 20px;
-          padding-left: ${() => this.model.depth * 10 + 10}px;
+          padding-left: ${() => this.model.depth * 10 + 20}px;
         }
         :host(.h2) slot {
           justify-content: center;
         }
         :host([slot="header"]) slot {
-          padding-left: ${() => this.model.depth * 10}px;
+          padding-left: ${() => this.model.depth * 10 + 10}px;
         }
       </style>
       <slot></slot>

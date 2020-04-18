@@ -1,4 +1,3 @@
-/* global btoa */
 import { h, render, mapEntries, showIfElse, after } from '/unpkg/horseless/horseless.js'
 import { iconGitBranch, iconGitMerge, iconFile, iconFilePlusFile, iconRepoPull } from './icons.js'
 import { ENTER_KEY, ESCAPE_KEY, CREATE_NEW_REPO, DECRYPT, ERROR, MAIN, REPO_SELECT, SAVE_AS, WORKING } from './constants.js'
@@ -9,7 +8,7 @@ import { repoDecrypt } from './screens/repoDecrypt.js'
 import { repoCreate } from './screens/repoCreate.js'
 
 const encoder = new TextEncoder()
-const ui8ToB64 = ui8 => btoa(String.fromCharCode.apply(null, ui8))
+const ui8ToB64 = ui8 => window.btoa(String.fromCharCode.apply(null, ui8))
 
 const save = el => e => {
   saveRepo('put')
@@ -94,6 +93,7 @@ function renderFile (file) {
 }
 
 render(document.querySelector('main'), h`
+  <canvas id="canvas" width="32" height="32" style="display:none;"></canvas>
   <hr>
   ${() => {
     switch (model.page) {
@@ -127,3 +127,25 @@ render(document.querySelector('main'), h`
   }}
   <hr>
 `)
+
+const c = document.getElementById('canvas')
+var ctx = c.getContext('2d', { alpha: false }) // context without alpha channel.
+var idata = ctx.createImageData(c.width, c.height) // create image data
+var buffer32 = new Uint32Array(idata.data.buffer) // get 32-bit view
+
+  ;
+(function loop () {
+  var len = buffer32.length - 1
+  while (len--) {
+    buffer32[len] = 0xffafafaf +
+      Math.floor(Math.random() * 0x20) +
+      Math.floor(Math.random() * 0x20) * 256 +
+      Math.floor(Math.random() * 0x20) * 256 * 256
+  }
+  ctx.putImageData(idata, 0, 0)
+  const main = document.querySelector('main')
+  if (main) {
+    main.style.backgroundImage = `url(${c.toDataURL()})`
+  }
+  window.requestAnimationFrame(loop)
+})()

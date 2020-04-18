@@ -1,8 +1,8 @@
 import { h } from '/unpkg/horseless/horseless.js'
-import { MAIN, WORKING, REPO_SELECT } from '../constants.js'
+import { MAIN, WORKING, REPO_SELECT, CONTAINER } from '../constants.js'
 import { model, setKey } from '../model.js'
-import { iconRepoTemplate, iconReply, iconLock, iconKey } from '../icons.js'
-import { header } from './lineBuilder.js'
+import { iconRepoTemplate, iconKey, iconRepo } from '../icons.js'
+import { header, backButton, passphrase, warning, link } from './lineBuilder.js'
 
 const encoder = new TextEncoder()
 
@@ -38,8 +38,25 @@ function defaultSalt () {
   return salt.substring(0, 32)
 }
 
+const onclick = el => e => {
+  console.log(el, e)
+}
+
+function validInputs () {
+  return model.passphrase
+}
+
 export const repoCreate = h`
-  ${header('Create New Repository', iconRepoTemplate, 'h2', el => e => { model.page = REPO_SELECT })}
+  ${backButton(e => { model.page = REPO_SELECT })}
+  <${CONTAINER}>
+    ${header('Create New Repository', iconRepoTemplate, 'h2', el => e => { model.page = REPO_SELECT })}
+    ${passphrase}
+    ${warning('Passphrases are NOT saved and can NOT be recovered!')}
+    ${link('Create Repository', iconRepo, onclick, validInputs)}
+    <${CONTAINER} collapsible>
+      ${header('Advanced', iconKey, 'h3')}
+    </${CONTAINER}>
+  </${CONTAINER}>
   <form class="nesting" onsubmit=${createNewRepository}>
     <div class="nested">
       <div class="bracket" style="left: 16px; z-index: 1;"></div>
