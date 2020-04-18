@@ -1,4 +1,4 @@
-import { h, render, proxy, mapEntries, renderAttributes } from '/unpkg/horseless/horseless.js'
+import { h, render, proxy, mapEntries } from '/unpkg/horseless/horseless.js'
 const ENTER_KEY = 13
 const ESCAPE_KEY = 27
 const model = proxy(
@@ -30,6 +30,18 @@ function _children (model) {
     </ul>
   `
 }
+
+function _renderAttributes (model) {
+  const node = render(model)[0]
+  const obj = {}
+  if (node.attributes) {
+    Array.prototype.forEach.call(node.attributes, att => {
+      obj[att.name] = att.value
+    })
+  }
+  return obj
+}
+
 function _child (model, isTopLevel) {
   if (!model.tag) {
     return null
@@ -47,7 +59,7 @@ function _child (model, isTopLevel) {
   }
   function longName () {
     const nameParts = [model.tag]
-    const attributes = renderAttributes(model.attributes)
+    const attributes = _renderAttributes(model)
     if (attributes.id) {
       nameParts.push(`#${attributes.id}`)
     }
@@ -68,6 +80,7 @@ function _child (model, isTopLevel) {
     </li>
   `
 }
+
 function _attributes (model) {
   const addAttribute = el => e => {
     console.log(JSON.parse(JSON.stringify(model.attributes)))
@@ -76,18 +89,18 @@ function _attributes (model) {
   return h`
     <ul title="attributes" onclick="${clickEater}">
       ${ /* eslint-disable indent */
-        mapEntries(() => renderAttributes(model.attributes), (value, name) => {
-          const liveEdit = el => e => { model.attributes.obj[name] = el.value.trim() }
-          const handleEditKeyDown = el => e => {
-            switch (e.keyCode) {
-              case ENTER_KEY:
-              case ESCAPE_KEY:
-                el.blur()
-                break
-            }
-          }
-          return h`<li><label>${name}<input value=${value} oninput=${liveEdit} onkeydown=${handleEditKeyDown} /></label></li>`
-        })
+    mapEntries(() => _renderAttributes(model), (value, name) => {
+      const liveEdit = el => e => { model.attributes.obj[name] = el.value.trim() }
+      const handleEditKeyDown = el => e => {
+        switch (e.keyCode) {
+          case ENTER_KEY:
+          case ESCAPE_KEY:
+            el.blur()
+            break
+        }
+      }
+      return h`<li><label>${name}<input value=${value} oninput=${liveEdit} onkeydown=${handleEditKeyDown} /></label></li>`
+    })
       /* eslint-enable indent */}
       <li>
         <label><input /><button onclick=${addAttribute} >+ Attribute</button></label>
@@ -97,24 +110,24 @@ function _attributes (model) {
 }
 
 render(document.body, h`
-<header class="app">
-  <svg class="hamburger" focusable="false" width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-    <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"></path>
-  </svg>
-  <h1>
-    JSVGX
-  </h1>
-</header>
+  <header class="app">
+    <svg class="hamburger" focusable="false" width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"></path>
+    </svg>
+    <h1>
+      JSVGX
+    </h1>
+  </header>
 
-<nav class="app">
-  ${_children({ children: model })}
-</nav>
+  <nav class="app">
+    ${_children({ children: model })}
+  </nav>
 
-<main class="app">
-  ${model}
-</main>
+  <main class="app">
+    ${model}
+  </main>
 
-<footer class="app">
-  Copyright © 2019 David Tudury
-</footer>
+  <footer class="app">
+    Copyright © 2019 David Tudury
+  </footer>
 `)
