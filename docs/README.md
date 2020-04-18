@@ -1,6 +1,6 @@
 # horseless
 
-horseless is a microscopic, fun, and expressive javascript framework. [Repo here.](https://github.com/dtudury/horseless)
+horseless is a microscopic, expressive, and fun javascript framework. [Repo here.](https://github.com/dtudury/horseless)
 
 ## Quick Reference
 ### h ###
