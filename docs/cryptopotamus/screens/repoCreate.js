@@ -2,7 +2,7 @@ import { h } from '/unpkg/horseless/horseless.js'
 import { MAIN, WORKING, REPO_SELECT, CONTAINER } from '../constants.js'
 import { model, setKey } from '../model.js'
 import { iconRepoTemplate, iconKey, iconRepo } from '../icons.js'
-import { header, backButton, passphrase, warning, link } from './lineBuilder.js'
+import { header, backButton, passphrase, warning, link, salt, iterations } from './lineBuilder.js'
 
 const encoder = new TextEncoder()
 
@@ -55,6 +55,8 @@ export const repoCreate = h`
     ${link('Create Repository', iconRepo, onclick, validInputs)}
     <${CONTAINER} collapsible>
       ${header('Advanced', iconKey, 'h3')}
+      ${salt}
+      ${iterations}
     </${CONTAINER}>
   </${CONTAINER}>
   <form class="nesting" onsubmit=${createNewRepository}>
