@@ -1,4 +1,4 @@
-import { h, render, mapEntries, showIfElse, after } from '/unpkg/horseless/horseless.js'
+import { h, render, mapEntries, showIfElse, after, objToStyle } from '/unpkg/horseless/horseless.js'
 import { iconGitBranch, iconGitMerge, iconFile, iconFilePlusFile, iconRepoPull } from './icons.js'
 import { ENTER_KEY, ESCAPE_KEY, CREATE_NEW_REPO, DECRYPT, ERROR, MAIN, REPO_SELECT, SAVE_AS, WORKING } from './constants.js'
 import { model, getKey } from './model.js'
@@ -92,60 +92,93 @@ function renderFile (file) {
   }
 }
 
-render(document.querySelector('main'), h`
-  <canvas id="canvas" width="32" height="32" style="display:none;"></canvas>
-  <hr>
-  ${() => {
-    switch (model.page) {
-      case WORKING: return h`<div class="status">working...</div>`
-      case DECRYPT: return repoDecrypt
-      case REPO_SELECT: return repoSelect
-      case CREATE_NEW_REPO: return repoCreate
-      case MAIN: return h`
-        <h2>${() => model.name || '[Unnamed Repository]'}</h2>
-        ${mapEntries(model.files, renderFile)}
-        <button class="new-file" type="button" onclick=${newFile}>${iconFilePlusFile}NEW FILE</button>
-        ${showIfElse(() => model.modified && model.name, h`
-          <button class="save" type="button" onclick=${save}>${iconGitMerge}SAVE</button>
-        `)}
-        <button class="saveas" type="button" onclick=${saveAs}>${iconGitBranch}SAVE AS</button>
-        <button class="download" type="button" onclick=${download}>${iconRepoPull}DOWNLOAD</button>
-      `
-      case SAVE_AS: return h`
-        <h2>Save Repository</h2>
-        <form onsubmit=${saveRepoAs}>
-          <label for="reponame">Repository Name:</label>
-          <input type="text" id="reponame" name="reponame" required>
-          <input type="submit" value="SAVE">
-        </form>
-      `
-      case ERROR: return h`
-        <h2>${model.errorName}</h2>
-        ${model.errorMessage}
-      `
-    }
-  }}
-  <hr>
+const headerStyle = objToStyle({
+  'text-align': 'center',
+  'background-color': '#444',
+  color: 'transparent',
+  'letter-spacing': '.5em',
+  'text-shadow': '0.1rem -0.1rem 0.3rem #aaa',
+  'background-clip': 'text',
+  '-webkit-background-clip': 'text',
+  '-moz-background-clip': 'text',
+  'user-select': 'none'
+})
+
+function screen () {
+  switch (model.page) {
+    case WORKING: return h`<div class="status">working...</div>`
+    case DECRYPT: return repoDecrypt
+    case REPO_SELECT: return repoSelect
+    case CREATE_NEW_REPO: return repoCreate
+    case MAIN: return h`
+      <h2>${() => model.name || '[Unnamed Repository]'}</h2>
+      ${mapEntries(model.files, renderFile)}
+      <button class="new-file" type="button" onclick=${newFile}>${iconFilePlusFile}NEW FILE</button>
+      ${showIfElse(() => model.modified && model.name, h`
+        <button class="save" type="button" onclick=${save}>${iconGitMerge}SAVE</button>
+      `)}
+      <button class="saveas" type="button" onclick=${saveAs}>${iconGitBranch}SAVE AS</button>
+      <button class="download" type="button" onclick=${download}>${iconRepoPull}DOWNLOAD</button>
+    `
+    case SAVE_AS: return h`
+      <h2>Save Repository</h2>
+      <form onsubmit=${saveRepoAs}>
+        <label for="reponame">Repository Name:</label>
+        <input type="text" id="reponame" name="reponame" required>
+        <input type="submit" value="SAVE">
+      </form>
+    `
+    case ERROR: return h`
+      <h2>${model.errorName}</h2>
+      ${model.errorMessage}
+    `
+  }
+}
+const hrStyle = objToStyle ({
+  border: 'none',
+  'border-top': '1px solid #ccc',
+  'z-index': '1'
+})
+
+render(document.body, h`
+  <h1 ${headerStyle}>cryptopotamus</h1>
+  <main>
+    <canvas id="canvas" width="32" height="32" style="display:none;"></canvas>
+    <hr ${hrStyle}>
+    ${screen}
+    <hr ${hrStyle}>
+  </main>
 `)
 
 const c = document.getElementById('canvas')
+console.log(c)
 var ctx = c.getContext('2d', { alpha: false }) // context without alpha channel.
 var idata = ctx.createImageData(c.width, c.height) // create image data
 var buffer32 = new Uint32Array(idata.data.buffer) // get 32-bit view
 
+const noises = []
+let lastNoise
   ;
 (function loop () {
-  var len = buffer32.length - 1
-  while (len--) {
-    buffer32[len] = 0xffafafaf +
-      Math.floor(Math.random() * 0x20) +
-      Math.floor(Math.random() * 0x20) * 256 +
-      Math.floor(Math.random() * 0x20) * 256 * 256
-  }
-  ctx.putImageData(idata, 0, 0)
+  let noise
+  do {
+    const index = Math.floor(Math.random() * 32)
+    if (!noises[index]) {
+      buffer32.forEach((v, i) => {
+        buffer32[i] = 0xffafafaf +
+          Math.floor(Math.random() * 0x20) +
+          Math.floor(Math.random() * 0x20) * 256 +
+          Math.floor(Math.random() * 0x20) * 256 * 256
+      })
+      ctx.putImageData(idata, 0, 0)
+      noises[index] = `url(${c.toDataURL()})`
+    }
+    noise = noises[index]
+  } while (noise === lastNoise)
+  lastNoise = noise
   const main = document.querySelector('main')
   if (main) {
-    main.style.backgroundImage = `url(${c.toDataURL()})`
+    main.style.backgroundImage = noise
   }
   window.requestAnimationFrame(loop)
 })()

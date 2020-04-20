@@ -5,12 +5,7 @@ export function defineContainer (name) {
   return name
 }
 
-export function defineLine (name) {
-  window.customElements.define(name, Line)
-  return name
-}
-
-function _countContainers (el) {
+export function countContainers (el) {
   let count = 0
   while (el) {
     if (el instanceof Container) {
@@ -63,41 +58,6 @@ class Container extends window.HTMLElement {
   }
 
   connectedCallback () {
-    this.model.depth = _countContainers(this)
-  }
-}
-
-class Line extends window.HTMLElement {
-  constructor () {
-    super()
-    this.model = proxy({ depth: 0 })
-    this.attachShadow({ mode: 'open' })
-    render(this.shadowRoot, h`
-      <style>
-        :host(.link) {
-          cursor: pointer;
-        }
-        :host(.link) :hover {
-          background: #ddd;
-        }
-        slot {
-          display: flex;
-          align-items: center;
-          padding-right: 20px;
-          padding-left: ${() => this.model.depth * 10 + 20}px;
-        }
-        :host(.h2) slot {
-          justify-content: center;
-        }
-        :host([slot="header"]) slot {
-          padding-left: ${() => this.model.depth * 10 + 10}px;
-        }
-      </style>
-      <slot></slot>
-    `)
-  }
-
-  connectedCallback () {
-    this.model.depth = _countContainers(this)
+    this.model.depth = countContainers(this)
   }
 }

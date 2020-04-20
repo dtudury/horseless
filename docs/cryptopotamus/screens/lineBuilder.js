@@ -1,22 +1,16 @@
-import { h } from '/unpkg/horseless/horseless.js'
+import { h, objToStyle } from '/unpkg/horseless/horseless.js'
 import { model } from '../model.js'
 import { iconReply, iconArrowRight, iconKey, iconIssueOpened } from '../icons.js'
 import { LINE } from '../constants.js'
-
-function _objToStyle (obj) {
-  return Object.entries(obj).map(([name, value]) => `${name}: ${value};`).join('')
-}
 
 export function backButton (back) {
   return iconReply({ class: 'back-button', onclick: back })
 }
 
 export function header (text, icon, hN = 'h3', back) {
-  const headerStyle = {
-    style: _objToStyle({
-      margin: 0
-    })
-  }
+  const headerStyle = objToStyle({
+    margin: 0
+  })
   return h`
     <${LINE} slot="header" class=${hN}>
       ${icon({ class: 'icon' })}
@@ -81,11 +75,9 @@ export const iterations = (function () {
 })()
 
 export function warning (text) {
-  const warningStyle = {
-    style: _objToStyle({
-      'font-size': '0.85em'
-    })
-  }
+  const warningStyle = objToStyle({
+    'font-size': '0.85em'
+  })
   return h`
     <${LINE} class="info">
       ${iconIssueOpened({ class: 'icon' })}
