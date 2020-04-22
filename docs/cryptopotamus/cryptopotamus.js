@@ -1,4 +1,4 @@
-import { h, render, objToStyle } from '/unpkg/horseless/horseless.js'
+import { h, render, objToDeclarations } from '/unpkg/horseless/horseless.js'
 import { APP, CREATE_NEW_REPO, DECRYPT, ERROR, MAIN, REPO_SELECT, SAVE_AS, WORKING } from './constants.js'
 import { model } from './model.js'
 import { repoSelect } from './screens/repoSelect.js'
@@ -8,23 +8,27 @@ import { saveAs } from './screens/saveAs.js'
 import { main } from './screens/main.js'
 import { errorScreen } from './screens/errorScreen.js'
 
-const headerStyle = objToStyle({
-  'text-align': 'center',
-  'background-color': '#444',
-  color: 'transparent',
-  'letter-spacing': '.5em',
-  'text-shadow': '0.1rem -0.1rem 0.3rem #aaa',
-  'background-clip': 'text',
-  '-webkit-background-clip': 'text',
-  '-moz-background-clip': 'text',
-  'user-select': 'none'
-})
+const headerStyle = {
+  style: objToDeclarations({
+    'text-align': 'center',
+    'background-color': '#444',
+    color: 'transparent',
+    'letter-spacing': '.5em',
+    'text-shadow': '0.1rem -0.1rem 0.3rem #aaa',
+    'background-clip': 'text',
+    '-webkit-background-clip': 'text',
+    '-moz-background-clip': 'text',
+    'user-select': 'none'
+  })
+}
 
-const hrStyle = objToStyle({
-  border: 'none',
-  'border-top': '1px solid #ccc',
-  'z-index': '1'
-})
+const hrStyle = {
+  style: objToDeclarations({
+    border: 'none',
+    'border-top': '1px solid #ccc',
+    'z-index': '1'
+  })
+}
 
 function screen () {
   switch (model.page) {

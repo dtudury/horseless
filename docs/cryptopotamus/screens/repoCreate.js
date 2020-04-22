@@ -2,7 +2,7 @@ import { h } from '/unpkg/horseless/horseless.js'
 import { MAIN, WORKING, REPO_SELECT, CONTAINER } from '../constants.js'
 import { model, setKey } from '../model.js'
 import { iconRepoTemplate, iconKey, iconRepo } from '../icons.js'
-import { header, backButton, passphrase, warning, link, salt, iterations } from './lineBuilder.js'
+import { header, backButton, passphrase, warning, info, link, salt, iterations } from './lineBuilder.js'
 
 const encoder = new TextEncoder()
 
@@ -46,10 +46,12 @@ function validInputs () {
   return model.passphrase
 }
 
+const back = el => e => { model.page = REPO_SELECT }
+
 export const repoCreate = h`
-  ${backButton(e => { model.page = REPO_SELECT })}
+  ${backButton(back)}
   <${CONTAINER}>
-    ${header('Create New Repository', iconRepoTemplate, 'h2', el => e => { model.page = REPO_SELECT })}
+    ${header('Create New Repository', iconRepoTemplate, 'h2')}
     ${passphrase}
     ${warning('Passphrases are NOT saved and can NOT be recovered!')}
     ${link('Create Repository', iconRepo, onclick, validInputs)}
@@ -57,43 +59,12 @@ export const repoCreate = h`
       ${header('Advanced', iconKey, 'h3')}
       ${salt}
       ${iterations}
+      ${info(`
+        Cryptopotamus uses PBKDF2 to turn passphrases 
+        into cryptographic keys and make attacks against passphrases more difficult.
+        A random "Salt" value and "Iterations" count are used by PBKDF2 to change the strength of the result.
+        Neither is a secret and both are stored as cleartext in saved repositories.
+      `)}
     </${CONTAINER}>
   </${CONTAINER}>
-  <form class="nesting" onsubmit=${createNewRepository}>
-    <div class="nested">
-      <div class="bracket" style="left: 16px; z-index: 1;"></div>
-
-      <div class="line">
-        ${iconKey}
-        <span class="narrow"><label for="passphrase">Passphrase:</label></span>
-        <input type="password" id="passphrase" name="passphrase" required>
-      </div>
-      <div class="line">
-        <span class="info">
-          <span class="important">WARNING!</span>: Passphrases are NOT saved and can NOT be recovered.
-          Forgetting your passphrase (or mistyping it here) will
-          <span class="important">PERMANENTLY lock you out</span> of your repository.
-        </span>
-      </div>
-
-      <input type="submit" value="CREATE">
-      <span class="advanced-toggle" onclick=${el => e => { model.showAdvanced = !model.showAdvanced }}>
-        ${() => model.showAdvanced ? '▿' : '▹'} Advanced
-      </span>
-      <span class="advanced-settings" ${() => model.showAdvanced ? null : { style: 'display: none;' }}>
-        <label for="salt">Salt:</label>
-        <input type="text" id="salt" name="salt" value="${defaultSalt}">
-        <label for="iterations">Iterations:</label>
-        <input type="text" id="iterations" name="iterations" value="1000000">
-        <span class="info">
-          Cryptopotamus uses <a href="https://en.wikipedia.org/wiki/PBKDF2">PBKDF2</a> to turn passphrases 
-          into cryptographic keys and make attacks against passphrases more difficult.
-          A random "Salt" value and "Iterations" count are used by PBKDF2 to change the strength of the result.
-          Neither is a secret and both are stored as cleartext in saved repositories.
-        </span>
-      </span>
-
-    </div>
-  </form>
-
 `

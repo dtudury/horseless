@@ -1,4 +1,5 @@
-import { h, render, proxy } from '/unpkg/horseless/horseless.js'
+import { h, render } from '/unpkg/horseless/horseless.js'
+import { Containable } from './containable.js'
 
 export function defineContainer (name) {
   window.customElements.define(name, Container)
@@ -8,6 +9,7 @@ export function defineContainer (name) {
 export function countContainers (el) {
   let count = 0
   while (el) {
+    console.log(el, el.tagName, el instanceof Container)
     if (el instanceof Container) {
       ++count
     }
@@ -16,10 +18,9 @@ export function countContainers (el) {
   return count
 }
 
-class Container extends window.HTMLElement {
+class Container extends Containable {
   constructor () {
     super()
-    this.model = proxy({ depth: 0 })
     this.attachShadow({ mode: 'open' })
     render(this.shadowRoot, h`
       <style>
@@ -62,9 +63,5 @@ class Container extends window.HTMLElement {
         <slot></slot>
       </div>
     `)
-  }
-
-  connectedCallback () {
-    this.model.depth = countContainers(this)
   }
 }

@@ -18,6 +18,7 @@ class App extends window.HTMLElement {
           position: relative;
           background: #ccc;
           color: #666;
+          fill: #666;
           border-radius: 0.5rem;
           padding: 1em 0;
           box-shadow: inset 0px 0.1rem 3rem #fff;

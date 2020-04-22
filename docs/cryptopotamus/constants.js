@@ -1,3 +1,4 @@
+import { objToDeclarations } from '/unpkg/horseless/horseless.js'
 import { defineApp } from './components/App.js'
 import { defineContainer } from './components/Container.js'
 import { defineLine } from './components/Line.js'
@@ -16,3 +17,10 @@ export const MAIN = 'main'
 export const REPO_SELECT = 'repo-select'
 export const SAVE_AS = 'save-as'
 export const WORKING = 'working'
+
+export const ICON_ATTRIBUTES = {
+  style: objToDeclarations({
+    'padding-right': '0.5rem',
+    fill: '#888'
+  })
+}
