@@ -14,7 +14,7 @@ const savedRepos = mapEntries(() => model.state.repoList, reponame => {
   const selectRepo = el => e => {
     gotoSavedRepository(reponame)
   }
-  return h`<${LINK} onclick=${selectRepo}><${OCTICON} repo/>${reponame}</${LINK}>`
+  return h`<${LINK} onclick=${selectRepo}><${OCTICON} repo slot="icon"/>${reponame}</${LINK}>`
 })
 
 class SelectScreen extends window.HTMLElement {
@@ -24,8 +24,8 @@ class SelectScreen extends window.HTMLElement {
       <${TOP_BAR}/>
       <${CONTAINER}>
         <${TITLE} slot="header"><${OCTICON} home/>Select Repository</${TITLE}>
-        <${LINK} onclick=${el => gotoNewRepository}><${OCTICON} repo-template/>New Repository</${LINK}>
-        <${LINK} onclick=${el => gotoUploadRepository}><${OCTICON} repo-push/>Upload Repository</${LINK}>
+        <${LINK} onclick=${el => gotoNewRepository}><${OCTICON} repo-template slot="icon"/>New Repository</${LINK}>
+        <${LINK} onclick=${el => gotoUploadRepository}><${OCTICON} repo-push slot="icon"/>Upload Repository</${LINK}>
         ${showIfElse(() => (model.state.repoList && model.state.repoList.length), h`
           <${CONTAINER} collapsible>
             <${HEADER} slot="header"><${OCTICON} database/>Saved Repositories:</${HEADER}>

@@ -1,13 +1,12 @@
 import { h, render } from '/unpkg/horseless/horseless.js'
-import { Containable } from './containable.js'
 import { OCTICON } from '../tags.js'
 
-export function defineLink (name) {
-  window.customElements.define(name, Link)
+export function defineButton (name) {
+  window.customElements.define(name, Button)
   return name
 }
 
-class Link extends Containable {
+class Button extends window.HTMLElement {
   constructor () {
     super()
     this.attachShadow({ mode: 'open' })
@@ -19,7 +18,6 @@ class Link extends Containable {
           justify-content: space-between;
           padding: 2px;
           padding-right: 1.5rem;
-          padding-left: ${() => this.model.depth * 0.5 + 1}rem;
           color: #888;
           fill: #888;
           cursor: pointer;
@@ -36,6 +34,7 @@ class Link extends Containable {
           visibility: hidden;
           display: flex;
           align-items: center;
+          margin-left: 0.5rem
         }
         :host(:hover) div {
           visibility: visible;
@@ -44,6 +43,8 @@ class Link extends Containable {
           display: flex;
           align-items: center;
           text-decoration: underline;
+          flex: 1;
+          justify-content: flex-end;
         }
       </style>
       <slot></slot>

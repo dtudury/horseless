@@ -1,4 +1,4 @@
-import { h, render, objToDeclarations, proxy } from '/unpkg/horseless/horseless.js'
+import { h, render, objToDeclarations, proxy, mapSwitch } from '/unpkg/horseless/horseless.js'
 import { model } from '../../model.js'
 import { screens } from '../../constants.js'
 import { LOADING_SCREEN, SELECT_SCREEN, NEW_REPO_SCREEN } from '../tags.js'
@@ -22,14 +22,14 @@ const divStyle = {
   })
 }
 
-function screen () {
-  switch (model.state.screen) {
+const screen = mapSwitch(() => model.state.screen, screen => {
+  switch (screen) {
     case screens.LOADING: return h`<${LOADING_SCREEN}/>`
     case screens.SELECT: return h`<${SELECT_SCREEN}/>`
     case screens.NEW_REPO: return h`<${NEW_REPO_SCREEN}/>`
     default: return `unhandled screen: ${String(model.state.screen)}`
   }
-}
+})
 
 // make tv static
 const canvas = render(h`<canvas width="32" height="32"/>`)[0]

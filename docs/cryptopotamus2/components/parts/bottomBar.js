@@ -15,6 +15,7 @@ class BottomBar extends window.HTMLElement {
           height: 1rem;
           padding: 0.5rem;
           border-top: 1px solid #bbb;
+          margin-top: 1rem;
         }
       </style>
       <slot/>

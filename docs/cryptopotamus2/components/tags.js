@@ -5,8 +5,12 @@ import { defineTopBar } from './parts/topBar.js'
 import { defineBottomBar } from './parts/bottomBar.js'
 import { defineHeader } from './parts/header.js'
 import { defineLink } from './parts/link.js'
+import { defineButton } from './parts/button.js'
+import { definePassphrase } from './parts/passphrase.js'
+import { defineSalt } from './parts/salt.js'
 import { defineContainer } from './parts/container.js'
 import { defineScreenTitle } from './parts/screenTitle.js'
+import { defineInfo } from './parts/info.js'
 import { defineOcticon } from './parts/octicon.js'
 
 import { defineLoadingScreen } from './screens/loadingScreen.js'
@@ -19,8 +23,12 @@ export const TOP_BAR = defineTopBar('top-bar')
 export const BOTTOM_BAR = defineBottomBar('bottom-bar')
 export const HEADER = defineHeader('header-element')
 export const LINK = defineLink('link-element')
+export const BUTTON = defineButton('button-element')
+export const PASSPHRASE = definePassphrase('passphrase-element')
+export const SALT = defineSalt('salt-element')
 export const CONTAINER = defineContainer('container-element')
 export const TITLE = defineScreenTitle('screen-title')
+export const INFO = defineInfo('info-title')
 export const OCTICON = defineOcticon('octicon-element')
 
 export const LOADING_SCREEN = defineLoadingScreen('loading-screen')

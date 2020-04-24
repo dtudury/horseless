@@ -1,10 +1,14 @@
-import { db } from '../db.js'
 import { model } from '../model.js'
 import { screens } from '../constants.js'
+import { db } from '../db.js'
 
-export async function updateRepoList () {
+export async function gotoSelectScreen () {
+  model.state = {
+    screen: screens.LOADING
+  }
   Object.assign((await db).transaction(['repos']).objectStore('repos').getAllKeys(), {
     onsuccess: function (event) {
+      console.log(event.target.result)
       model.state = {
         screen: screens.SELECT,
         repoList: event.target.result

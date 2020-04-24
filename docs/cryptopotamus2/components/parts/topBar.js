@@ -1,4 +1,4 @@
-import { h, render } from '/unpkg/horseless/horseless.js'
+import { h, render, proxy } from '/unpkg/horseless/horseless.js'
 
 export function defineTopBar (name) {
   window.customElements.define(name, TopBar)
@@ -8,6 +8,7 @@ export function defineTopBar (name) {
 class TopBar extends window.HTMLElement {
   constructor () {
     super()
+    this.model = proxy({ onclick: false })
     render(this.attachShadow({ mode: 'open' }), h`
       <style>
         :host {
@@ -15,12 +16,17 @@ class TopBar extends window.HTMLElement {
           height: 1rem;
           padding: 0.5rem;
           border-bottom: 1px solid #bbb;
+          ${() => this.model.onclick ? 'cursor: pointer;' : ''}
         }
         :host(:hover) {
-          background: #00000010;
+          ${() => this.model.onclick ? 'background: #00000010;' : ''}
         }
       </style>
       <slot/>
     `)
+  }
+
+  connectedCallback () {
+    this.model.onclick = !!this.onclick
   }
 }
