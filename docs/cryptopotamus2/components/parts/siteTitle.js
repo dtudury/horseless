@@ -1,11 +1,11 @@
 import { h, render } from '/unpkg/horseless/horseless.js'
 
-export function defineHeaderTitle (name) {
-  window.customElements.define(name, HeaderTitle)
+export function defineSiteTitle (name) {
+  window.customElements.define(name, SiteTitle)
   return name
 }
 
-class HeaderTitle extends window.HTMLElement {
+class SiteTitle extends window.HTMLElement {
   constructor () {
     super()
     render(this.attachShadow({ mode: 'open' }), h`

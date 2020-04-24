@@ -34,17 +34,17 @@ class Container extends Containable {
         }
         .body {
           position: relative;
-          padding: 10px 0 5px;
+          margin: 0.5rem 0;
         }
         .bracket {
           content: "";
-          width: 5px;
+          width: 0.2rem;
           height: 100%;
           border: 1px solid #aaa;
           border-right: none;
           position: absolute;
-          top: 0;
-          left: ${() => this.model.depth * 10 + 10}px;
+          top: -1px;
+          left: ${() => this.model.depth * 0.5 + 0.5}rem;
           z-index: 1;
           pointer-events: none;
         }
@@ -52,7 +52,7 @@ class Container extends Containable {
           border-color: #666;
         }
         .header {
-          padding-top: 10px;
+          padding-top: 0.5rem;
         }
       </style>
       <div class="header">

@@ -1,5 +1,5 @@
 import { proxy } from '/unpkg/horseless/horseless.js'
-import { CONTAINER } from '../components.js'
+import { CONTAINER } from '../tags.js'
 
 export function countContainers (el) {
   let count = 0

@@ -1,13 +1,12 @@
 import { h, render } from '/unpkg/horseless/horseless.js'
-import { iconArrowRight } from '../../icons.js'
 import { Containable } from './containable.js'
 
-export function defineLine (name) {
-  window.customElements.define(name, Line)
+export function defineHeader (name) {
+  window.customElements.define(name, Header)
   return name
 }
 
-class Line extends Containable {
+class Header extends Containable {
   constructor () {
     super()
     this.attachShadow({ mode: 'open' })
@@ -17,12 +16,7 @@ class Line extends Containable {
           display: flex;
           align-items: center;
           justify-content: space-between;
-          padding: 2px;
-          padding-right: 20px;
-          padding-left: ${() => this.model.depth * 10 + 20}px;
-        }
-        :host([slot="header"]) {
-          padding-left: ${() => this.model.depth * 10 + 10}px;
+          padding-left: ${() => this.model.depth * 0.5 + 0.5}rem;
         }
         slot {
           display: flex;
@@ -30,7 +24,6 @@ class Line extends Containable {
         }
       </style>
       <slot></slot>
-      ${iconArrowRight}
     `)
   }
 }

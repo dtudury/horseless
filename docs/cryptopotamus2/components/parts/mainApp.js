@@ -1,20 +1,12 @@
 import { h, render, objToDeclarations, proxy } from '/unpkg/horseless/horseless.js'
 import { model } from '../../model.js'
 import { screens } from '../../constants.js'
-import { LOADING_SCREEN, SELECT_SCREEN } from '../components.js'
+import { LOADING_SCREEN, SELECT_SCREEN, NEW_REPO_SCREEN } from '../tags.js'
 const _noise = proxy({ image: '' })
 
 export function defineMainApp (name) {
   window.customElements.define(name, MainApp)
   return name
-}
-
-const hrStyle = {
-  style: objToDeclarations({
-    border: 'none',
-    'border-top': '1px solid #ccc',
-    'z-index': '1'
-  })
 }
 
 const divStyle = {
@@ -25,7 +17,7 @@ const divStyle = {
     left: '0',
     width: '100%',
     height: '100%',
-    'box-shadow': 'inset 0px 0.2rem 0.5rem #666',
+    'box-shadow': 'inset 0 0.2rem 0.5rem #666',
     'border-radius': '0.5rem'
   })
 }
@@ -34,6 +26,7 @@ function screen () {
   switch (model.state.screen) {
     case screens.LOADING: return h`<${LOADING_SCREEN}/>`
     case screens.SELECT: return h`<${SELECT_SCREEN}/>`
+    case screens.NEW_REPO: return h`<${NEW_REPO_SCREEN}/>`
     default: return `unhandled screen: ${String(model.state.screen)}`
   }
 }
@@ -77,14 +70,11 @@ class MainApp extends window.HTMLElement {
           color: #666;
           fill: #666;
           border-radius: 0.5rem;
-          padding: 1em 0;
           box-shadow: inset 0px 0.1rem 3rem #fff;
           background-image: ${() => _noise.image};
         }
       </style>
-      <hr ${hrStyle}>
       ${screen}
-      <hr ${hrStyle}>
       <div ${divStyle}/>
     `)
   }
