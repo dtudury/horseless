@@ -35,7 +35,6 @@ class NewRepoScreen extends window.HTMLElement {
           </${HEADER}>
           <${INFO}><${OCTICON} info/>Cryptopotamus uses PBKDF2 to turn passphrases into cryptographic keys and make attacks against passphrases more difficult. A random "Salt" value and "Iterations" count are used by PBKDF2 to change the strength of the result. Neither value is a secret and both are stored as cleartext in saved repositories.</${INFO}>
           <${SALT}/>
-          <${PASSPHRASE}/>
         </${CONTAINER}>
       </${CONTAINER}>
       <${BOTTOM_BAR}/>

@@ -22,6 +22,7 @@ class Passphrase extends Containable {
           display: flex;
           align-items: center;
           justify-content: space-between;
+          padding: 3px;
           padding-left: ${() => this.model.depth * 0.5 + 1}rem;
           padding-right: 1.5rem;
         }
@@ -55,7 +56,7 @@ class Passphrase extends Containable {
         }
       </style>
       <label for="passphrase">Passphrase:</label>
-      <input type="password" id="passphrase" name="passphrase" value=${() => model.state.passphrase} oninput=${oninput}>
+      <input type="password" id="passphrase" name="passphrase" value=${() => model.state.passphrase} oninput=${oninput} autofocus>
       <${OCTICON} key/>
     `)
   }

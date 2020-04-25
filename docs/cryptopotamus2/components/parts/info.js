@@ -16,6 +16,7 @@ class Info extends Containable {
           display: flex;
           align-items: center;
           justify-content: space-between;
+          padding: 3px;
           padding-left: ${() => this.model.depth * 0.5 + 1}rem;
           font-size: 0.8rem;
         }
