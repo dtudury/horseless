@@ -8,6 +8,10 @@ export function defineNewRepoScreen (name) {
   return name
 }
 
+const toggleAdvanced = el => e => {
+  model.state.closeAdvanced = !model.state.closeAdvanced
+}
+
 class NewRepoScreen extends window.HTMLElement {
   constructor () {
     super()
@@ -23,9 +27,13 @@ class NewRepoScreen extends window.HTMLElement {
         ${showIfElse(() => model.state.passphrase, h`
           <${BUTTON} onclick=${[]}><${OCTICON} repo slot="icon"/>Create Repository</${BUTTON}>
         `)}
-        <${CONTAINER}>
-          <${HEADER} slot="header"><${OCTICON} chevron-down/><${OCTICON} gear/>Advanced</${HEADER}>
-          <${INFO}><${OCTICON} info/>Cryptopotamus uses PBKDF2 to turn passphrases into cryptographic keys and make attacks against passphrases more difficult. A random "Salt" value and "Iterations" count are used by PBKDF2 to change the strength of the result. Neither is a secret and both are stored as cleartext in saved repositories.</${INFO}>
+        <${CONTAINER} ${() => model.state.closeAdvanced ? 'closed' : null}>
+          <${HEADER} slot="header" onclick=${toggleAdvanced}>
+            <${OCTICON} style="width: 10px;" ${() => model.state.closeAdvanced ? 'chevron-right' : 'chevron-down'}/>
+            <${OCTICON} gear/>
+            Advanced
+          </${HEADER}>
+          <${INFO}><${OCTICON} info/>Cryptopotamus uses PBKDF2 to turn passphrases into cryptographic keys and make attacks against passphrases more difficult. A random "Salt" value and "Iterations" count are used by PBKDF2 to change the strength of the result. Neither value is a secret and both are stored as cleartext in saved repositories.</${INFO}>
           <${SALT}/>
           <${PASSPHRASE}/>
         </${CONTAINER}>

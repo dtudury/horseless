@@ -8,6 +8,7 @@ export function gotoNewRepository () {
   }
   model.state = {
     screen: screens.NEW_REPO,
+    closeAdvanced: true,
     passphrase: '',
     salt: salt.substring(0, 32),
     iterations: 25000

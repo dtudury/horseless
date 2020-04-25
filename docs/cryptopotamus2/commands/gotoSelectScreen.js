@@ -8,7 +8,6 @@ export async function gotoSelectScreen () {
   }
   Object.assign((await db).transaction(['repos']).objectStore('repos').getAllKeys(), {
     onsuccess: function (event) {
-      console.log(event.target.result)
       model.state = {
         screen: screens.SELECT,
         repoList: event.target.result

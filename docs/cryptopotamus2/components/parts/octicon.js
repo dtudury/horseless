@@ -48,7 +48,9 @@ class Octicon extends window.HTMLElement {
     return Object.keys(_icons)
   }
 
-  attributeChangedCallback (name) {
-    this.model.icon = name
+  attributeChangedCallback (name, last, value) {
+    if (value) {
+      this.model.icon = value
+    }
   }
 }

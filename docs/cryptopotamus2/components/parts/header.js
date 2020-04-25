@@ -18,6 +18,13 @@ class Header extends Containable {
           justify-content: space-between;
           padding-left: ${() => this.model.depth * 0.5 + 0.5}rem;
         }
+        :host([onclick]:hover) {
+          cursor: pointer;
+          background: #00000010;
+          border-color: #bbb;
+          color: #666;
+          fill: #666;
+        }
         slot {
           display: flex;
           align-items: center;

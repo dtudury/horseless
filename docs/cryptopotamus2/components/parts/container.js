@@ -28,6 +28,9 @@ class Container extends Containable {
           color: #888;
           fill: #888;
         }
+        :host([closed]) .body {
+          display: none;
+        }
         :host(:hover) {
           color: #666;
           fill: #666;
