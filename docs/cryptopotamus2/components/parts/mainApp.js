@@ -1,7 +1,7 @@
 import { h, render, objToDeclarations, proxy, mapSwitch } from '/unpkg/horseless/horseless.js'
 import { model } from '../../model.js'
 import { screens } from '../../constants.js'
-import { LOADING_SCREEN, SELECT_SCREEN, NEW_REPO_SCREEN } from '../tags.js'
+import { BUSY_SCREEN, SELECT_SCREEN, NEW_REPO_SCREEN, EDIT_REPO_SCREEN } from '../tags.js'
 const _noise = proxy({ image: '' })
 
 export function defineMainApp (name) {
@@ -24,10 +24,14 @@ const divStyle = {
 
 const screen = mapSwitch(() => model.state.screen, screen => {
   switch (screen) {
-    case screens.LOADING: return h`<${LOADING_SCREEN}/>`
+    case screens.LOADING: return h`<${BUSY_SCREEN}>loading</${BUSY_SCREEN}>`
+    case screens.WORKING: return h`<${BUSY_SCREEN}>working</${BUSY_SCREEN}>`
     case screens.SELECT: return h`<${SELECT_SCREEN}/>`
     case screens.NEW_REPO: return h`<${NEW_REPO_SCREEN}/>`
-    default: return `unhandled screen: ${String(model.state.screen)}`
+    case screens.EDIT_REPO: return h`<${EDIT_REPO_SCREEN}/>`
+    default:
+      console.error(`unhandled screen: ${String(model.state.screen)}`)
+      return `unhandled screen: ${String(model.state.screen)}`
   }
 })
 

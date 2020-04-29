@@ -1,7 +1,7 @@
 import { h, render, proxy } from '/unpkg/horseless/horseless.js'
 
-export function defineLoadingScreen (name) {
-  window.customElements.define(name, LoadingScreen)
+export function defineBusyScreen (name) {
+  window.customElements.define(name, BusyScreen)
   return name
 }
 
@@ -15,16 +15,17 @@ setInterval(() => {
   }
 }, 1000)
 
-class LoadingScreen extends window.HTMLElement {
+class BusyScreen extends window.HTMLElement {
   constructor () {
     super()
     render(this.attachShadow({ mode: 'open' }), h`
       <style>
         :host {
+          display: block;
           padding: 1rem;
         }
       </style>
-      loading${() => dots.dots}
+      <slot/>${() => dots.dots}
     `)
   }
 }

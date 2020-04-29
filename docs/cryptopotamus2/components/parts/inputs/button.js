@@ -1,5 +1,5 @@
 import { h, render } from '/unpkg/horseless/horseless.js'
-import { OCTICON } from '../tags.js'
+import { OCTICON } from '../../tags.js'
 
 export function defineButton (name) {
   window.customElements.define(name, Button)
