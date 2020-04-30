@@ -13,6 +13,7 @@ import { defineContainer } from './parts/container.js'
 import { defineScreenTitle } from './parts/screenTitle.js'
 import { defineInfo } from './parts/info.js'
 import { defineOcticon } from './parts/octicon.js'
+import { defineInput } from './parts/inputs/input.js'
 
 import { defineBusyScreen } from './screens/busyScreen.js'
 import { defineSelectRepoScreen } from './screens/selectRepoScreen.js'
@@ -33,6 +34,7 @@ export const CONTAINER = defineContainer('container-element')
 export const TITLE = defineScreenTitle('screen-title')
 export const INFO = defineInfo('info-title')
 export const OCTICON = defineOcticon('octicon-element')
+export const INPUT = defineInput('input-element')
 
 export const BUSY_SCREEN = defineBusyScreen('loading-screen')
 export const SELECT_SCREEN = defineSelectRepoScreen('select-repo-screen')

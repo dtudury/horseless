@@ -2,23 +2,11 @@ import { h, render } from '/unpkg/horseless/horseless.js'
 import { Containable } from './containable.js'
 
 export function defineContainer (name) {
-  window.customElements.define(name, Container)
+  window.customElements.define(name, ContainerElement)
   return name
 }
 
-export function countContainers (el) {
-  let count = 0
-  while (el) {
-    console.log(el, el.tagName, el instanceof Container)
-    if (el instanceof Container) {
-      ++count
-    }
-    el = el.parentNode
-  }
-  return count
-}
-
-class Container extends Containable {
+class ContainerElement extends Containable {
   constructor () {
     super()
     this.attachShadow({ mode: 'open' })

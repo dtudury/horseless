@@ -17,7 +17,7 @@ const divStyle = {
     left: '0',
     width: '100%',
     height: '100%',
-    'box-shadow': 'inset 0 0.2rem 0.5rem #666',
+    'box-shadow': 'inset 0 0.1rem 0.7rem 0.2rem #666',
     'border-radius': '0.5rem'
   })
 }
@@ -73,8 +73,8 @@ class MainApp extends window.HTMLElement {
           background: #ccc;
           color: #666;
           fill: #666;
-          border-radius: 0.5rem;
-          box-shadow: inset 0px 0.1rem 3rem #fff;
+          border-radius: 0.6rem;
+          box-shadow: inset 0px 0.1rem 1rem 0.5rem #fff, inset 0.3rem 0.1rem 0.2rem 0.1rem #0ff, inset -0.1rem 0.1rem 0.2rem 0.4rem #ff0;
           background-image: ${() => _noise.image};
         }
       </style>

@@ -17,6 +17,7 @@ class NewRepoScreen extends window.HTMLElement {
     const submit = el => e => {
       const passphrase = this.shadowRoot.querySelector(PASSPHRASE).value
       this.shadowRoot.querySelector(PASSPHRASE).value = ''
+      this.model.showSubmit = false
       const salt = this.shadowRoot.querySelector(SALT).value
       const iterations = this.shadowRoot.querySelector(ITERATIONS).value
       createNewRepository(passphrase, salt, iterations)

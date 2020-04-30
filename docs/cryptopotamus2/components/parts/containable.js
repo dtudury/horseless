@@ -1,7 +1,7 @@
 import { proxy } from '/unpkg/horseless/horseless.js'
 import { CONTAINER } from '../tags.js'
 
-export function countContainers (el) {
+function countContainers (el) {
   let count = 0
   while (el) {
     if (el.tagName && el.tagName.toUpperCase() === CONTAINER.toUpperCase()) {

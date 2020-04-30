@@ -1,7 +1,7 @@
 import { proxy } from '/unpkg/horseless/horseless.js'
 import { screens } from './constants.js'
 
-export const model = proxy({
+export const model = window.model = proxy({
   state: { screen: screens.LOADING }
 })
 

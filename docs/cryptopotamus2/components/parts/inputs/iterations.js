@@ -1,5 +1,5 @@
 import { h, render } from '/unpkg/horseless/horseless.js'
-import { InputStyle } from './inputStyle.js'
+import { InputCommon } from './inputCommon.js'
 import { OCTICON } from '../../tags.js'
 import { model } from '../../../model.js'
 
@@ -8,7 +8,7 @@ export function defineIterations (name) {
   return name
 }
 
-class Iterations extends InputStyle {
+class Iterations extends InputCommon {
   constructor () {
     super()
     this.attachShadow({ mode: 'open' })

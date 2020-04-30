@@ -1,5 +1,5 @@
 import { h, render } from '/unpkg/horseless/horseless.js'
-import { InputStyle } from './inputStyle.js'
+import { InputCommon } from './inputCommon.js'
 import { OCTICON } from '../../tags.js'
 import { model } from '../../../model.js'
 
@@ -8,7 +8,7 @@ export function defineSalt (name) {
   return name
 }
 
-class Salt extends InputStyle {
+class Salt extends InputCommon {
   constructor () {
     super()
     this.attachShadow({ mode: 'open' })

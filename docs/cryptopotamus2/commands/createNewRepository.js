@@ -1,5 +1,6 @@
 import { model, setKey } from '../model.js'
 import { screens } from '../constants.js'
+import { db } from '../db.js'
 
 export async function createNewRepository (passphrase, salt, iterations) {
   const encoder = new TextEncoder()
@@ -13,10 +14,22 @@ export async function createNewRepository (passphrase, salt, iterations) {
     keyMaterial,
     { name: 'AES-GCM', length: 256 }, false, ['encrypt', 'decrypt']
   ))
-  model.state = {
-    screen: screens.EDIT_REPO,
-    salt,
-    iterations,
-    files: []
-  }
+  Object.assign((await db).transaction(['repos']).objectStore('repos').getAllKeys(), {
+    onsuccess: function (event) {
+      const repoList = event.target.result
+      let name
+      let i = 1
+      do {
+        name = `unnamed-repo-${i}`
+        ++i
+      } while (repoList.indexOf(name) !== -1)
+      model.state = {
+        screen: screens.EDIT_REPO,
+        salt,
+        iterations,
+        name,
+        files: []
+      }
+    }
+  })
 }

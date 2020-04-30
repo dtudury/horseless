@@ -1,5 +1,5 @@
 import { h, render } from '/unpkg/horseless/horseless.js'
-import { InputStyle } from './inputStyle.js'
+import { InputCommon } from './inputCommon.js'
 import { OCTICON } from '../../tags.js'
 
 export function definePassphrase (name) {
@@ -7,7 +7,7 @@ export function definePassphrase (name) {
   return name
 }
 
-class Passphrase extends InputStyle {
+class Passphrase extends InputCommon {
   constructor () {
     super()
     this.attachShadow({ mode: 'open' })
