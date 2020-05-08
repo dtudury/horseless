@@ -1,4 +1,4 @@
-import { h, render, proxy } from '/unpkg/horseless/horseless.js'
+import { h, render, proxy } from 'https://unpkg.com/horseless@0.3.0/dist/horseless.min.esm.js'
 
 const results = proxy({
   chained: 'not yet run',
@@ -34,7 +34,6 @@ const unchained = el => e => {
   const dt = new Date() - t0
   results.unchained = `memory "high water mark": ${highWaterMark} bytes, time running: ${dt}ms`
 }
-console.log(chained)
 
 render(document.body, h`
   <button onclick=${chained}>call chained()</button> results: ${() => results.chained}
