@@ -1,11 +1,11 @@
 import { h, render, proxy } from 'https://unpkg.com/horseless@0.3.0/dist/horseless.min.esm.js'
 
 const results = proxy({
-  chained: 'not yet run',
-  unchained: 'not yet run'
+  chained: 'not yet run (click button and wait a bit)',
+  unchained: 'not yet run (click button and wait a bit)'
 })
-let highWaterMark
 
+let highWaterMark
 const returnTrue = () => {
   highWaterMark = Math.max(highWaterMark, window.performance.memory.usedJSHeapSize)
   return true
@@ -18,7 +18,7 @@ const chained = el => e => {
   console.log(e.target.onclick)
   highWaterMark = 0
   const t0 = new Date()
-  eval(longChainExpression)
+  eval(longChainExpression) // eslint-disable-line no-eval
   const dt = new Date() - t0
   results.chained = `memory "high water mark": ${highWaterMark} bytes, time running: ${dt}ms`
 }
@@ -36,7 +36,19 @@ const unchained = el => e => {
 }
 
 render(document.body, h`
-  <button onclick=${chained}>call chained()</button> results: ${() => results.chained}
+  chained() does something like arr.filter(...).filter(...).filter(...)...
   <br>
-  <button onclick=${unchained}>call unchained()</button> results: ${() => results.unchained}
+  <button onclick=${chained}>call chained()</button>
+  <br>
+  results: ${() => results.chained}
+  <br>
+  <br>
+  unchained() does something like arr = arr.filter(...); arr = arr.filter(...);...
+  <br>
+  <button onclick=${unchained}>call unchained()</button>
+  <br>
+  results: ${() => results.unchained}
+  <br>
+  <br>
+  <a href="./chains.js">(script)</a>
 `)
