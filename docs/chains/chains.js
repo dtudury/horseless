@@ -34,6 +34,7 @@ const unchained = el => e => {
   const dt = new Date() - t0
   results.unchained = `memory "high water mark": ${highWaterMark} bytes, time running: ${dt}ms`
 }
+console.log(chained)
 
 render(document.body, h`
   <button onclick=${chained}>call chained()</button> results: ${() => results.chained}
