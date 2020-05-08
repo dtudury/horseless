@@ -36,7 +36,13 @@ const screen = mapSwitch(() => model.state.screen, screen => {
 })
 
 // make tv static
-const canvas = render(h`<canvas width="32" height="32"/>`)[0]
+const size = 128
+const colorBase = 0xffcccccc
+const range = 5
+const rRange = range
+const gRange = range
+const bRange = range
+const canvas = render(h`<canvas width="${size}" height="${size}"/>`)[0]
 var context = canvas.getContext('2d', { alpha: false })
 var imageData = context.createImageData(canvas.width, canvas.height)
 var uint32Array = new Uint32Array(imageData.data.buffer)
@@ -47,10 +53,10 @@ function updateNoise () {
     const index = Math.floor(Math.random() * 32)
     if (!images[index]) {
       uint32Array.forEach((v, i) => {
-        uint32Array[i] = 0xffafafaf +
-          Math.floor(Math.random() * 0x20) +
-          Math.floor(Math.random() * 0x20) * 0x100 +
-          Math.floor(Math.random() * 0x20) * 0x10000
+        uint32Array[i] = colorBase +
+          Math.round(2 * Math.random() * rRange - rRange) +
+          Math.round(2 * Math.random() * gRange - gRange) * 0x100 +
+          Math.round(2 * Math.random() * bRange - bRange) * 0x10000
       })
       context.putImageData(imageData, 0, 0)
       images[index] = `url(${canvas.toDataURL()})`
@@ -58,7 +64,7 @@ function updateNoise () {
     image = images[index]
   } while (image === _noise.image)
   _noise.image = image
-  window.requestAnimationFrame(updateNoise)
+  // window.requestAnimationFrame(updateNoise)
 }
 updateNoise()
 
