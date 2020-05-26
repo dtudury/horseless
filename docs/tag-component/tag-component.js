@@ -4,7 +4,6 @@ const model = proxy({ seconds: 0 })
 setInterval(() => { ++model.seconds }, 1000)
 
 function component (attributes, children) {
-  console.log(attributes.model)
   return h`
     <div>
       attribute a is: ${attributes.a}
