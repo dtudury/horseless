@@ -1,12 +1,7 @@
 {
   "name": "horseless",
-<<<<<<< HEAD
   "version": "0.5.2",
   "description": "a framework?",
-=======
-  "version": "0.6.0",
-  "description": "a framework?!",
->>>>>>> 58271de60d71b2fc776a281520dfbb150c569912
   "main": "dist/horseless.cjs.js",
   "module": "dist/horseless.min.esm.js",
   "devmodule": "dist/horseless.esm.js",
