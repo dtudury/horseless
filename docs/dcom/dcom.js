@@ -113,7 +113,7 @@ function luna(entries) {
               <h1 style="display: inline;">${entry.entry}</h1>
               ${showIfElse(() => entry.homograph, h`<sup>${entry.homograph}</sup>`)}
               <figure style="display: inline; margin: 0;">
-              ${showIfElse(() => model.ipa, h`[${entry.pronunciation.ipa}]`, h`/${entry.pronunciation.spell}/`)}
+              ${showIfElse(() => model.ipa, h`/${entry.pronunciation.ipa}/`, h`[${entry.pronunciation.spell}]`)}
               </figure>
               <button onclick=${toggleIpa}>${showIfElse(() => model.ipa, h`PHONETIC RESPELLING`, h`SHOW IPA`)}</button>
             </header>
@@ -145,7 +145,16 @@ function luna(entries) {
                         })
                         return h`
                           <li value="${definition.order}">${formatted}
-                            <ol>
+                            <ol type="a">
+                              ${mapEntries(definition.subdefinitions, subdefinition => {
+                                const formatted = h([subdefinition.definition || '']).map(node => {
+                                  if (node.value) return h`${node.value}`
+                                  if (node.children) return h`<i>${node.children[0].value}</i>`
+                                })
+                                return h`
+                                  <li>${formatted}</li>
+                                `
+                              })}
                             </ol>
                           </li>
                         `
