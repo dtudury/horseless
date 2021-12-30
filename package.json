@@ -1,6 +1,6 @@
 {
   "name": "horseless",
-  "version": "0.5.3",
+  "version": "0.5.4",
   "description": "a framework?",
   "main": "dist/horseless.cjs.js",
   "module": "dist/horseless.min.esm.js",
@@ -24,7 +24,6 @@
     "dist"
   ],
   "devDependencies": {
-    "@rollup/plugin-alias": "^3.0.1",
     "acorn": "^7.4.0",
     "chai": "^4.2.0",
     "express": "^4.17.1",
